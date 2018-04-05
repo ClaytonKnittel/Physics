@@ -13,7 +13,7 @@ public class Main {
 		Screen s = new Screen(800, 600, 72);
 		
 		Setup.CIRCULAR.initialize(s, 1);
-		Setup.CIRCULAR.showExactSolution(s, 300, Color.ORANGE);
+		Setup.CIRCULAR.showExactSolution(s, 300, Color.CYAN);
 		
 //		int i = 20;
 //		for (int x = -i; x <= i; x += 60) {
