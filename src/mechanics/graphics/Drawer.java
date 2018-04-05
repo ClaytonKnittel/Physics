@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import mechanics.utils.Drawable;
 import mechanics.utils.Entity;
-import tensor.Vector;
+import tensor.DVector;
 
 public class Drawer {
 	
@@ -28,7 +28,7 @@ public class Drawer {
 		return entities.energy();
 	}
 	
-	public Vector momentum() {
+	public DVector momentum() {
 		return entities.momentum();
 	}
 	

@@ -1,11 +1,11 @@
 package mechanics.utils;
 
 import mechanics.physics.utils.Attribute;
-import numbers.cliffordAlgebras.Quaternion;
+import numbers.cliffordAlgebras.DQuaternion;
 
 public interface Entity extends Drawable {
 	
-	Quaternion pos();
+	DQuaternion pos();
 	
 	Shape shape();
 	

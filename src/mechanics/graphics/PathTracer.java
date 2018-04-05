@@ -35,7 +35,10 @@ public class PathTracer implements DynamicDrawable {
 		else if (shouldAppend(pos)) {
 			screen.remove(lines.add(new LineSegment(lines.getLast().end(), pos, color)));
 			screen.add(lines.getLast());
-		}
+		} else
+			return;
+		// ensure that last Line added will have its most recent transformed position saved
+		lines.getLast().update();
 	}
 	
 	private boolean shouldAppend(Vector pos) {

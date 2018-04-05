@@ -6,7 +6,7 @@ import java.util.Iterator;
 import mechanics.physics.Body;
 import mechanics.physics.PMath;
 import mechanics.utils.Entity;
-import tensor.Vector;
+import tensor.DVector;
 
 public class EntityList extends ArrayList<Entity> {
 	
@@ -45,8 +45,8 @@ public class EntityList extends ArrayList<Entity> {
 		return energy;
 	}
 	
-	public Vector momentum() {
-		Vector p = new Vector(0, 0, 0);
+	public DVector momentum() {
+		DVector p = new DVector(0, 0, 0);
 		for (int i = 0; i < size(); i++) {
 			p.add(((Body) getEl(i)).momentum());
 		}

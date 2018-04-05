@@ -12,7 +12,8 @@ import mechanics.physics.utils.Attributes;
 import mechanics.physics.utils.BodyCollisionList;
 import mechanics.utils.Entity;
 import mechanics.utils.Shape;
-import numbers.cliffordAlgebras.Quaternion;
+import numbers.cliffordAlgebras.DQuaternion;
+import tensor.DVector;
 import tensor.Vector;
 
 public abstract class Body implements Entity {
@@ -20,20 +21,20 @@ public abstract class Body implements Entity {
 	/**
 	 * @serialField pos the position of the center of mass
 	 */
-	private Quaternion pos;
+	private DQuaternion pos;
 	
 	/**
 	 * @serialField transPos the transformed position, with respect to the screen
 	 */
 	private Vector transPos;
 	
-	private Vector velocity;
+	private DVector velocity;
 	
-	private Vector netForce;
+	private DVector netForce;
 	
 	
 	
-	private float mass;
+	private double mass;
 	
 	/**
 	 * @serialField a description of the shape of this Body
@@ -52,8 +53,8 @@ public abstract class Body implements Entity {
 	 */
 	private Attributes attributes;
 	
-	public Body(Vector pos, Vector vi, float mass, Shape shape, Color color, Attribute...attributes) {
-		this.pos = new Quaternion(pos);
+	public Body(DVector pos, DVector vi, float mass, Shape shape, Color color, Attribute...attributes) {
+		this.pos = new DQuaternion(pos);
 		this.velocity = vi;
 		this.mass = mass;
 		this.shape = shape;
@@ -63,12 +64,12 @@ public abstract class Body implements Entity {
 		reset();
 	}
 	
-	public Body(Vector pos, Vector vi, float mass, Shape shape, Color color) {
+	public Body(DVector pos, DVector vi, float mass, Shape shape, Color color) {
 		this(pos, vi, mass, shape, color, Attribute.Physical, Attribute.Massive);
 	}
 	
-	public Body(Vector pos, float mass, Shape shape, Color color) {
-		this(pos, new Vector(Vector.ZERO), mass, shape, color);
+	public Body(DVector pos, float mass, Shape shape, Color color) {
+		this(pos, new DVector(DVector.ZERO), mass, shape, color);
 	}
 	
 	/**
@@ -80,8 +81,8 @@ public abstract class Body implements Entity {
 		reset();
 	}
 	
-	public void lineTrace(Screen screen, float precision, Color color) {
-		pathTracer = new PathTracer(precision, 200, color);
+	public void lineTrace(Screen screen, float precision, int numSteps, Color color) {
+		pathTracer = new PathTracer(precision, numSteps, color);
 		screen.add(pathTracer);
 	}
 	
@@ -89,23 +90,23 @@ public abstract class Body implements Entity {
 		return pathTracer != null;
 	}
 	
-	public Quaternion pos() {
+	public DQuaternion pos() {
 		return pos;
 	}
 	
-	public Vector velocity() {
+	public DVector velocity() {
 		return velocity;
 	}
 	
-	protected void setVelocity(Vector v) {
+	protected void setVelocity(DVector v) {
 		this.velocity = v;
 	}
 	
-	public Vector momentum() {
+	public DVector momentum() {
 		return velocity.times(mass);
 	}
 	
-	public float mass() {
+	public double mass() {
 		return mass;
 	}
 	
@@ -118,7 +119,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public String toString() {
-		return "Position: " + (Vector) pos + "\nVelocity: " + velocity + "\nMass: " + mass + "\nColor: " + color;
+		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nMass: " + mass + "\nColor: " + color;
 	}
 	
 	public boolean is(Attribute a) {
@@ -133,14 +134,14 @@ public abstract class Body implements Entity {
 		return Math.abs(transPos.z());
 	}
 	
-	protected void addForce(Vector force) {
+	protected void addForce(DVector force) {
 		netForce.add(force);
 	}
 	
 	public void update() {
-		transPos = GMath.transform(pos);
+		transPos = GMath.transform(pos.toQuaternion());
 		if (tracing())
-			pathTracer.recordLocation(pos);
+			pathTracer.recordLocation(pos.toVector());
 	}
 	
 	public void physUpdate() {
@@ -158,7 +159,7 @@ public abstract class Body implements Entity {
 	}
 	
 	private void reset() {
-		netForce = new Vector(Vector.ZERO);
+		netForce = new DVector(DVector.ZERO);
 	}
 	
 	/**
@@ -171,7 +172,7 @@ public abstract class Body implements Entity {
 		if (!Body.class.isAssignableFrom(e.getClass()))
 			return;
 		Body b = (Body) e;
-		Vector net = PMath.interactionForce(this, b);
+		DVector net = PMath.interactionForce(this, b);
 		this.addForce(net);
 		b.addForce(net.times(-1));
 	}

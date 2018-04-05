@@ -1,21 +1,21 @@
 package mechanics.physics;
 
-import tensor.Vector;
+import tensor.DVector;
 
 public class CollisionInformation {
 	
-	private Vector location, norm;
+	private DVector location, norm;
 	
-	public CollisionInformation(Vector location, Vector norm) {
+	public CollisionInformation(DVector location, DVector norm) {
 		this.location = location;
 		this.norm = norm;
 	}
 	
-	public Vector location() {
+	public DVector location() {
 		return location;
 	}
 	
-	public Vector norm() {
+	public DVector norm() {
 		return norm;
 	}
 	

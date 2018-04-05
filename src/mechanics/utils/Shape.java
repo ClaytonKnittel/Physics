@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import mechanics.physics.CollisionInformation;
+import tensor.DVector;
 import tensor.Vector;
 
 public interface Shape {
@@ -15,7 +16,7 @@ public interface Shape {
 	 * <br>
 	 * The surface normal is the <code>Vector</code> normal to and pointing outward from this <code>Shape</code>'s surface.
 	 */
-	CollisionInformation collisionInformation(Shape s, Vector thisToOther);
+	CollisionInformation collisionInformation(Shape s, DVector thisToOther);
 	
 	/**
 	 * @param s The shape to be comparing to this one
@@ -24,7 +25,7 @@ public interface Shape {
 	 * <br>
 	 * The surface normal is the <code>Vector</code> normal to and pointing outward from this <code>Shape</code>'s surface.
 	 */
-	boolean colliding(Shape s, Vector thisToOther);
+	boolean colliding(Shape s, DVector thisToOther);
 	
 	/**
 	 * Shapes provide a drawing method, in which a few parameters must be passed down by the

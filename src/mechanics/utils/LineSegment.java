@@ -14,10 +14,13 @@ public class LineSegment implements Drawable {
 	private Quaternion tStart, tEnd;
 	private Color color;
 	
+	private boolean h;
+	
 	public LineSegment(Vector start, Vector end, Color color) {
 		this.start = new Quaternion(start);
 		this.end = new Quaternion(end);
 		this.color = color;
+		h = false;
 	}
 	
 	public Vector start() {
@@ -38,12 +41,19 @@ public class LineSegment implements Drawable {
 
 	@Override
 	public void update() {
+		h = true;
 		tStart = GMath.transform(start);
 		tEnd = GMath.transform(end);
+	}
+	
+	public String toString() {
+		return start + "\t" + end + "\t" + color;
 	}
 
 	@Override
 	public float distance(Camera c) {
+		if (!h)
+			System.out.println(this);
 		return Math.abs((tStart.z() + tEnd.z()) / 2);
 	}
 	

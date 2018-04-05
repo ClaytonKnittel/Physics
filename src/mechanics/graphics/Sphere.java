@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import mechanics.graphics.math.GMath;
 import mechanics.physics.CollisionInformation;
 import mechanics.utils.Shape;
+import tensor.DVector;
 import tensor.Vector;
 
 public class Sphere implements Shape {
@@ -22,17 +23,17 @@ public class Sphere implements Shape {
 		g.fillOval((int) (GMath.screenX(pos) - d), (int) (GMath.screenY(pos) - d), (int) (2 * d), (int) (2 * d));
 	}
 
-	public CollisionInformation collisionInformation(Shape s, Vector thisToS) {
+	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {
 		if (!colliding(s, thisToS))
 			return null;
 		return new CollisionInformation(thisToS.divide(2), thisToS.normalized());
 	}
 	
-	public boolean colliding(Shape s, Vector thisToS) {
+	public boolean colliding(Shape s, DVector thisToS) {
 		if (!Sphere.class.isAssignableFrom(s.getClass()))
 			return false;
 		Sphere p = (Sphere) s;
-		float mdist = radius + p.radius;
+		double mdist = radius + p.radius;
 		mdist *= mdist;
 		if (thisToS.mag2() > mdist)
 			return false;

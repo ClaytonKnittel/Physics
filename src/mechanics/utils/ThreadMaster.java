@@ -7,14 +7,14 @@ public class ThreadMaster extends Thread {
 	private long delta;
 	private int frames;
 	
-	public ThreadMaster(Updatable u, float frequency) {
+	public ThreadMaster(Updatable u, double frequency) {
 		this.u = u;
 		this.delay = (long) Math.round(frequency * 1000);
 		this.delta = System.currentTimeMillis();
 		this.frames = 0;
 	}
 	
-	public ThreadMaster(Updatable u, float frequency, String name) {
+	public ThreadMaster(Updatable u, double frequency, String name) {
 		this(u, frequency);
 		this.setName(name);
 	}
