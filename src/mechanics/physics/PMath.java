@@ -128,27 +128,53 @@ public final class PMath {
 	}
 	
 	
-	public static void setupCircilarOrbit(Body b1, Body b2) {
-		DVector r = b2.pos().minus(b1.pos());
+	public static void setupOrbitAroundPlanet(Body planet, Body satellite) {
+		setupOrbitAroundPlanet(planet, satellite, DVector.Z);
+	}
+	
+	public static void setupOrbitAroundPlanet(Body planet, Body satellite, DVector norm) {
+		DVector r = satellite.pos().minus(centerOfMass(planet, satellite));
 		
 		// p will be direction of motion of b1
-		DVector p = getNormalizedPerpendicular(r);
+		DVector p = getNormalizedPerpendicular(r, norm);
+		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (planet.mass() + satellite.mass()));
+		satellite.setVelocity(p.times(planet.mass() * factor).plus(planet.velocity()));
+	}
+	
+	public static void setupCircilarOrbit(Body b1, Body b2) {
+		setupCircularOrbit(b1, b2, DVector.Z);
+	}
+	
+	public static void setupCircularOrbit(Body b1, Body b2, DVector norm) {
+		DVector r = b1.pos().minus(centerOfMass(b1, b2));
+		
+		// p will be direction of motion of b1
+		DVector p = getNormalizedPerpendicular(r, norm);
+		
 		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (b1.mass() + b2.mass()));
 		b1.setVelocity(p.times(b2.mass() * factor));
 		b2.setVelocity(p.times(-b1.mass() * factor));
 	}
 	
 	public static void setupParabolicOrbit(Body b1, Body b2) {
-		DVector r = b2.pos().minus(b1.pos());
-		DVector p = getNormalizedPerpendicular(r);
+		setupParabolicOrbit(b1, b2, DVector.Z);
+	}
+	
+	public static void setupParabolicOrbit(Body b1, Body b2, DVector norm) {
+		DVector r = b1.pos().minus(centerOfMass(b1, b2));
+		DVector p = getNormalizedPerpendicular(r, norm);
 		
-		double factor = Math.sqrt(2 / (Ginv * r.mag() * (b1.mass() + b2.mass())));
+		double factor = Math.sqrt(2 * b2.mass() / (Ginv * r.mag())) / (b1.mass() + b2.mass());
 		b1.setVelocity(p.times(b2.mass() * factor));
 		b2.setVelocity(p.times(-b1.mass() * factor));
 	}
 	
-	private static DVector getNormalizedPerpendicular(DVector r) {
-		DVector p = r.cross(DVector.Y);
+	public static DVector centerOfMass(Body b1, Body b2) {
+		return b1.pos().times(b1.mass()).plus(b2.pos().times(b2.mass())).divide(b1.mass() + b2.mass());
+	}
+	
+	private static DVector getNormalizedPerpendicular(DVector r, DVector norm) {
+		DVector p = r.cross(norm);
 		if (p.mag2() < .0001)
 			p = r.cross(DVector.X);
 		return p.normalized();

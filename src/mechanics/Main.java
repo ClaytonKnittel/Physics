@@ -12,17 +12,33 @@ public class Main {
 	
 	public static void main(String args[]) {
 		Screen s = new Screen(800, 600, 72);
-		s.setCamera(new Vector(0, 0, 200));
-		//s.setCamera(new Vector(100, 0, 300));
 		
-//		Setup.ELLIPTICAL.initialize(s, 1);
-//		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
+		
+		s.setCamera(new Vector(0, 100, 100), .4f, 0);
+		Setup.ELLIPTICAL.initialize(s, 1);
+		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
 //		Setup.PARABOLIC.showExactSolution(s, 300, Color.CYAN);
 		
-		Setup.POLAR.initialize(s, 1);
-		Setup.POLAR.showExactSolution(s, 300, Color.CYAN);
+//		Setup.HYPERBOLIC.initialize(s, 1);
+//		Setup.HYPERBOLIC.showExactSolution(s, 1200, Color.CYAN);
+		
+//		Setup.CIRCULAR.initialize(s, 1);
+//		Setup.CIRCULAR.showExactSolution(s, 300, Color.CYAN);
+		
+//		Setup.POLAR.initialize(s, 1);
+//		Setup.POLAR.showExactSolution(s, 300, Color.CYAN);
+
+		//s.setCamera(new Vector(300, 0, 3000));
+//		s.setCamera(new Vector(1000, -40, 100));
+//		Setup.EARTH_MOON.initialize(s, 1);
+//		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
+		
+		
+//		s.setCamera(new Vector(0, 0, 10000));
+//		Setup.INNER_SYSTEM.initialize(s, 1);
+//		Setup.INNER_SYSTEM.showExactSolutions(s, 300, new Color[] {Color.BLUE, Color.GRAY, Color.GREEN, Color.DARK_GRAY}, 0, new int[] {1, 2, 3, 4});
 		
 //		int i = 20;
 //		for (int x = -i; x <= i; x += 60) {

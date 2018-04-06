@@ -12,6 +12,8 @@ public class Camera extends Vector {
 	private float polar, azimuthal;
 	
 	private boolean boost;
+	private long lastBoost;
+	private final long wait = 400;
 	
 	// in spatial units / second
 	public static float upV, forwardV, backwardV, sidewaysV, turnV, factor;
@@ -30,6 +32,7 @@ public class Camera extends Vector {
 		this.polar = polar;
 		this.azimuthal = azimuthal;
 		this.boost = false;
+		this.lastBoost = 0;
 	}
 	
 	public Camera(Vector pos) {
@@ -71,7 +74,10 @@ public class Camera extends Vector {
 	}
 	
 	public void flipSpeed() {
-		boost = !boost;
+		if (lastBoost < System.currentTimeMillis()) {
+			boost = !boost;
+			this.lastBoost = System.currentTimeMillis() + wait;
+		}
 	}
 	
 	public Quaternion getTransformation() {

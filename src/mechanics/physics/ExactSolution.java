@@ -38,7 +38,7 @@ public class ExactSolution implements DynamicDrawable {
 	
 	public void calculatePath() {
 		reset();
-		DVector cm = main.pos().times(main.mass()).plus(other.pos().times(other.mass())).divide(main.mass() + other.mass());
+		DVector cm = PMath.centerOfMass(main, other);
 		
 		// x-axis
 		DVector x = main.pos().minus(cm).normalized();
@@ -46,14 +46,17 @@ public class ExactSolution implements DynamicDrawable {
 		DVector y = x.cross(main.velocity()).cross(x).normalized();
 		// angular momentum
 		double l2 = main.pos().minus(cm).cross(main.velocity()).mag2();
-		double factor = other.mass() * other.mass() / ((other.mass() + main.mass()) * (other.mass() + main.mass()));
-		double d = factor * other.mass() / PMath.Ginv / l2;
+		double factor = PMath.square(other.mass() / (other.mass() + main.mass()));
+		double d = factor * other.mass() / (PMath.Ginv * l2);
 		double c = 1 / main.pos().minus(cm).mag() - d;
-				
+		
+		
 		double pi2 = Math.PI * 2;
 		
 		double rp = 1 / (c + d);
 		double r;
+		
+		//System.out.println(d + " " + c + "  " + rp);
 		
 		for (int frac = 1; frac <= numSteps; frac++) {
 			r = 1 / (c * Math.cos((pi2 * frac) / numSteps) + d);

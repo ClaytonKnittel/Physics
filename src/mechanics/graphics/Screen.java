@@ -85,6 +85,11 @@ public class Screen extends JFrame {
 		camera.add(loc.minus(camera));
 	}
 	
+	public void setCamera(Vector loc, float theta, float phi) {
+		camera.add(loc.minus(camera));
+		camera.rotate((theta - camera.polar()) / GMath.dt, (phi - camera.azimuthal()) / GMath.dt);
+	}
+	
 	/**
 	 * must be called prior to execution and after all <code>Entities</code> have been added
 	 */
