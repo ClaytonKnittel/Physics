@@ -55,6 +55,11 @@ public class KeyListen {
 		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0, true), "ku");
 		component.getActionMap().put("ku", new KeyAction(KeyEvent.VK_K, true));
 		
+		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0, false), "jd");
+		component.getActionMap().put("jd", new KeyAction(KeyEvent.VK_J, false));
+		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0, true), "ju");
+		component.getActionMap().put("ju", new KeyAction(KeyEvent.VK_J, true));
+		
 		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "spaced");
 		component.getActionMap().put("spaced", new KeyAction(KeyEvent.VK_SPACE, false));
 		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "spaceu");
@@ -86,6 +91,7 @@ public class KeyListen {
 			});
 		keyActions.put(KeyEvent.VK_M, (c) -> { c.rotate(Camera.turnV, 0); });
 		keyActions.put(KeyEvent.VK_K, (c) -> { c.rotate(-Camera.turnV, 0); });
+		keyActions.put(KeyEvent.VK_J, (c) -> c.flipSpeed());
 	}
 	
 	public boolean shift() {

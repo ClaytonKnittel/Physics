@@ -53,7 +53,7 @@ public abstract class Body implements Entity {
 	 */
 	private Attributes attributes;
 	
-	public Body(DVector pos, DVector vi, float mass, Shape shape, Color color, Attribute...attributes) {
+	public Body(DVector pos, DVector vi, double mass, Shape shape, Color color, Attribute...attributes) {
 		this.pos = new DQuaternion(pos);
 		this.velocity = vi;
 		this.mass = mass;
@@ -64,11 +64,11 @@ public abstract class Body implements Entity {
 		reset();
 	}
 	
-	public Body(DVector pos, DVector vi, float mass, Shape shape, Color color) {
+	public Body(DVector pos, DVector vi, double mass, Shape shape, Color color) {
 		this(pos, vi, mass, shape, color, Attribute.Physical, Attribute.Massive);
 	}
 	
-	public Body(DVector pos, float mass, Shape shape, Color color) {
+	public Body(DVector pos, double mass, Shape shape, Color color) {
 		this(pos, new DVector(DVector.ZERO), mass, shape, color);
 	}
 	

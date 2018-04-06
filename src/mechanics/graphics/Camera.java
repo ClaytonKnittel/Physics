@@ -11,8 +11,10 @@ public class Camera extends Vector {
 	
 	private float polar, azimuthal;
 	
+	private boolean boost;
+	
 	// in spatial units / second
-	public static float upV, forwardV, backwardV, sidewaysV, turnV;
+	public static float upV, forwardV, backwardV, sidewaysV, turnV, factor;
 	
 	static {
 		upV = 33;
@@ -20,12 +22,14 @@ public class Camera extends Vector {
 		backwardV = 40;
 		sidewaysV = 34;
 		turnV = .4f;
+		factor = 30;
 	}
 	
 	public Camera(Vector pos, float polar, float azimuthal) {
 		super(pos);
 		this.polar = polar;
 		this.azimuthal = azimuthal;
+		this.boost = false;
 	}
 	
 	public Camera(Vector pos) {
@@ -46,10 +50,14 @@ public class Camera extends Vector {
 	}
 	
 	public void updward(float velocity) {
+		if (boost)
+			velocity *= factor;
 		this.add(new Vector(0, velocity * GMath.dt, 0));
 	}
 	
 	public void forward(float velocity) {
+		if (boost)
+			velocity *= factor;
 		this.add(new Vector((float) -Math.sin(azimuthal), 0, (float) -Math.cos(azimuthal)).times(velocity * GMath.dt));
 	}
 	
@@ -57,7 +65,13 @@ public class Camera extends Vector {
 	 * @param velocity the velocity at which to travel in the rightward direction
 	 */
 	public void sideways(float velocity) {
+		if (boost)
+			velocity *= factor;
 		this.add(new Vector((float) Math.cos(azimuthal), 0, (float) -Math.sin(azimuthal)).times(velocity * GMath.dt));
+	}
+	
+	public void flipSpeed() {
+		boost = !boost;
 	}
 	
 	public Quaternion getTransformation() {

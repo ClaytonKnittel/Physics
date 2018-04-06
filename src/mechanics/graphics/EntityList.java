@@ -16,7 +16,7 @@ public class EntityList extends ArrayList<Entity> {
 		super();
 	}
 	
-	private synchronized Entity getEl(int i) {
+	public synchronized Entity getEl(int i) {
 		return super.get(i);
 	}
 	
@@ -35,11 +35,15 @@ public class EntityList extends ArrayList<Entity> {
 	
 	public float energy() {
 		float energy = 0;
+		Entity e;
 		for (int i = 0; i < size(); i++) {
-			Body b = (Body) getEl(i);
-			energy += PMath.kineticEnergy(b);
-			for (int j = i + 1; j < size(); j++) {
-				energy += PMath.potentialEnergy((Body) getEl(j), b);
+			e = getEl(i);
+			if (Body.class.isAssignableFrom(e.getClass())) {
+				Body b = (Body) e;
+				energy += PMath.kineticEnergy(b);
+				for (int j = i + 1; j < size(); j++) {
+					energy += PMath.potentialEnergy((Body) getEl(j), b);
+				}
 			}
 		}
 		return energy;
@@ -47,8 +51,13 @@ public class EntityList extends ArrayList<Entity> {
 	
 	public DVector momentum() {
 		DVector p = new DVector(0, 0, 0);
+		Entity e;
 		for (int i = 0; i < size(); i++) {
-			p.add(((Body) getEl(i)).momentum());
+			e = getEl(i);
+			if (Body.class.isAssignableFrom(e.getClass())) {
+				Body b = (Body) e;
+				p.add(b.momentum());
+			}
 		}
 		return p;
 	}

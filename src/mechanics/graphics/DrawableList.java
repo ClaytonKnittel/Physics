@@ -17,7 +17,7 @@ public class DrawableList extends ArrayList<Drawable> {
 		ec = new DrawableComparator(c);
 	}
 	
-	private synchronized Drawable getEl(int i) {
+	public synchronized Drawable getEl(int i) {
 		return super.get(i);
 	}
 	

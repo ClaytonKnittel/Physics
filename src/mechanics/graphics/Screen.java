@@ -81,6 +81,10 @@ public class Screen extends JFrame {
 		this.drawer = new Drawer(camera);
 	}
 	
+	public void setCamera(Vector loc) {
+		camera.add(loc.minus(camera));
+	}
+	
 	/**
 	 * must be called prior to execution and after all <code>Entities</code> have been added
 	 */

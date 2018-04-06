@@ -7,6 +7,8 @@ import mechanics.physics.Body;
 import mechanics.physics.ExactSolution;
 import mechanics.physics.PMath;
 import mechanics.physics.Planet;
+import mechanics.physics.SphericalBodies;
+import mechanics.utils.Entity;
 import tensor.DVector;
 
 public class Setup {
@@ -32,20 +34,33 @@ public class Setup {
 		PMath.setupCircilarOrbit(earth, sun);
 		
 		CIRCULAR = new Setup(traceE, numSteps, earth, sun);
-		PARABOLIC = null;
+		
+		earth = new Planet(new DVector(30, 0, -100), 10, 3, earthColor);
+		sun = new Planet(new DVector(0, 0, -100), 1000, 5, sunColor);
+		traceE = new Color[] {Color.GREEN, null};
+		numSteps = new int[] {200, 0};
+		PMath.setupParabolicOrbit(earth, sun);
+		
+		PARABOLIC = new Setup(traceE, numSteps, earth, sun);
 		HYPERBOLIC = null;
-		POLAR = null;
+		
+		SphericalBodies earthSun = new SphericalBodies(new DVector(30, Math.PI / 2, 0), new DVector(0, .16, 0),
+													   10, 100, 3, 5, earthColor, sunColor);
+		traceE = new Color[] {Color.RED, null};
+		numSteps = new int[] {200, 0};
+		
+		POLAR = new Setup(traceE, numSteps, earthSun);
 	}
 	
 	
-	private Body[] bodies;
+	private Entity[] bodies;
 	
 	// which bodies will be traced (if opted to) (null if not traced, otherwise color of path)
 	private Color[] trace;
 	
 	private int[] numSteps;
 	
-	private Setup(Color[] trace, int[] numSteps, Body...bodies) {
+	private Setup(Color[] trace, int[] numSteps, Entity...bodies) {
 		this.bodies = bodies;
 		this.trace = trace;
 		this.numSteps = numSteps;
@@ -60,9 +75,16 @@ public class Setup {
 	}
 	
 	public void showExactSolution(Screen screen, int numSteps, Color color) {
-		if (bodies.length < 2)
-			System.err.println("Can only show solution of 2-or-more-body system");
-		ExactSolution e = new ExactSolution(bodies[0], bodies[1], numSteps, color);
+		Body a, b;
+		if (bodies[0] instanceof SphericalBodies) {
+			SphericalBodies sp = (SphericalBodies) bodies[0];
+			a = sp.body1();
+			b = sp.body2();
+		} else {
+			a = (Body) bodies[0];
+			b = (Body) bodies[1];
+		}
+		ExactSolution e = new ExactSolution(a, b, numSteps, color);
 		screen.add(e);
 		e.calculatePath();
 	}

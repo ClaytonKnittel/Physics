@@ -5,7 +5,7 @@ import tensor.DVector;
 
 public final class PMath {
 	
-	public static final double dt = .001;
+	public static final double dt = 0.0009765625;
 	public static final double Ginv = .1; //14983338527.5574;
 	
 	private static long frame = 0;
@@ -43,6 +43,31 @@ public final class PMath {
 		double s = (a.mass() * b.mass() / Ginv / dr.mag2());
 		dr.normalize();
 		return dr.times(s);
+	}
+	
+	
+	public static DVector[] gForceSpherical(SphericalBodies b) {
+		double mu = b.m1() * b.m2() / (b.m1() + b.m2());
+		
+		double m = b.m1() * (b.m1() + b.m2()) / b.m2();
+		double f1 = -mu * b.m2() / (Ginv * square(b.r1()));
+		double dr1 = b.ra1() + f1 / m;
+		double dtheta1 = b.thetaa1();
+		
+		m = b.m2() * (b.m1() + b.m2()) / b.m1();
+		double f2 = -mu * b.m1() / (Ginv * square(b.r2()));
+		double dr2 = b.ra2() + f2 / m;
+		double dtheta2 = b.thetaa2();
+		
+//		System.out.println(dr1 + "\t" + dtheta1 + "\t" + dphi1);
+//		System.out.println(dr2 + "\t" + dtheta2 + "\t" + dphi2);
+//		System.out.println();
+				
+		return new DVector[] {new DVector(dr1, dtheta1, 0), new DVector(dr2, dtheta2, 0)};
+	}
+	
+	public static double square(double d) {
+		return d * d;
 	}
 	
 	/**
@@ -105,18 +130,28 @@ public final class PMath {
 	
 	public static void setupCircilarOrbit(Body b1, Body b2) {
 		DVector r = b2.pos().minus(b1.pos());
-		DVector p;
 		
 		// p will be direction of motion of b1
-		p = r.cross(DVector.Y);
+		DVector p = getNormalizedPerpendicular(r);
+		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (b1.mass() + b2.mass()));
+		b1.setVelocity(p.times(b2.mass() * factor));
+		b2.setVelocity(p.times(-b1.mass() * factor));
+	}
+	
+	public static void setupParabolicOrbit(Body b1, Body b2) {
+		DVector r = b2.pos().minus(b1.pos());
+		DVector p = getNormalizedPerpendicular(r);
+		
+		double factor = Math.sqrt(2 / (Ginv * r.mag() * (b1.mass() + b2.mass())));
+		b1.setVelocity(p.times(b2.mass() * factor));
+		b2.setVelocity(p.times(-b1.mass() * factor));
+	}
+	
+	private static DVector getNormalizedPerpendicular(DVector r) {
+		DVector p = r.cross(DVector.Y);
 		if (p.mag2() < .0001)
 			p = r.cross(DVector.X);
-		p.normalize();
-		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (b1.mass() + b2.mass()));
-		double v1i = b2.mass() * factor;
-		double v2i = b1.mass() * factor;
-		b1.setVelocity(p.times(v1i));
-		b2.setVelocity(p.times(-v2i));
+		return p.normalized();
 	}
 	
 }

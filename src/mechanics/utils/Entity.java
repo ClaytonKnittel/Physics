@@ -1,5 +1,8 @@
 package mechanics.utils;
 
+import java.awt.Color;
+
+import mechanics.graphics.Screen;
 import mechanics.physics.utils.Attribute;
 import numbers.cliffordAlgebras.DQuaternion;
 
@@ -19,6 +22,8 @@ public interface Entity extends Drawable {
 	 * update this <code>Entity</code>'s physics parameters
 	 */
 	void physUpdate();
+	
+	void lineTrace(Screen screen, float precision, int numSteps, Color color);
 	
 	
 	void interact(Entity e);
