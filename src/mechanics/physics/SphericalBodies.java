@@ -1,9 +1,9 @@
 package mechanics.physics;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import mechanics.graphics.Camera;
+import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
 import mechanics.graphics.math.GMath;
@@ -222,7 +222,7 @@ public class SphericalBodies implements Entity {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(ImageGraphics g) {
 		s1.draw(g, t1, Vector.Z, 0, c1);
 		s2.draw(g, t2, Vector.Z, 0, c2);
 	}

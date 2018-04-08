@@ -1,6 +1,5 @@
 package mechanics.graphics;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,7 +20,7 @@ public class DrawableList extends ArrayList<Drawable> {
 		return super.get(i);
 	}
 	
-	public void draw(Graphics g) {
+	public void draw(ImageGraphics g) {
 		this.sort(ec);
 		for (int i = 0; i < this.size(); i++)
 			getEl(i).draw(g);

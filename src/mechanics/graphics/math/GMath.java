@@ -7,7 +7,7 @@ import tensor.Vector;
 public class GMath {
 	
 	// frequency of frames (seconds / frame)
-	public static final float dt = .01f;
+	public static final float dt = .02f;
 	
 	private static Screen screen;
 	private static Quaternion transform;
@@ -39,7 +39,7 @@ public class GMath {
 	
 	
 	public static float lengthOnScreen(float length, float distance) {
-		return length * screen.depth() / (distance);
+		return length * screen.getFustrum().depth() / (distance);
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class GMath {
 	 * @return the <code>Vector</code>'s screen x-coordinate
 	 */
 	public static int screenX(Vector v) {
-		return screen.width() / 2 - (int) (v.x() * screen.depth() / (v.z()));
+		return screen.width() / 2 - (int) (v.x() * screen.getFustrum().depth() / (v.z()));
 	}
 	
 	/**
@@ -55,12 +55,12 @@ public class GMath {
 	 * @return the <code>Vector</code>'s screen y-coordinate
 	 */
 	public static int screenY(Vector v) {
-		return screen.height() / 2 + (int) (v.y() * screen.depth() / (v.z()));
+		return screen.height() / 2 + (int) (v.y() * screen.getFustrum().depth() / (v.z()));
 	}
 	
 	
 	public static Quaternion transform(Quaternion q) {
-		return transform.rotate(q.minus(screen.getCamera()));
+		return transform.rotate(q.minus(screen.getFustrum()));
 	}
 	
 	

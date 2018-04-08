@@ -1,9 +1,9 @@
 package mechanics.utils;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import mechanics.graphics.Camera;
+import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.math.GMath;
 import numbers.cliffordAlgebras.Quaternion;
 import tensor.Vector;
@@ -32,7 +32,7 @@ public class LineSegment implements Drawable {
 	}
 	
 	@Override
-	public void draw(Graphics g) {
+	public void draw(ImageGraphics g) {
 		if (tStart.z() > 0 || tEnd.z() > 0)
 			return;
 		g.setColor(color);

@@ -1,8 +1,8 @@
 package mechanics.graphics.shapes;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
+import mechanics.graphics.ImageGraphics;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Vector;
@@ -41,6 +41,6 @@ public interface Shape {
 	 * @param angle the difference in angle from the described drawing of the <code>Shape</code>, according to the right-hand rule
 	 * @param c the color of the object
 	 */
-	void draw(Graphics g, Vector pos, Vector z, float angle, Color c);
+	void draw(ImageGraphics g, Vector pos, Vector z, float angle, Color c);
 	
 }

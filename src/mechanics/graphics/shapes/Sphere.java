@@ -1,8 +1,8 @@
 package mechanics.graphics.shapes;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
+import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.math.GMath;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -16,10 +16,10 @@ public class Sphere implements Shape {
 		this.radius = radius;
 	}
 
-	public void draw(Graphics g, Vector pos, Vector z, float angle, Color c) {
+	public void draw(ImageGraphics g, Vector pos, Vector z, float angle, Color c) {
 		float d = GMath.lengthOnScreen(radius, -pos.z());
 		g.setColor(c);
-		g.fillOval((int) (GMath.screenX(pos) - d), (int) (GMath.screenY(pos) - d), (int) (2 * d), (int) (2 * d));
+		g.drawCircle(GMath.screenX(pos), GMath.screenY(pos), d);
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {
@@ -38,5 +38,6 @@ public class Sphere implements Shape {
 			return false;
 		return true;
 	}
+	
 	
 }

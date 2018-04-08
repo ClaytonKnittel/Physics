@@ -1,8 +1,6 @@
 package mechanics.graphics;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,19 +25,16 @@ public class Screen extends JFrame {
 	private static final long serialVersionUID = -8477179036183785300L;
 
 	private int width, height;
-	private float viewAngle, depth;
+	
+	private Fustrum fustrum;
 	
 	private JPanel panel;
-	
-	private BufferStrategy b;
-	
-	private Camera camera;
-	
+		
 	private Drawer drawer;
 	
-	private KeyListen keyListener;
+	private ImageGraphics img;
 	
-	private Color bg = new Color(16, 16, 16);
+	private KeyListen keyListener;
 	
 	/**
 	 * @param width width of the screen (in pixels)
@@ -50,8 +45,7 @@ public class Screen extends JFrame {
 	public Screen(int width, int height, float viewAngle) {
 		this.width = width;
 		this.height = height;
-		this.viewAngle = (float) Math.toRadians(viewAngle) / 2f;
-		this.depth = width / (float) Math.tan(this.viewAngle);
+		this.fustrum = new Fustrum(width, height, viewAngle, new Vector(Vector.ZERO));
 		
 		this.setVisible(true);
 		this.setFocusable(false);
@@ -60,8 +54,8 @@ public class Screen extends JFrame {
 		this.setResizable(false);
 		this.setTitle("Planetary Motion");
 		
-		this.createBufferStrategy(2);
-		this.b = this.getBufferStrategy();
+		this.img = new ImageGraphics(this);
+		img.setBGColor(new Color(16, 16, 16));
 		
 		panel = new JPanel();
 		this.add(panel);
@@ -75,19 +69,17 @@ public class Screen extends JFrame {
 		
 //		sun.java2d.SunGraphics2D gf;
 //		sun.java2d.pipe.PixelDrawPipe p;
-		
-		this.camera = new Camera(new Vector(Vector.ZERO));
-		
-		this.drawer = new Drawer(camera);
+				
+		this.drawer = new Drawer(fustrum);
 	}
 	
 	public void setCamera(Vector loc) {
-		camera.add(loc.minus(camera));
+		fustrum.add(loc.minus(fustrum));
 	}
 	
 	public void setCamera(Vector loc, float theta, float phi) {
-		camera.add(loc.minus(camera));
-		camera.rotate((theta - camera.polar()) / GMath.dt, (phi - camera.azimuthal()) / GMath.dt);
+		fustrum.add(loc.minus(fustrum));
+		fustrum.rotate((theta - fustrum.polar()) / GMath.dt, (phi - fustrum.azimuthal()) / GMath.dt);
 	}
 	
 	/**
@@ -105,16 +97,8 @@ public class Screen extends JFrame {
 		return height;
 	}
 	
-	public float viewAngle() {
-		return viewAngle;
-	}
-	
-	public float depth() {
-		return depth;
-	}
-	
-	public Camera getCamera() {
-		return camera;
+	public Fustrum getFustrum() {
+		return fustrum;
 	}
 	
 	public void add(Drawable d) {
@@ -130,9 +114,9 @@ public class Screen extends JFrame {
 	}
 	
 	public void update() {
-		keyListener.update(camera);
+		keyListener.update(fustrum);
 		GMath.reset();
-		GMath.appendRotation(camera.getTransformation());
+		GMath.appendRotation(fustrum.getTransformation());
 		drawer.update();
 	}
 	
@@ -142,19 +126,14 @@ public class Screen extends JFrame {
 	
 	public void draw() {
 		update();
-		Graphics g = b.getDrawGraphics();
 		
-		g.setColor(bg);
-		g.fillRect(0, 0, width, height);
-		
-		drawer.draw(g);
-		
-		g.dispose();
-		b.show();
+		img.clear();
+		drawer.draw(img);
+		img.draw();
 	}
 	
 	public String getInfo() {
-		return camera.toString() + "\nNumber of bodies: " + drawer.size() + "\nEnergy: " + drawer.energy() + "\nMomentum: " + drawer.momentum();
+		return fustrum.toString() + "\nNumber of bodies: " + drawer.size() + "\nEnergy: " + drawer.energy() + "\nMomentum: " + drawer.momentum();
 	}
 	
 }

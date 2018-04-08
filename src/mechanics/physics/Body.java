@@ -1,9 +1,9 @@
 package mechanics.physics;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import mechanics.graphics.Camera;
+import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
 import mechanics.graphics.math.GMath;
@@ -130,7 +130,7 @@ public abstract class Body implements Entity {
 		return attributes.is(a);
 	}
 	
-	public void draw(Graphics g) {
+	public void draw(ImageGraphics g) {
 		shape.draw(g, transPos, Vector.Z, 0, color);
 	}
 

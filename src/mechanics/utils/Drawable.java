@@ -1,8 +1,7 @@
 package mechanics.utils;
 
-import java.awt.Graphics;
-
 import mechanics.graphics.Camera;
+import mechanics.graphics.ImageGraphics;
 
 public interface Drawable {
 	
@@ -14,7 +13,7 @@ public interface Drawable {
 	float distance(Camera c);
 	
 	
-	void draw(Graphics g);
+	void draw(ImageGraphics g);
 	
 	/**
 	 * update this <code>Entity</code>'s graphics parameters

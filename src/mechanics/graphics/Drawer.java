@@ -1,7 +1,5 @@
 package mechanics.graphics;
 
-import java.awt.Graphics;
-
 import mechanics.utils.Drawable;
 import mechanics.utils.Entity;
 import tensor.DVector;
@@ -61,7 +59,7 @@ public class Drawer {
 			e.physUpdate();
 	}
 	
-	public void draw(Graphics g) {
+	public void draw(ImageGraphics g) {
 		objects.draw(g);
 	}
 	
