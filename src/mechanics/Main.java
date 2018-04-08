@@ -15,8 +15,8 @@ public class Main {
 		
 		
 		s.setCamera(new Vector(0, 100, 100), .4f, 0);
-		Setup.ELLIPTICAL.initialize(s, 1);
-		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
+//		Setup.ELLIPTICAL.initialize(s, 1);
+//		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
 //		Setup.PARABOLIC.showExactSolution(s, 300, Color.CYAN);
@@ -30,10 +30,10 @@ public class Main {
 //		Setup.POLAR.initialize(s, 1);
 //		Setup.POLAR.showExactSolution(s, 300, Color.CYAN);
 
-		//s.setCamera(new Vector(300, 0, 3000));
-//		s.setCamera(new Vector(1000, -40, 100));
-//		Setup.EARTH_MOON.initialize(s, 1);
-//		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
+//		s.setCamera(new Vector(300, 0, 3000));
+		s.setCamera(new Vector(1000, -40, 100));
+		Setup.EARTH_MOON.initialize(s, 1);
+		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
 		
 		
 //		s.setCamera(new Vector(0, 0, 10000));

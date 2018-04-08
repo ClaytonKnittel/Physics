@@ -2,7 +2,7 @@ package mechanics.physics;
 
 import java.awt.Color;
 
-import mechanics.graphics.Sphere;
+import mechanics.graphics.shapes.Sphere;
 import tensor.DVector;
 
 public class Planet extends Body {

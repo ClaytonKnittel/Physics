@@ -138,7 +138,7 @@ public final class PMath {
 		// p will be direction of motion of b1
 		DVector p = getNormalizedPerpendicular(r, norm);
 		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (planet.mass() + satellite.mass()));
-		satellite.setVelocity(p.times(planet.mass() * factor).plus(planet.velocity()));
+		satellite.addVelocity(p.times(planet.mass() * factor).plus(planet.velocity()));
 	}
 	
 	public static void setupCircilarOrbit(Body b1, Body b2) {
@@ -152,8 +152,8 @@ public final class PMath {
 		DVector p = getNormalizedPerpendicular(r, norm);
 		
 		double factor = 1 / Math.sqrt(PMath.Ginv * r.mag() * (b1.mass() + b2.mass()));
-		b1.setVelocity(p.times(b2.mass() * factor));
-		b2.setVelocity(p.times(-b1.mass() * factor));
+		b1.addVelocity(p.times(b2.mass() * factor));
+		b2.addVelocity(p.times(-b1.mass() * factor));
 	}
 	
 	public static void setupParabolicOrbit(Body b1, Body b2) {
@@ -165,8 +165,8 @@ public final class PMath {
 		DVector p = getNormalizedPerpendicular(r, norm);
 		
 		double factor = Math.sqrt(2 * b2.mass() / (Ginv * r.mag())) / (b1.mass() + b2.mass());
-		b1.setVelocity(p.times(b2.mass() * factor));
-		b2.setVelocity(p.times(-b1.mass() * factor));
+		b1.addVelocity(p.times(b2.mass() * factor));
+		b2.addVelocity(p.times(-b1.mass() * factor));
 	}
 	
 	public static DVector centerOfMass(Body b1, Body b2) {

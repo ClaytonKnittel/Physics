@@ -3,6 +3,7 @@ package mechanics.utils;
 import java.awt.Color;
 
 import mechanics.graphics.Screen;
+import mechanics.graphics.shapes.Shape;
 import mechanics.physics.utils.Attribute;
 import numbers.cliffordAlgebras.DQuaternion;
 

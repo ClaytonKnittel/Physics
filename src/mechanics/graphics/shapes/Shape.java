@@ -1,4 +1,4 @@
-package mechanics.utils;
+package mechanics.graphics.shapes;
 
 import java.awt.Color;
 import java.awt.Graphics;

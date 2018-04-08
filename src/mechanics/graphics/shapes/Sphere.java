@@ -1,11 +1,10 @@
-package mechanics.graphics;
+package mechanics.graphics.shapes;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import mechanics.graphics.math.GMath;
 import mechanics.physics.CollisionInformation;
-import mechanics.utils.Shape;
 import tensor.DVector;
 import tensor.Vector;
 

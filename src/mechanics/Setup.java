@@ -64,7 +64,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(1000, 0, -100), 10, 1, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), 1000, 30, sunColor);
-		Planet moon = new Planet(new DVector(1000, 0, -102.56956), .01f, 0.3f, moonColor);
+		Planet moon = new Planet(new DVector(1000, 0, -102.56956), .01f, 0.1f, moonColor);
 		PMath.setupCircilarOrbit(earth, sun);
 		PMath.setupOrbitAroundPlanet(earth, moon, new DVector(1, 1, 1).normalized());
 		

@@ -7,11 +7,11 @@ import mechanics.graphics.Camera;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
 import mechanics.graphics.math.GMath;
+import mechanics.graphics.shapes.Shape;
 import mechanics.physics.utils.Attribute;
 import mechanics.physics.utils.Attributes;
 import mechanics.physics.utils.BodyCollisionList;
 import mechanics.utils.Entity;
-import mechanics.utils.Shape;
 import numbers.cliffordAlgebras.DQuaternion;
 import tensor.DVector;
 import tensor.Vector;
@@ -100,6 +100,10 @@ public abstract class Body implements Entity {
 	
 	protected void setVelocity(DVector v) {
 		this.velocity = v;
+	}
+	
+	protected void addVelocity(DVector v) {
+		this.velocity.add(v);
 	}
 	
 	public DVector momentum() {
