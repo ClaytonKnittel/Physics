@@ -1,15 +1,17 @@
 package mechanics.graphics;
 
+import graphics.GLFWWindow;
+
 //import java.awt.Color;
 //
 //import javax.swing.JFrame;
 //import javax.swing.JPanel;
 
 import mechanics.graphics.math.GMath;
-import mechanics.graphics.opengl.GLFWWindow;
 // import mechanics.input.KeyListen;
 import mechanics.utils.Drawable;
 import mechanics.utils.DynamicDrawable;
+import mechanics.utils.ThreadMaster;
 import tensor.Vector;
 
 
@@ -51,31 +53,13 @@ public class Screen {
 		this.height = height;
 		this.fustrum = new Fustrum(width, height, viewAngle, new Vector(Vector.ZERO));
 		
-		
 		window = new GLFWWindow();
-		
-//		this.setVisible(true);
-//		this.setFocusable(false);
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.setSize(width, height);
-//		this.setResizable(false);
-//		this.setTitle("Planetary Motion");
-//		
-//		this.img = new ImageGraphics(this);
-//		img.setBGColor(new Color(16, 16, 16));
-//		
-//		panel = new JPanel();
-//		this.add(panel);
-//		panel.setFocusable(true);
-//		panel.requestFocus();
-		
-//		keyListener = new KeyListen();
-//		keyListener.init(panel);
+		window.loadShaders("/Users/claytonknittel/git/Physics/src/mechanics/graphics/opengl/vertexShader",
+				"/Users/claytonknittel/git/Physics/src/mechanics/graphics/opengl/fragmentShader");
+		window.enter();
+		window.setQuitAction(() -> ThreadMaster.quit());
 		
 		GMath.init(this);
-		
-//		sun.java2d.SunGraphics2D gf;
-//		sun.java2d.pipe.PixelDrawPipe p;
 				
 		this.drawer = new Drawer(fustrum);
 	}
