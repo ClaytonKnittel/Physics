@@ -11,10 +11,12 @@ import tensor.Vector;
 public class Main {
 	
 	public static void main(String args[]) {
+		
 		Screen s = new Screen(800, 600, 72);
+
+		System.out.println("FE");
 		
-		
-		s.setCamera(new Vector(0, 100, 100), .4f, 0);
+		//s.setCamera(new Vector(0, 100, 100), .4f, 0);
 //		Setup.ELLIPTICAL.initialize(s, 1);
 //		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
 		
@@ -31,9 +33,9 @@ public class Main {
 //		Setup.POLAR.showExactSolution(s, 300, Color.CYAN);
 
 //		s.setCamera(new Vector(300, 0, 3000));
-		s.setCamera(new Vector(1000, -40, 100));
-		Setup.EARTH_MOON.initialize(s, 1);
-		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
+//		s.setCamera(new Vector(1000, -40, 100));
+//		Setup.EARTH_MOON.initialize(s, 1);
+//		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
 		
 		
 //		s.setCamera(new Vector(0, 0, 10000));
@@ -53,22 +55,24 @@ public class Main {
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.draw();
 			GMath.next();
-		}, GMath.dt, "graphics");
+		}, GMath.dt, true, "graphics");
 		
 		ThreadMaster physics = new ThreadMaster(() -> {
 			s.physUpdate();
 			PMath.next();
-		}, PMath.dt, "physics");
+		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {
 			System.out.println(s.getInfo());
 			System.out.println(graphics);
 			System.out.println(physics);
-		}, 1);
+		}, 1, false);
 		
-		graphics.start();
 		physics.start();
 		info.start();
+		
+		// beacuse GLFW needs to be run in main thread
+		graphics.run();
 	}
 	
 }

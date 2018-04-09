@@ -1,22 +1,39 @@
 package mechanics.utils;
 
-public class ThreadMaster extends Thread {
+public class ThreadMaster {
+	
+	Thread thread;
 	
 	private Updatable u;
 	private long delay;
 	private long delta;
 	private int frames;
+	private boolean useMain;
 	
-	public ThreadMaster(Updatable u, double frequency) {
+	private static boolean running = true;
+	
+	public ThreadMaster(Updatable u, double frequency, boolean useMainThread) {
 		this.u = u;
 		this.delay = (long) Math.round(frequency * 1000);
 		this.delta = System.currentTimeMillis();
 		this.frames = 0;
+		this.useMain = useMainThread;
+		if (!useMainThread)
+			this.thread = new Thread();
 	}
 	
-	public ThreadMaster(Updatable u, double frequency, String name) {
-		this(u, frequency);
-		this.setName(name);
+	public ThreadMaster(Updatable u, double frequency, boolean useMainThread, String name) {
+		this(u, frequency, useMainThread);
+		if (!useMainThread)
+			thread.setName(name);
+	}
+	
+	public static void quit() {
+		running = false;
+	}
+	
+	public static boolean running() {
+		return running;
 	}
 	
 	private int reset() {
@@ -29,11 +46,14 @@ public class ThreadMaster extends Thread {
 		return reset();
 	}
 	
-	@Override
+	public void start() {
+		thread.start();
+	}
+	
 	public void run() {
-		while (true) {
+		while (running) {
 			if (delta > System.currentTimeMillis()) {
-				yield();
+				Thread.yield();
 				continue;
 			}
 			delta = System.currentTimeMillis() + delay;
@@ -43,7 +63,10 @@ public class ThreadMaster extends Thread {
 	}
 	
 	public String toString() {
-		return this.getName() + " " + getFrames();
+		if (useMain)
+			return Thread.currentThread().getName() + " " + getFrames();
+		else
+			return thread.getName() + " " + getFrames();
 	}
 	
 }
