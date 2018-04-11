@@ -1,8 +1,8 @@
 package mechanics.physics;
 
-import java.awt.Color;
 import java.util.LinkedList;
 
+import graphics.Color;
 import mechanics.graphics.Screen;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.LineSegment;

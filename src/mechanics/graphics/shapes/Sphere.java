@@ -1,25 +1,58 @@
 package mechanics.graphics.shapes;
 
-import java.awt.Color;
-
-import mechanics.graphics.ImageGraphics;
-import mechanics.graphics.math.GMath;
+import graphics.models.OBJLoader;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
-import tensor.Vector;
 
 public class Sphere implements Shape {
 	
 	private float radius;
 	
+	private static final float[] modelData;
+	
+	static {
+//		modelData = new float[] {
+//				0, -1, 0,	0, -1, 0,
+//				1, 0, 1,	1, 0, 1,
+//				-1, 0, 1,	-1, 0, 1,
+//				
+//				-1, 0, 1,	-1, 0, 1,
+//				1, 0, 1,	1, 0, 1,
+//				0, 1, 0,	0, 1, 0,
+//				
+//				0, -1, 0,	0, -1, 0,
+//				1, 0, -1,	1, 0, -1,
+//				1, 0, 1,	1, 0, 1,
+//				
+//				1, 0, 1,	1, 0, 1,
+//				1, 0, -1,	1, 0, -1,
+//				0, 1, 0,	0, 1, 0,
+//				
+//				0, -1, 0,	0, -1, 0,
+//				-1, 0, -1,	-1, 0, -1,
+//				1, 0, -1,	1, 0, -1,
+//				
+//				1, 0, -1,	1, 0, -1,
+//				-1, 0, -1,	-1, 0, -1,
+//				0, 1, 0,	0, 1, 0,
+//				
+//				0, -1, 0,	0, -1, 0,
+//				-1, 0, 1,	-1, 0, 1,
+//				-1, 0, -1,	-1, 0, -1,
+//				
+//				-1, 0, -1,	-1, 0, -1,
+//				-1, 0, 1,	-1, 0, 1,
+//				0, 1, 0,	0, 1, 1
+//		};
+		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData();
+	}
+	
 	public Sphere(float radius) {
 		this.radius = radius;
 	}
-
-	public void draw(ImageGraphics g, Vector pos, Vector z, float angle, Color c) {
-		float d = GMath.lengthOnScreen(radius, -pos.z());
-		g.setColor(c);
-		g.drawCircle(GMath.screenX(pos), GMath.screenY(pos), d);
+	
+	public float[] modelData() {
+		return modelData;
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {

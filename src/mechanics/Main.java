@@ -1,11 +1,15 @@
 package mechanics;
 
-import java.awt.Color;
-
+import arrays.AO;
+import graphics.Color;
+import graphics.RigidState;
+import graphics.models.OBJLoader;
 import mechanics.graphics.Screen;
 import mechanics.graphics.math.GMath;
 import mechanics.physics.PMath;
+import mechanics.physics.Planet;
 import mechanics.utils.ThreadMaster;
+import tensor.DVector;
 import tensor.Vector;
 
 public class Main {
@@ -14,7 +18,6 @@ public class Main {
 		
 		Screen s = new Screen(800, 600, 72);
 
-		System.out.println("FE");
 		
 		//s.setCamera(new Vector(0, 100, 100), .4f, 0);
 //		Setup.ELLIPTICAL.initialize(s, 1);
@@ -50,7 +53,20 @@ public class Main {
 //			}
 //		}
 		
+		AO.print(OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData(Color.red));
+		
+		float[] f = new float[] {-.6f, -.4f, -1.3f, 1, 1, 1,
+								 .6f, -.4f, -1.3f, 0, 0, 1,
+								 0, .5f, -1.3f, 0, 1, 0};
+		float[] ff = new float[] {-1f, -.4f, -1, 0, 0, 0,
+				 .4f, -.4f, -1, 0, 1, 0,
+				 -.2f, .5f, -1, 1, 0, 0};
+		
+		s.add(new Planet(new DVector(0, 0, 0), 1, 1, Color.cyan));
+		
 		s.init();
+		s.enter();
+		
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.draw();

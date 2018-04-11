@@ -1,7 +1,6 @@
 package mechanics;
 
-import java.awt.Color;
-
+import graphics.Color;
 import mechanics.graphics.Screen;
 import mechanics.physics.Body;
 import mechanics.physics.ExactSolution;
@@ -22,7 +21,7 @@ public class Setup {
 	static {
 		Planet earth = new Planet(new DVector(30, 0, -100), new DVector(0, 0, -68), 10, 3, earthColor);
 		Planet sun = new Planet(new DVector(0, 0, -100), new DVector(0, 0, .068f), 10000, 5, sunColor);
-		Color[] traceE = new Color[] {Color.RED, null};
+		Color[] traceE = new Color[] {Color.red, null};
 		int[] numSteps = {240, 0};
 		
 		ELLIPTICAL = new Setup(traceE, numSteps, earth, sun);
@@ -30,7 +29,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), 100, 5, sunColor);
-		traceE = new Color[] {Color.GREEN, null};
+		traceE = new Color[] {Color.green, null};
 		numSteps = new int[] {200, 0};
 		PMath.setupCircilarOrbit(earth, sun);
 		
@@ -38,7 +37,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(-.3f, 0, -100), 1000, 5, sunColor);
-		traceE = new Color[] {Color.GREEN, null};
+		traceE = new Color[] {Color.green, null};
 		numSteps = new int[] {1000, 0};
 		PMath.setupParabolicOrbit(earth, sun);
 		
@@ -46,7 +45,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), new DVector(0, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), new DVector(0, 0, .1f), 10000, 5, sunColor);
-		traceE = new Color[] {Color.RED, null};
+		traceE = new Color[] {Color.red, null};
 		numSteps = new int[] {500, 0};
 		
 		HYPERBOLIC = new Setup(traceE, numSteps, earth, sun);
@@ -55,7 +54,7 @@ public class Setup {
 		
 		SphericalBodies earthSun = new SphericalBodies(new DVector(30, Math.PI / 2, 0), new DVector(0, .16, -.12),
 													   10, 100, 3, 5, earthColor, sunColor);
-		traceE = new Color[] {Color.RED, null};
+		traceE = new Color[] {Color.red, null};
 		numSteps = new int[] {200, 0};
 		
 		POLAR = new Setup(traceE, numSteps, earthSun);
@@ -68,7 +67,7 @@ public class Setup {
 		PMath.setupCircilarOrbit(earth, sun);
 		PMath.setupOrbitAroundPlanet(earth, moon, new DVector(1, 1, 1).normalized());
 		
-		traceE = new Color[] {Color.RED, null, Color.GRAY};
+		traceE = new Color[] {Color.red, null, Color.gray};
 		numSteps = new int[] {200, 0, 200};
 		
 		EARTH_MOON = new Setup(traceE, numSteps, earth, sun, moon);
@@ -85,7 +84,7 @@ public class Setup {
 		PMath.setupCircilarOrbit(earth, sun);
 		PMath.setupCircilarOrbit(mars, sun);
 		
-		traceE = new Color[] {null, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.RED};
+		traceE = new Color[] {null, Color.yellow, Color.orange, Color.cyan, Color.red};
 		numSteps = new int[] {0, 300, 300, 300, 300};
 		
 		INNER_SYSTEM = new Setup(traceE, numSteps, sun, mercury, venus, earth, mars);

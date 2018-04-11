@@ -1,11 +1,7 @@
 package mechanics.graphics.shapes;
 
-import java.awt.Color;
-
-import mechanics.graphics.ImageGraphics;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
-import tensor.Vector;
 
 public interface Shape {
 
@@ -28,19 +24,8 @@ public interface Shape {
 	boolean colliding(Shape s, DVector thisToOther);
 	
 	/**
-	 * Shapes provide a drawing method, in which a few parameters must be passed down by the
-	 * Object this belongs to in order to make drawing possible. Shapes hold no information about
-	 * their orientation or position in 3-D space, but rather only contain a description of
-	 * what the shape looks like.
-	 * <p>
-	 * All parameters are with respect to the screen, not the origin.
-	 * 
-	 * @param g a Graphics Object provided by the Screen
-	 * @param pos the position of this Object in 3-D space
-	 * @param z the direction of the vertical component of this Shape
-	 * @param angle the difference in angle from the described drawing of the <code>Shape</code>, according to the right-hand rule
-	 * @param c the color of the object
+	 * @return the model data for this shape, in compliance with whatever rendering method is being used
 	 */
-	void draw(ImageGraphics g, Vector pos, Vector z, float angle, Color c);
+	float[] modelData();
 	
 }

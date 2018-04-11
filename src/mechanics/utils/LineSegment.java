@@ -1,14 +1,15 @@
 package mechanics.utils;
 
-import java.awt.Color;
-
+import graphics.Color;
+import graphics.entities.GLFWRenderable;
 import mechanics.graphics.Camera;
 import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.math.GMath;
 import numbers.cliffordAlgebras.Quaternion;
+import tensor.Matrix4;
 import tensor.Vector;
 
-public class LineSegment implements Drawable {
+public class LineSegment implements GLFWRenderable {
 	
 	private Quaternion start, end;
 	private Quaternion tStart, tEnd;
@@ -30,14 +31,6 @@ public class LineSegment implements Drawable {
 	public Vector end() {
 		return end;
 	}
-	
-	@Override
-	public void draw(ImageGraphics g) {
-		if (tStart.z() > 0 || tEnd.z() > 0)
-			return;
-		g.setColor(color);
-		g.drawLine(GMath.screenX(tStart), GMath.screenY(tStart), GMath.screenX(tEnd), GMath.screenY(tEnd));
-	}
 
 	@Override
 	public void update() {
@@ -51,10 +44,13 @@ public class LineSegment implements Drawable {
 	}
 
 	@Override
-	public float distance(Camera c) {
-		if (!h)
-			System.out.println(this);
-		return Math.abs((tStart.z() + tEnd.z()) / 2);
+	public Matrix4 model() {
+		return new Matrix4();
+	}
+
+	@Override
+	public float[] modelData() {
+		return null;
 	}
 	
 	

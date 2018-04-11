@@ -1,13 +1,13 @@
 package mechanics.utils;
 
-import java.awt.Color;
-
+import graphics.Color;
+import graphics.entities.GLFWRenderable;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Shape;
 import mechanics.physics.utils.Attribute;
 import numbers.cliffordAlgebras.DQuaternion;
 
-public interface Entity extends Drawable {
+public interface Entity extends GLFWRenderable {
 	
 	DQuaternion pos();
 	

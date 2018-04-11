@@ -1,7 +1,6 @@
 package mechanics.physics;
 
-import java.awt.Color;
-
+import graphics.Color;
 import mechanics.graphics.shapes.Sphere;
 import tensor.DVector;
 

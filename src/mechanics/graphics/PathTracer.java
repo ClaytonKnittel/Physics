@@ -1,7 +1,6 @@
 package mechanics.graphics;
 
-import java.awt.Color;
-
+import graphics.Color;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.FiniteModularList;
 import mechanics.utils.LineSegment;

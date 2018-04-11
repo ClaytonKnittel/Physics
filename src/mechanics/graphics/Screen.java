@@ -1,6 +1,12 @@
 package mechanics.graphics;
 
+import java.util.HashMap;
+
 import graphics.GLFWWindow;
+import graphics.State;
+import graphics.entities.GLFWRenderable;
+import graphics.input.K;
+import graphics.input.KeyAction;
 
 //import java.awt.Color;
 //
@@ -34,13 +40,9 @@ public class Screen {
 	
 	private Fustrum fustrum;
 	
-	//private JPanel panel;
 		
 	private Drawer drawer;
 	
-	//private ImageGraphics img;
-	
-	//private KeyListen keyListener;
 	
 	/**
 	 * @param width width of the screen (in pixels)
@@ -53,15 +55,26 @@ public class Screen {
 		this.height = height;
 		this.fustrum = new Fustrum(width, height, viewAngle, new Vector(Vector.ZERO));
 		
-		window = new GLFWWindow();
-		window.loadShaders("/Users/claytonknittel/git/Physics/src/mechanics/graphics/opengl/vertexShader",
-				"/Users/claytonknittel/git/Physics/src/mechanics/graphics/opengl/fragmentShader");
-		window.enter();
+		HashMap<Integer, KeyAction> p = new HashMap<Integer, KeyAction>();
+		HashMap<Integer, KeyAction> r = new HashMap<Integer, KeyAction>();
+		p.put(K.Q, () -> window.quit());
+		
+		window = new GLFWWindow(width, height, "Planetary Motion", p, r);
+		setInputs("pos, norm, color", new int[] {3, 3, 3});
+		
 		window.setQuitAction(() -> ThreadMaster.quit());
 		
 		GMath.init(this);
-				
+		
 		this.drawer = new Drawer(fustrum);
+	}
+	
+	private void setInputs(String names, int[] sizes) {
+		window.configureInputs(names, sizes);
+	}
+	
+	public void enter() {
+		window.enter();
 	}
 	
 	public void setCamera(Vector loc) {
@@ -79,7 +92,7 @@ public class Screen {
 	public void init() {
 		drawer.init();
 	}
-		
+	
 	public int width() {
 		return width;
 	}
@@ -92,20 +105,27 @@ public class Screen {
 		return fustrum;
 	}
 	
-	public void add(Drawable d) {
-		drawer.add(d);
+	public void add(GLFWRenderable...states) {
+		window.add(states);
 	}
+	
+//	public void add(Drawable d) {
+//		drawer.add(d);
+//	}
 	
 	public void add(DynamicDrawable d) {
 		d.give(this);
 	}
 	
-	public void remove(Drawable d) {
-		drawer.remove(d);
+//	public void remove(Drawable d) {
+//		drawer.remove(d);
+//	}
+	
+	public void remove(GLFWRenderable...states) {
+		window.remove(states);
 	}
 	
 	public void update() {
-		//keyListener.update(fustrum);
 		GMath.reset();
 		GMath.appendRotation(fustrum.getTransformation());
 		drawer.update();
@@ -117,7 +137,6 @@ public class Screen {
 	
 	public void draw() {
 		update();
-		
 		if (window.shouldClose()) {
 			window.destroy();
 		}

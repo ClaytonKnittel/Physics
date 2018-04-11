@@ -1,12 +1,9 @@
 package mechanics.physics;
 
-import java.awt.Color;
-
-import mechanics.graphics.Camera;
-import mechanics.graphics.ImageGraphics;
+import graphics.Color;
+import graphics.VBOConverter;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
-import mechanics.graphics.math.GMath;
 import mechanics.graphics.shapes.Shape;
 import mechanics.physics.utils.Attribute;
 import mechanics.physics.utils.Attributes;
@@ -14,7 +11,7 @@ import mechanics.physics.utils.BodyCollisionList;
 import mechanics.utils.Entity;
 import numbers.cliffordAlgebras.DQuaternion;
 import tensor.DVector;
-import tensor.Vector;
+import tensor.Matrix4;
 
 public abstract class Body implements Entity {
 	
@@ -23,10 +20,6 @@ public abstract class Body implements Entity {
 	 */
 	private DQuaternion pos;
 	
-	/**
-	 * @serialField transPos the transformed position, with respect to the screen
-	 */
-	private Vector transPos;
 	
 	private DVector velocity;
 	
@@ -47,6 +40,8 @@ public abstract class Body implements Entity {
 	
 	
 	private BodyCollisionList collided;
+	
+	private int time = 0;
 	
 	/**
 	 * By default, Bodies are Physical and Massive
@@ -79,6 +74,17 @@ public abstract class Body implements Entity {
 		velocity.add(netForce.divide(mass).times(PMath.dt / 2));
 		// reset the forces (they were only calculated to find v(dt / 2) and must be reset before the first physics iteration runs
 		reset();
+	}
+	
+	@Override
+	public Matrix4 model() {
+		time++;
+		return Matrix4.translate(0, 0, -4).multiply(Matrix4.rotate(time/ 10f, 0, 1.4f, 1));
+	}
+	
+	@Override
+	public float[] modelData() {
+		return VBOConverter.toPosNormColor(shape.modelData(), color);
 	}
 	
 	public void lineTrace(Screen screen, float precision, int numSteps, Color color) {
@@ -130,20 +136,12 @@ public abstract class Body implements Entity {
 		return attributes.is(a);
 	}
 	
-	public void draw(ImageGraphics g) {
-		shape.draw(g, transPos, Vector.Z, 0, color);
-	}
-
-	public float distance(Camera c) {
-		return Math.abs(transPos.z());
-	}
-	
 	protected void addForce(DVector force) {
 		netForce.add(force);
 	}
 	
 	public void update() {
-		transPos = GMath.transform(pos.toQuaternion());
+		// TODO update model matrix
 		if (tracing())
 			pathTracer.recordLocation(pos.toVector());
 	}

@@ -1,7 +1,6 @@
 package mechanics.physics;
 
-import java.awt.Color;
-
+import graphics.Color;
 import mechanics.graphics.Camera;
 import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.PathTracer;
@@ -14,6 +13,7 @@ import mechanics.utils.Entity;
 import numbers.cliffordAlgebras.DQuaternion;
 import numbers.cliffordAlgebras.Quaternion;
 import tensor.DVector;
+import tensor.Matrix4;
 import tensor.Vector;
 
 public class SphericalBodies implements Entity {
@@ -25,9 +25,6 @@ public class SphericalBodies implements Entity {
 	 */
 	private DQuaternion b1, b2;
 	private DVector v1, v2;
-	
-	// transformed positions (for graphics)
-	private Vector t1, t2;
 	
 	private Shape s1, s2;
 	private Color c1, c2;
@@ -51,6 +48,11 @@ public class SphericalBodies implements Entity {
 		this.m1 = m1;
 		this.m2 = m2;
 		init();
+	}
+	
+	@Override
+	public float[] modelData() {
+		return null;
 	}
 	
 	public DVector p1() {
@@ -189,12 +191,6 @@ public class SphericalBodies implements Entity {
 		return pathTracer != null;
 	}
 	
-	
-	@Override
-	public float distance(Camera c) {
-		return 0;
-	}
-	
 	/**
 	 * Used only for graphics purposes
 	 * @return b1 in cartesian coordinates
@@ -222,17 +218,14 @@ public class SphericalBodies implements Entity {
 	}
 
 	@Override
-	public void draw(ImageGraphics g) {
-		s1.draw(g, t1, Vector.Z, 0, c1);
-		s2.draw(g, t2, Vector.Z, 0, c2);
-	}
-
-	@Override
 	public void update() {
-		t1 = GMath.transform(cartesian1());
-		t2 = GMath.transform(cartesian2());
 		if (tracing())
 			pathTracer.recordLocation(cartesian1());
+	}
+	
+	@Override
+	public Matrix4 model() {
+		return new Matrix4();
 	}
 
 	public void init() {
