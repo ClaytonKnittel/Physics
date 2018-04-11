@@ -53,8 +53,6 @@ public class Main {
 //			}
 //		}
 		
-		AO.print(OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData(Color.red));
-		
 		float[] f = new float[] {-.6f, -.4f, -1.3f, 1, 1, 1,
 								 .6f, -.4f, -1.3f, 0, 0, 1,
 								 0, .5f, -1.3f, 0, 1, 0};
