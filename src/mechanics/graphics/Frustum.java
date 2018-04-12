@@ -2,13 +2,13 @@ package mechanics.graphics;
 
 import tensor.Vector;
 
-public class Fustrum extends Camera {
+public class Frustum extends Camera {
 	
 	private float angleX, depth;
 	private float width, height, halfWidth, halfHeight;
 	
-	public Fustrum(float width, float height, float viewAngle, Vector pos, float polar, float azimuthal) {
-		super(pos, polar, azimuthal);
+	public Frustum(float width, float height, float viewAngle, Vector pos, float phi, float theta, float psi) {
+		super(pos, phi, theta, psi);
 		this.width = width;
 		this.height = height;
 		this.halfWidth = width / 2;
@@ -17,8 +17,8 @@ public class Fustrum extends Camera {
 		this.depth = width / (float) Math.tan(this.angleX);
 	}
 	
-	public Fustrum(float width, float height, float viewAngle, Vector pos) {
-		this(width, height, viewAngle, pos, (float) Math.PI / 2, 0);
+	public Frustum(float width, float height, float viewAngle, Vector pos) {
+		this(width, height, viewAngle, pos, 0, (float) Math.PI / 2, 0);
 	}
 	
 	public float width() {

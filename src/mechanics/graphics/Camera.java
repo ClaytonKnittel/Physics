@@ -1,15 +1,13 @@
 package mechanics.graphics;
 
-import java.awt.Graphics;
-
+import graphics.input.Locatable;
 import mechanics.graphics.math.GMath;
-import mechanics.utils.Entity;
 import numbers.cliffordAlgebras.Quaternion;
 import tensor.Vector;
 
-public class Camera extends Vector {
+public class Camera extends Vector implements Locatable {
 	
-	private float polar, azimuthal;
+	private float phi, theta, psi;
 	
 	private boolean boost;
 	private long lastBoost;
@@ -27,29 +25,43 @@ public class Camera extends Vector {
 		factor = 30;
 	}
 	
-	public Camera(Vector pos, float polar, float azimuthal) {
+	public Camera(Vector pos, float phi, float theta, float psi) {
 		super(pos);
-		this.polar = polar;
-		this.azimuthal = azimuthal;
+		this.phi = phi;
+		this.theta = theta;
+		this.psi = psi;
 		this.boost = false;
 		this.lastBoost = 0;
 	}
 	
 	public Camera(Vector pos) {
-		this(pos, 0, 0);
+		this(pos, 0, 0, 0);
 	}
 	
-	public float polar() {
-		return polar;
+	@Override
+	public Vector pos() {
+		return this;
 	}
 	
-	public float azimuthal() {
-		return azimuthal;
+	@Override
+	public float phi() {
+		return phi;
 	}
 	
-	public void rotate(float vPolar, float vAzimuthal) {
-		polar += vPolar * GMath.dt;
-		azimuthal += vAzimuthal * GMath.dt;
+	@Override
+	public float theta() {
+		return theta;
+	}
+	
+	@Override
+	public float psi() {
+		return psi;
+	}
+	
+	public void rotate(float vPhi, float vTheta, float vPsi) {
+		phi += vPhi * GMath.dt;
+		theta += vTheta * GMath.dt;
+		psi += vPsi * GMath.dt;
 	}
 	
 	public void updward(float velocity) {
@@ -61,7 +73,7 @@ public class Camera extends Vector {
 	public void forward(float velocity) {
 		if (boost)
 			velocity *= factor;
-		this.add(new Vector((float) -Math.sin(azimuthal), 0, (float) -Math.cos(azimuthal)).times(velocity * GMath.dt));
+		this.add(new Vector((float) -Math.sin(phi), 0, (float) -Math.cos(phi)).times(velocity * GMath.dt));
 	}
 	
 	/**
@@ -70,7 +82,7 @@ public class Camera extends Vector {
 	public void sideways(float velocity) {
 		if (boost)
 			velocity *= factor;
-		this.add(new Vector((float) Math.cos(azimuthal), 0, (float) -Math.sin(azimuthal)).times(velocity * GMath.dt));
+		this.add(new Vector((float) Math.cos(phi), 0, (float) -Math.sin(phi)).times(velocity * GMath.dt));
 	}
 	
 	public void flipSpeed() {
@@ -81,18 +93,11 @@ public class Camera extends Vector {
 	}
 	
 	public Quaternion getTransformation() {
-		return Quaternion.euler(Vector.X, polar).times(Quaternion.euler(Vector.Y, -azimuthal));
-	}
-	
-	public float distance(Entity e) {
-		return 0;
-	}
-
-	public void draw(Graphics g) {
+		return Quaternion.euler(Vector.X, theta).times(Quaternion.euler(Vector.Y, -phi));
 	}
 	
 	public String toString() {
-		return super.toString() + "  \t" + polar + "    " + azimuthal;
+		return super.toString() + "  \tphi: " + phi + "  \ttheta: " + theta + "  \tpsi: " + psi;
 	}
 
 }

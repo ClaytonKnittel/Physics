@@ -72,12 +72,12 @@ public class KeyListen {
 		keyActions.put(KeyEvent.VK_A, (c) -> {
 			if (shift())
 				c.sideways(-Camera.sidewaysV);
-			else c.rotate(0, Camera.turnV);
+			else c.rotate(Camera.turnV, 0, 0);
 			});
 		keyActions.put(KeyEvent.VK_D, (c) -> {
 			if (shift())
 				c.sideways(Camera.sidewaysV);
-			else c.rotate(0, -Camera.turnV);
+			else c.rotate(-Camera.turnV, 0, 0);
 			});
 		keyActions.put(KeyEvent.VK_W, (c) -> {
 			if (shift())
@@ -89,8 +89,8 @@ public class KeyListen {
 				c.updward(-Camera.upV);
 			else c.forward(-Camera.backwardV);
 			});
-		keyActions.put(KeyEvent.VK_M, (c) -> { c.rotate(Camera.turnV, 0); });
-		keyActions.put(KeyEvent.VK_K, (c) -> { c.rotate(-Camera.turnV, 0); });
+		keyActions.put(KeyEvent.VK_M, (c) -> { c.rotate(0, Camera.turnV, 0); });
+		keyActions.put(KeyEvent.VK_K, (c) -> { c.rotate(0, -Camera.turnV, 0); });
 		keyActions.put(KeyEvent.VK_J, (c) -> c.flipSpeed());
 	}
 	

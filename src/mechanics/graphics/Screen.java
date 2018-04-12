@@ -3,19 +3,12 @@ package mechanics.graphics;
 import java.util.HashMap;
 
 import graphics.GLFWWindow;
-import graphics.State;
 import graphics.entities.GLFWRenderable;
+import graphics.entities.LightSource;
 import graphics.input.K;
 import graphics.input.KeyAction;
-
-//import java.awt.Color;
-//
-//import javax.swing.JFrame;
-//import javax.swing.JPanel;
-
+import graphics.input.Locatable;
 import mechanics.graphics.math.GMath;
-// import mechanics.input.KeyListen;
-import mechanics.utils.Drawable;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.ThreadMaster;
 import tensor.Vector;
@@ -38,7 +31,7 @@ public class Screen {
 	
 	private int width, height;
 	
-	private Fustrum fustrum;
+	private Frustum frustum;
 	
 		
 	private Drawer drawer;
@@ -53,7 +46,7 @@ public class Screen {
 	public Screen(int width, int height, float viewAngle) {
 		this.width = width;
 		this.height = height;
-		this.fustrum = new Fustrum(width, height, viewAngle, new Vector(Vector.ZERO));
+		this.frustum = new Frustum(width, height, viewAngle, new Vector(Vector.ZERO));
 		
 		HashMap<Integer, KeyAction> p = new HashMap<Integer, KeyAction>();
 		HashMap<Integer, KeyAction> r = new HashMap<Integer, KeyAction>();
@@ -66,7 +59,7 @@ public class Screen {
 		
 		GMath.init(this);
 		
-		this.drawer = new Drawer(fustrum);
+		this.drawer = new Drawer(frustum);
 	}
 	
 	private void setInputs(String names, int[] sizes) {
@@ -78,12 +71,12 @@ public class Screen {
 	}
 	
 	public void setCamera(Vector loc) {
-		fustrum.add(loc.minus(fustrum));
+		frustum.add(loc.minus(frustum));
 	}
 	
-	public void setCamera(Vector loc, float theta, float phi) {
-		fustrum.add(loc.minus(fustrum));
-		fustrum.rotate((theta - fustrum.polar()) / GMath.dt, (phi - fustrum.azimuthal()) / GMath.dt);
+	public void setCamera(Vector loc, float phi, float theta, float psi) {
+		frustum.add(loc.minus(frustum));
+		frustum.rotate((theta - frustum.theta()) / GMath.dt, (phi - frustum.phi()) / GMath.dt, (psi - frustum.psi()) / GMath.dt);
 	}
 	
 	/**
@@ -101,12 +94,20 @@ public class Screen {
 		return height;
 	}
 	
-	public Fustrum getFustrum() {
-		return fustrum;
+	public Frustum getFustrum() {
+		return frustum;
 	}
 	
 	public void add(GLFWRenderable...states) {
 		window.add(states);
+	}
+	
+	public void add(LightSource light) {
+		window.add(light);
+	}
+	
+	public void add(Locatable camera) {
+		window.add(camera);
 	}
 	
 //	public void add(Drawable d) {
@@ -127,7 +128,7 @@ public class Screen {
 	
 	public void update() {
 		GMath.reset();
-		GMath.appendRotation(fustrum.getTransformation());
+		GMath.appendRotation(frustum.getTransformation());
 		drawer.update();
 	}
 	
@@ -148,7 +149,7 @@ public class Screen {
 	}
 	
 	public String getInfo() {
-		return fustrum.toString() + "\nNumber of bodies: " + drawer.size() + "\nEnergy: " + drawer.energy() + "\nMomentum: " + drawer.momentum();
+		return frustum.toString() + "\nNumber of bodies: " + drawer.size() + "\nEnergy: " + drawer.energy() + "\nMomentum: " + drawer.momentum();
 	}
 	
 }

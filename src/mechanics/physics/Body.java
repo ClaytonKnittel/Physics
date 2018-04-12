@@ -78,8 +78,7 @@ public abstract class Body implements Entity {
 	
 	@Override
 	public Matrix4 model() {
-		time++;
-		return Matrix4.translate(0, 0, -4).multiply(Matrix4.rotate(time/ 10f, 0, 1.4f, 1));
+		return Matrix4.translate(pos.toVector());
 	}
 	
 	@Override

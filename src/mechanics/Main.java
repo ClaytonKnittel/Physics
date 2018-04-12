@@ -1,11 +1,11 @@
 package mechanics;
 
-import arrays.AO;
 import graphics.Color;
-import graphics.RigidState;
-import graphics.models.OBJLoader;
+import graphics.entities.LightSource;
+import mechanics.graphics.Camera;
 import mechanics.graphics.Screen;
 import mechanics.graphics.math.GMath;
+import mechanics.physics.ExactSolution;
 import mechanics.physics.PMath;
 import mechanics.physics.Planet;
 import mechanics.utils.ThreadMaster;
@@ -24,7 +24,7 @@ public class Main {
 //		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
-//		Setup.PARABOLIC.showExactSolution(s, 300, Color.CYAN);
+//		Setup.PARABOLIC.showExactSolution(s, 300, Color.cyan);
 		
 //		Setup.HYPERBOLIC.initialize(s, 1);
 //		Setup.HYPERBOLIC.showExactSolution(s, 1200, Color.CYAN);
@@ -53,14 +53,21 @@ public class Main {
 //			}
 //		}
 		
-		float[] f = new float[] {-.6f, -.4f, -1.3f, 1, 1, 1,
-								 .6f, -.4f, -1.3f, 0, 0, 1,
-								 0, .5f, -1.3f, 0, 1, 0};
-		float[] ff = new float[] {-1f, -.4f, -1, 0, 0, 0,
-				 .4f, -.4f, -1, 0, 1, 0,
-				 -.2f, .5f, -1, 1, 0, 0};
-		
-		s.add(new Planet(new DVector(0, 0, 0), 1, 1, Color.cyan));
+		s.add(new Planet(new DVector(0, 0, -10), 1, 1, Color.red));
+		s.add(new Planet(new DVector(2, 0, -8), 1, 1, Color.blue));
+		s.add(new LightSource() {
+			public Vector pos() {
+				return new Vector(50, 0, 50);
+			}
+			public Color color() {
+				return Color.white;
+			}
+			public float brightness() {
+				return 0;
+			}
+		});
+		Camera c = new Camera(new Vector(0, 0, 0));
+		s.add(c);
 		
 		s.init();
 		s.enter();
@@ -80,10 +87,10 @@ public class Main {
 			System.out.println(s.getInfo());
 			System.out.println(graphics);
 			System.out.println(physics);
-		}, 1, false);
-		
-		physics.start();
-		info.start();
+		}, 1, false, "info");
+
+//		physics.start();
+//		info.start();
 		
 		// beacuse GLFW needs to be run in main thread
 		graphics.run();

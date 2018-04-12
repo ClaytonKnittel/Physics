@@ -56,7 +56,7 @@ public class ExactSolution implements DynamicDrawable {
 		double rp = 1 / (c + d);
 		double r;
 		
-		//System.out.println(d + " " + c + "  " + rp);
+		System.out.println(c + "\n" + d);
 		
 		for (int frac = 1; frac <= numSteps; frac++) {
 			r = 1 / (c * Math.cos((pi2 * frac) / numSteps) + d);

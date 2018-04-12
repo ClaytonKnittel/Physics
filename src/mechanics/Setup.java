@@ -40,6 +40,7 @@ public class Setup {
 		traceE = new Color[] {Color.green, null};
 		numSteps = new int[] {1000, 0};
 		PMath.setupParabolicOrbit(earth, sun);
+		System.out.println(earth + "\n\n" + sun);
 		
 		PARABOLIC = new Setup(traceE, numSteps, earth, sun);
 		

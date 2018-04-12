@@ -1,8 +1,8 @@
 package mechanics.utils;
 
-public class ThreadMaster {
+public class ThreadMaster implements Runnable {
 	
-	Thread thread;
+	private Thread thread;
 	
 	private Updatable u;
 	private long delay;
@@ -19,7 +19,7 @@ public class ThreadMaster {
 		this.frames = 0;
 		this.useMain = useMainThread;
 		if (!useMainThread)
-			this.thread = new Thread();
+			this.thread = new Thread(this);
 	}
 	
 	public ThreadMaster(Updatable u, double frequency, boolean useMainThread, String name) {
