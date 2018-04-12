@@ -8,8 +8,8 @@ import graphics.entities.LightSource;
 import graphics.input.K;
 import graphics.input.KeyAction;
 import graphics.input.Locatable;
-import mechanics.graphics.math.GMath;
 import mechanics.utils.DynamicDrawable;
+import mechanics.utils.Entity;
 import mechanics.utils.ThreadMaster;
 import tensor.Vector;
 
@@ -31,10 +31,11 @@ public class Screen {
 	
 	private int width, height;
 	
-	private Frustum frustum;
+	private Camera camera;
 	
+	public static float dt = .02f;
 		
-	private Drawer drawer;
+	private PhysicsBodies bodies;
 	
 	
 	/**
@@ -46,20 +47,89 @@ public class Screen {
 	public Screen(int width, int height, float viewAngle) {
 		this.width = width;
 		this.height = height;
-		this.frustum = new Frustum(width, height, viewAngle, new Vector(Vector.ZERO));
+		this.camera = new Camera(new Vector(Vector.ZERO));
 		
-		HashMap<Integer, KeyAction> p = new HashMap<Integer, KeyAction>();
-		HashMap<Integer, KeyAction> r = new HashMap<Integer, KeyAction>();
-		p.put(K.Q, () -> window.quit());
+		HashMap<Integer, KeyAction> pressed = new HashMap<Integer, KeyAction>();
+		HashMap<Integer, KeyAction> released = new HashMap<Integer, KeyAction>();
+		setKeybindings(pressed, released);
 		
-		window = new GLFWWindow(width, height, "Planetary Motion", p, r);
+		window = new GLFWWindow(width, height, "Planetary Motion", pressed, released);
 		setInputs("pos, norm, color", new int[] {3, 3, 3});
 		
 		window.setQuitAction(() -> ThreadMaster.quit());
 		
-		GMath.init(this);
+		this.bodies = new PhysicsBodies();
 		
-		this.drawer = new Drawer(frustum);
+		add(camera);
+	}
+	
+	private boolean shift;
+	
+	private void setKeybindings(HashMap<Integer, KeyAction> p, HashMap<Integer, KeyAction> r) {
+		shift = false;
+		p.put(K.Q, () -> window.quit());
+		
+		p.put(K.SPACE, () -> shift = true);
+		
+		p.put(K.W, () -> {
+			if (shift)
+				camera.setDY(Camera.upV);
+			else
+				camera.setDZ(-Camera.forwardV);
+		});
+		p.put(K.S, () -> {
+			if (shift)
+				camera.setDY(-Camera.upV);
+			else
+				camera.setDZ(Camera.backwardV);
+		});
+		
+		p.put(K.A, () -> {
+			if (shift)
+				camera.setDX(-Camera.sidewaysV);
+			else
+				camera.setDPhi(Camera.turnV);
+		});
+		p.put(K.D, () -> {
+			if (shift)
+				camera.setDX(Camera.sidewaysV);
+			else
+				camera.setDPhi(-Camera.turnV);
+		});
+		
+		p.put(K.K, () -> {
+			camera.setDTheta(-Camera.turnV);
+		});
+		p.put(K.M, () -> {
+			camera.setDTheta(Camera.turnV);
+		});
+		
+		r.put(K.SPACE, () -> shift = false);
+		
+		r.put(K.W, () -> {
+			camera.setDZ(0);
+			camera.setDY(0);
+		});
+		r.put(K.S, () -> {
+			camera.setDZ(0);
+			camera.setDY(0);
+		});
+		
+		r.put(K.A, () -> {
+			camera.setDPhi(0);
+			camera.setDX(0);
+		});
+		r.put(K.D, () -> {
+			camera.setDPhi(0);
+			camera.setDX(0);
+		});
+		
+		r.put(K.K, () -> {
+			camera.setDTheta(0);
+		});
+		r.put(K.M, () -> {
+			camera.setDTheta(0);
+		});
 	}
 	
 	private void setInputs(String names, int[] sizes) {
@@ -71,19 +141,19 @@ public class Screen {
 	}
 	
 	public void setCamera(Vector loc) {
-		frustum.add(loc.minus(frustum));
+		camera.add(loc.minus(camera));
 	}
 	
 	public void setCamera(Vector loc, float phi, float theta, float psi) {
-		frustum.add(loc.minus(frustum));
-		frustum.rotate((theta - frustum.theta()) / GMath.dt, (phi - frustum.phi()) / GMath.dt, (psi - frustum.psi()) / GMath.dt);
+		camera.add(loc.minus(camera));
+		camera.rotate((theta - camera.theta()) / dt, (phi - camera.phi()) / dt, (psi - camera.psi()) / dt);
 	}
 	
 	/**
 	 * must be called prior to execution and after all <code>Entities</code> have been added
 	 */
 	public void init() {
-		drawer.init();
+		bodies.init();
 	}
 	
 	public int width() {
@@ -94,12 +164,18 @@ public class Screen {
 		return height;
 	}
 	
-	public Frustum getFustrum() {
-		return frustum;
+	public Camera getCamera() {
+		return camera;
 	}
 	
 	public void add(GLFWRenderable...states) {
 		window.add(states);
+	}
+	
+	public void add(Entity...entities) {
+		bodies.add(entities);
+		for (Entity e : entities)
+			add((GLFWRenderable) e);
 	}
 	
 	public void add(LightSource light) {
@@ -126,30 +202,23 @@ public class Screen {
 		window.remove(states);
 	}
 	
-	public void update() {
-		GMath.reset();
-		GMath.appendRotation(frustum.getTransformation());
-		drawer.update();
-	}
-	
 	public void physUpdate() {
-		drawer.physUpdate();
+		bodies.physUpdate();
 	}
 	
 	public void draw() {
-		update();
 		if (window.shouldClose()) {
 			window.destroy();
 		}
 		window.render();
-		
-//		img.clear();
-//		drawer.draw(img);
-//		img.draw();
 	}
 	
 	public String getInfo() {
-		return frustum.toString() + "\nNumber of bodies: " + drawer.size() + "\nEnergy: " + drawer.energy() + "\nMomentum: " + drawer.momentum();
+		return camera.toString() + "\nNumber of bodies: " + bodies.size() + "\nEnergy: " + bodies.energy() + "\nMomentum: " + bodies.momentum();
+	}
+	
+	public String getBodies() {
+		return bodies.toString();
 	}
 	
 }

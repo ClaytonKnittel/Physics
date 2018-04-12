@@ -16,6 +16,11 @@ public class EntityList extends ArrayList<Entity> {
 		super();
 	}
 	
+	public void add(Entity...entities) {
+		for (Entity e : entities)
+			add(e);
+	}
+	
 	public synchronized Entity getEl(int i) {
 		return super.get(i);
 	}

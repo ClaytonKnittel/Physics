@@ -1,11 +1,8 @@
 package mechanics.physics;
 
 import graphics.Color;
-import mechanics.graphics.Camera;
-import mechanics.graphics.ImageGraphics;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
-import mechanics.graphics.math.GMath;
 import mechanics.graphics.shapes.Shape;
 import mechanics.graphics.shapes.Sphere;
 import mechanics.physics.utils.Attribute;
@@ -14,7 +11,6 @@ import numbers.cliffordAlgebras.DQuaternion;
 import numbers.cliffordAlgebras.Quaternion;
 import tensor.DVector;
 import tensor.Matrix4;
-import tensor.Vector;
 
 public class SphericalBodies implements Entity {
 	

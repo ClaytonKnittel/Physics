@@ -1,13 +1,15 @@
 package mechanics.graphics;
 
 import graphics.input.Locatable;
-import mechanics.graphics.math.GMath;
-import numbers.cliffordAlgebras.Quaternion;
+import tensor.Matrix4;
 import tensor.Vector;
 
 public class Camera extends Vector implements Locatable {
 	
 	private float phi, theta, psi;
+	
+	private Vector v;
+	private float dPhi, dTheta, dPsi;
 	
 	private boolean boost;
 	private long lastBoost;
@@ -21,7 +23,7 @@ public class Camera extends Vector implements Locatable {
 		forwardV = 50;
 		backwardV = 40;
 		sidewaysV = 34;
-		turnV = .4f;
+		turnV = 2f;
 		factor = 30;
 	}
 	
@@ -32,10 +34,24 @@ public class Camera extends Vector implements Locatable {
 		this.psi = psi;
 		this.boost = false;
 		this.lastBoost = 0;
+		freeze();
 	}
 	
 	public Camera(Vector pos) {
 		this(pos, 0, 0, 0);
+	}
+	
+	private void freeze() {
+		this.v = new Vector(0, 0, 0);
+		this.dPhi = 0;
+		this.dTheta = 0;
+		this.dPsi = 0;
+	}
+	
+	@Override
+	public void update() {
+		this.add(Matrix4.phiRotate(-phi).multiply(v).times(Screen.dt));
+		this.rotate(dPhi * Screen.dt, dTheta * Screen.dt, dPsi * Screen.dt);
 	}
 	
 	@Override
@@ -58,22 +74,46 @@ public class Camera extends Vector implements Locatable {
 		return psi;
 	}
 	
-	public void rotate(float vPhi, float vTheta, float vPsi) {
-		phi += vPhi * GMath.dt;
-		theta += vTheta * GMath.dt;
-		psi += vPsi * GMath.dt;
+	public void setDPhi(float dPhi) {
+		this.dPhi = dPhi;
+	}
+	
+	public void setDTheta(float dTheta) {
+		this.dTheta = dTheta;
+	}
+	
+	public void setDX(float dx) {
+		v.x(dx);
+	}
+	
+	public void setDY(float dy) {
+		v.y(dy);
+	}
+	
+	public void setDZ(float dz) {
+		v.z(dz);
+	}
+	
+	public void setDPsi(float dPsi) {
+		this.dPsi = dPsi;
+	}
+	
+	public void rotate(float dPhi, float dTheta, float dPsi) {
+		phi += dPhi;
+		theta += dTheta;
+		psi += dPsi;
 	}
 	
 	public void updward(float velocity) {
 		if (boost)
 			velocity *= factor;
-		this.add(new Vector(0, velocity * GMath.dt, 0));
+		this.add(new Vector(0, velocity * Screen.dt, 0));
 	}
 	
 	public void forward(float velocity) {
 		if (boost)
 			velocity *= factor;
-		this.add(new Vector((float) -Math.sin(phi), 0, (float) -Math.cos(phi)).times(velocity * GMath.dt));
+		this.add(new Vector((float) -Math.sin(phi), 0, (float) -Math.cos(phi)).times(velocity * Screen.dt));
 	}
 	
 	/**
@@ -82,7 +122,7 @@ public class Camera extends Vector implements Locatable {
 	public void sideways(float velocity) {
 		if (boost)
 			velocity *= factor;
-		this.add(new Vector((float) Math.cos(phi), 0, (float) -Math.sin(phi)).times(velocity * GMath.dt));
+		this.add(new Vector((float) Math.cos(phi), 0, (float) -Math.sin(phi)).times(velocity * Screen.dt));
 	}
 	
 	public void flipSpeed() {
@@ -90,10 +130,6 @@ public class Camera extends Vector implements Locatable {
 			boost = !boost;
 			this.lastBoost = System.currentTimeMillis() + wait;
 		}
-	}
-	
-	public Quaternion getTransformation() {
-		return Quaternion.euler(Vector.X, theta).times(Quaternion.euler(Vector.Y, -phi));
 	}
 	
 	public String toString() {

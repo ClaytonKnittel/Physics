@@ -8,7 +8,7 @@ public class Sphere implements Shape {
 	
 	private float radius;
 	
-	private static final float[] modelData;
+	private static float[] modelData;
 	
 	static {
 //		modelData = new float[] {
@@ -44,14 +44,23 @@ public class Sphere implements Shape {
 //				-1, 0, 1,	-1, 0, 1,
 //				0, 1, 0,	0, 1, 1
 //		};
-		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData();
 	}
 	
 	public Sphere(float radius) {
 		this.radius = radius;
 	}
 	
+	public static float[] getModel(float radius) {
+		return OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData(radius);
+	}
+	
+	private void setModel() {
+		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData(radius);;
+	}
+	
 	public float[] modelData() {
+		if (modelData == null)
+			setModel();
 		return modelData;
 	}
 

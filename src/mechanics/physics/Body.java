@@ -18,7 +18,7 @@ public abstract class Body implements Entity {
 	/**
 	 * @serialField pos the position of the center of mass
 	 */
-	private DQuaternion pos;
+	private DVector pos;
 	
 	
 	private DVector velocity;
@@ -26,8 +26,11 @@ public abstract class Body implements Entity {
 	private DVector netForce;
 	
 	
+	private Matrix4 model;
+	
 	
 	private double mass;
+	private double phi, theta, psi;
 	
 	/**
 	 * @serialField a description of the shape of this Body
@@ -56,6 +59,10 @@ public abstract class Body implements Entity {
 		this.color = color;
 		this.collided = new BodyCollisionList(this);
 		this.attributes = new Attributes(attributes);
+		this.model = new Matrix4();
+		this.phi = 0;
+		this.theta = 0;
+		this.psi = 0;
 		reset();
 	}
 	
@@ -78,7 +85,7 @@ public abstract class Body implements Entity {
 	
 	@Override
 	public Matrix4 model() {
-		return Matrix4.translate(pos.toVector());
+		return model;
 	}
 	
 	@Override
@@ -95,7 +102,7 @@ public abstract class Body implements Entity {
 		return pathTracer != null;
 	}
 	
-	public DQuaternion pos() {
+	public DVector pos() {
 		return pos;
 	}
 	
@@ -140,7 +147,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public void update() {
-		// TODO update model matrix
+		model = Matrix4.eulerMatrix((float) phi, (float) theta, (float) psi).multiply(Matrix4.translate(pos.toVector()));
 		if (tracing())
 			pathTracer.recordLocation(pos.toVector());
 	}

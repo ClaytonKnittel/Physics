@@ -5,11 +5,11 @@ import graphics.entities.GLFWRenderable;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Shape;
 import mechanics.physics.utils.Attribute;
-import numbers.cliffordAlgebras.DQuaternion;
+import tensor.DVector;
 
 public interface Entity extends GLFWRenderable {
 	
-	DQuaternion pos();
+	DVector pos();
 	
 	Shape shape();
 	

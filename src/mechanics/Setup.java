@@ -12,6 +12,7 @@ import tensor.DVector;
 
 public class Setup {
 	
+	public static boolean tracing = false;
 	
 	public static final Setup ELLIPTICAL, CIRCULAR, PARABOLIC, HYPERBOLIC, POLAR, EARTH_MOON, INNER_SYSTEM;
 	
@@ -74,12 +75,13 @@ public class Setup {
 		EARTH_MOON = new Setup(traceE, numSteps, earth, sun, moon);
 		
 		
+		float radMult = 1;
 		
-		earth = new Planet(new DVector(1000, 0, -100), 10, 1, earthColor);
-		sun = new Planet(new DVector(0, 0, -100), 1000, 30, sunColor);
-		Planet mercury = new Planet(new DVector(86.7832, 380.222, 0), 0.552735261, 1, mercuryColor);
-		Planet venus = new Planet(new DVector(-551.552, -462.807, 0), 8.14997513, 1, venusColor);
-		Planet mars = new Planet(new DVector(-1229.71, 893.434, 0), 1.07446849, 1, marsColor);
+		earth = new Planet(new DVector(1000, 0, -100), 10, 1 * radMult, earthColor);
+		sun = new Planet(new DVector(0, 0, -100), 1000, 30 * radMult, sunColor);
+		Planet mercury = new Planet(new DVector(86.7832, 380.222, 0), 0.552735261, 1 * radMult, mercuryColor);
+		Planet venus = new Planet(new DVector(-551.552, -462.807, 0), 8.14997513, 1 * radMult, venusColor);
+		Planet mars = new Planet(new DVector(-1229.71, 893.434, 0), 1.07446849, 1 * radMult, marsColor);
 		PMath.setupCircilarOrbit(mercury, sun);
 		PMath.setupCircilarOrbit(venus, sun);
 		PMath.setupCircilarOrbit(earth, sun);
@@ -108,7 +110,7 @@ public class Setup {
 	public void initialize(Screen screen, float precision) {
 		for (int i = 0; i < bodies.length; i++) {
 			screen.add(bodies[i]);
-			if (trace[i] != null)
+			if (trace[i] != null && tracing)
 				bodies[i].lineTrace(screen, precision, numSteps[i], trace[i]);
 		}
 	}

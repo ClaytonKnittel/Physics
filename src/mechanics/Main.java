@@ -4,7 +4,6 @@ import graphics.Color;
 import graphics.entities.LightSource;
 import mechanics.graphics.Camera;
 import mechanics.graphics.Screen;
-import mechanics.graphics.math.GMath;
 import mechanics.physics.ExactSolution;
 import mechanics.physics.PMath;
 import mechanics.physics.Planet;
@@ -19,9 +18,9 @@ public class Main {
 		Screen s = new Screen(800, 600, 72);
 
 		
-		//s.setCamera(new Vector(0, 100, 100), .4f, 0);
+//		s.setCamera(new Vector(0, -10, 100), 0, .4f, 0);
 //		Setup.ELLIPTICAL.initialize(s, 1);
-//		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.CYAN);
+		//Setup.ELLIPTICAL.showExactSolution(s, 300, Color.cyan);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
 //		Setup.PARABOLIC.showExactSolution(s, 300, Color.cyan);
@@ -41,8 +40,8 @@ public class Main {
 //		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
 		
 		
-//		s.setCamera(new Vector(0, 0, 10000));
-//		Setup.INNER_SYSTEM.initialize(s, 1);
+		s.setCamera(new Vector(0, 0, 1000));
+		Setup.INNER_SYSTEM.initialize(s, 1);
 //		Setup.INNER_SYSTEM.showExactSolutions(s, 300, new Color[] {Color.BLUE, Color.GRAY, Color.GREEN, Color.DARK_GRAY}, 0, new int[] {1, 2, 3, 4});
 		
 //		int i = 20;
@@ -53,8 +52,6 @@ public class Main {
 //			}
 //		}
 		
-		s.add(new Planet(new DVector(0, 0, -10), 1, 1, Color.red));
-		s.add(new Planet(new DVector(2, 0, -8), 1, 1, Color.blue));
 		s.add(new LightSource() {
 			public Vector pos() {
 				return new Vector(50, 0, 50);
@@ -66,18 +63,13 @@ public class Main {
 				return 0;
 			}
 		});
-		Camera c = new Camera(new Vector(0, 0, 0));
-		s.add(c);
 		
 		s.init();
 		s.enter();
 		
-		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.draw();
-			GMath.next();
-		}, GMath.dt, true, "graphics");
-		
+		}, Screen.dt, true, "graphics");
 		ThreadMaster physics = new ThreadMaster(() -> {
 			s.physUpdate();
 			PMath.next();
@@ -89,8 +81,8 @@ public class Main {
 			System.out.println(physics);
 		}, 1, false, "info");
 
-//		physics.start();
-//		info.start();
+		physics.start();
+		info.start();
 		
 		// beacuse GLFW needs to be run in main thread
 		graphics.run();
