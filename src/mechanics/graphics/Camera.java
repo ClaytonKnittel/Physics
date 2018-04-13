@@ -50,6 +50,11 @@ public class Camera extends Vector implements Locatable {
 	
 	@Override
 	public void update() {
+		Vector v;
+		if (boost)
+			v = this.v.times(factor);
+		else
+			v = this.v;
 		this.add(Matrix4.phiRotate(-phi).multiply(v).times(Screen.dt));
 		this.rotate(dPhi * Screen.dt, dTheta * Screen.dt, dPsi * Screen.dt);
 	}
@@ -96,6 +101,10 @@ public class Camera extends Vector implements Locatable {
 	
 	public void setDPsi(float dPsi) {
 		this.dPsi = dPsi;
+	}
+	
+	public void toggleBoost() {
+		boost = !boost;
 	}
 	
 	public void rotate(float dPhi, float dTheta, float dPsi) {

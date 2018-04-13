@@ -7,6 +7,7 @@ import mechanics.graphics.Screen;
 import mechanics.physics.ExactSolution;
 import mechanics.physics.PMath;
 import mechanics.physics.Planet;
+import mechanics.physics.Rectangle;
 import mechanics.utils.ThreadMaster;
 import tensor.DVector;
 import tensor.Vector;
@@ -18,8 +19,8 @@ public class Main {
 		Screen s = new Screen(800, 600, 72);
 
 		
-//		s.setCamera(new Vector(0, -10, 100), 0, .4f, 0);
-//		Setup.ELLIPTICAL.initialize(s, 1);
+		s.setCamera(new Vector(0, 60, -60), .4f, 0, 0);
+		Setup.ELLIPTICAL.initialize(s, 1);
 		//Setup.ELLIPTICAL.showExactSolution(s, 300, Color.cyan);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
@@ -40,8 +41,8 @@ public class Main {
 //		Setup.EARTH_MOON.showExactSolution(s, 300, Color.CYAN);
 		
 		
-		s.setCamera(new Vector(0, 0, 1000));
-		Setup.INNER_SYSTEM.initialize(s, 1);
+//		s.setCamera(new Vector(0, 0, 1000));
+//		Setup.INNER_SYSTEM.initialize(s, 1);
 //		Setup.INNER_SYSTEM.showExactSolutions(s, 300, new Color[] {Color.BLUE, Color.GRAY, Color.GREEN, Color.DARK_GRAY}, 0, new int[] {1, 2, 3, 4});
 		
 //		int i = 20;
@@ -64,6 +65,9 @@ public class Main {
 			}
 		});
 		
+		Rectangle r = new Rectangle(new DVector(100, 0, 0), .001, 10, 20, 30, Color.blue);
+		s.add(r);
+		
 		s.init();
 		s.enter();
 		
@@ -81,7 +85,7 @@ public class Main {
 			System.out.println(physics);
 		}, 1, false, "info");
 
-		physics.start();
+		//physics.start();
 		info.start();
 		
 		// beacuse GLFW needs to be run in main thread

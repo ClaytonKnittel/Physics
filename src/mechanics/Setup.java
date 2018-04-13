@@ -75,7 +75,7 @@ public class Setup {
 		EARTH_MOON = new Setup(traceE, numSteps, earth, sun, moon);
 		
 		
-		float radMult = 1;
+		float radMult = .6f;
 		
 		earth = new Planet(new DVector(1000, 0, -100), 10, 1 * radMult, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), 1000, 30 * radMult, sunColor);

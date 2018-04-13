@@ -67,9 +67,10 @@ public class Screen {
 	
 	private void setKeybindings(HashMap<Integer, KeyAction> p, HashMap<Integer, KeyAction> r) {
 		shift = false;
-		p.put(K.Q, () -> window.quit());
+		p.put(K.ONE, () -> window.quit());
 		
 		p.put(K.SPACE, () -> shift = true);
+		p.put(K.J, () -> camera.toggleBoost());
 		
 		p.put(K.W, () -> {
 			if (shift)
@@ -104,6 +105,13 @@ public class Screen {
 			camera.setDTheta(Camera.turnV);
 		});
 		
+		p.put(K.Q, () -> {
+			camera.setDPsi(-Camera.turnV);
+		});
+		p.put(K.E, () -> {
+			camera.setDPsi(Camera.turnV);
+		});
+		
 		r.put(K.SPACE, () -> shift = false);
 		
 		r.put(K.W, () -> {
@@ -129,6 +137,13 @@ public class Screen {
 		});
 		r.put(K.M, () -> {
 			camera.setDTheta(0);
+		});
+		
+		r.put(K.Q, () -> {
+			camera.setDPsi(0);
+		});
+		r.put(K.E, () -> {
+			camera.setDPsi(0);
 		});
 	}
 	
@@ -186,17 +201,9 @@ public class Screen {
 		window.add(camera);
 	}
 	
-//	public void add(Drawable d) {
-//		drawer.add(d);
-//	}
-	
 	public void add(DynamicDrawable d) {
 		d.give(this);
 	}
-	
-//	public void remove(Drawable d) {
-//		drawer.remove(d);
-//	}
 	
 	public void remove(GLFWRenderable...states) {
 		window.remove(states);
