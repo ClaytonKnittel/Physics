@@ -1,4 +1,4 @@
-package mechanics.physics;
+package mechanics.physics.bodies;
 
 import graphics.Color;
 import mechanics.graphics.shapes.Box;

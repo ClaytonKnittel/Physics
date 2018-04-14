@@ -3,8 +3,8 @@ package mechanics.graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import mechanics.physics.Body;
-import mechanics.physics.PMath;
+import mechanics.physics.bodies.Body;
+import mechanics.physics.bodies.PMath;
 import mechanics.utils.Entity;
 import tensor.DVector;
 

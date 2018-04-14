@@ -1,7 +1,7 @@
 package mechanics.physics.utils;
 
-import mechanics.physics.Body;
-import mechanics.physics.PMath;
+import mechanics.physics.bodies.Body;
+import mechanics.physics.bodies.PMath;
 
 /**
  * 

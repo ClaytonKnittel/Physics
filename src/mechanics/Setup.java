@@ -2,11 +2,11 @@ package mechanics;
 
 import graphics.Color;
 import mechanics.graphics.Screen;
-import mechanics.physics.Body;
 import mechanics.physics.ExactSolution;
-import mechanics.physics.PMath;
-import mechanics.physics.Planet;
-import mechanics.physics.SphericalBodies;
+import mechanics.physics.bodies.Body;
+import mechanics.physics.bodies.PMath;
+import mechanics.physics.bodies.Planet;
+import mechanics.physics.bodies.SphericalBodies;
 import mechanics.utils.Entity;
 import tensor.DVector;
 

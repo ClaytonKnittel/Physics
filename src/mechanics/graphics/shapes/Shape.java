@@ -2,6 +2,7 @@ package mechanics.graphics.shapes;
 
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
+import tensor.Matrix4;
 
 public interface Shape {
 
@@ -27,5 +28,26 @@ public interface Shape {
 	 * @return the model data for this shape, in compliance with whatever rendering method is being used
 	 */
 	float[] modelData();
+	
+	/**
+	 * @return themodel matrix. Will be the first operator to be performed on the data to transform it into the right shape / size
+	 */
+	Matrix4 model();
+	
+	/**
+	 * Moment of inertia factor, excluding the mass factor
+	 * @return moment of inertia about x- (principal) axis
+	 */
+	double l1();
+	/**
+	 * Moment of inertia factor, excluding the mass factor
+	 * @return moment of inertia about y- (principal) axis
+	 */
+	double l2();
+	/**
+	 * Moment of inertia factor, excluding the mass factor
+	 * @return moment of inertia about z- (principal) axis
+	 */
+	double l3();
 	
 }

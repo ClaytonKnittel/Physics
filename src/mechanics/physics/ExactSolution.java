@@ -4,8 +4,10 @@ import java.util.LinkedList;
 
 import graphics.Color;
 import mechanics.graphics.Screen;
+import mechanics.graphics.shapes.LineSegment;
+import mechanics.physics.bodies.Body;
+import mechanics.physics.bodies.PMath;
 import mechanics.utils.DynamicDrawable;
-import mechanics.utils.LineSegment;
 import tensor.DVector;
 
 public class ExactSolution implements DynamicDrawable {
@@ -60,7 +62,7 @@ public class ExactSolution implements DynamicDrawable {
 		
 		for (int frac = 1; frac <= numSteps; frac++) {
 			r = 1 / (c * Math.cos((pi2 * frac) / numSteps) + d);
-			lines.add(new LineSegment(polarBasisToVector(rp, pi2 * (frac - 1) / numSteps, x, y).plus(cm).toVector(), polarBasisToVector(r, pi2 * frac / numSteps, x, y).plus(cm).toVector(), color));
+			lines.add(new LineSegment(polarBasisToVector(rp, pi2 * (frac - 1) / numSteps, x, y).plus(cm).toVector(), polarBasisToVector(r, pi2 * frac / numSteps, x, y).plus(cm).toVector(), 1, color));
 			rp = r;
 		}
 		push();

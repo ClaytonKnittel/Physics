@@ -19,4 +19,12 @@ public class CollisionInformation {
 		return norm;
 	}
 	
+	/**
+	 * 
+	 * @return the CollisionInformation relative to the other shape colliding with this one
+	 */
+	public CollisionInformation flip(DVector thisToOther) {
+		return new CollisionInformation(location.minus(thisToOther), norm.times(-1));
+	}
+	
 }

@@ -12,8 +12,6 @@ public class Camera extends Vector implements Locatable {
 	private float dPhi, dTheta, dPsi;
 	
 	private boolean boost;
-	private long lastBoost;
-	private final long wait = 400;
 	
 	// in spatial units / second
 	public static float upV, forwardV, backwardV, sidewaysV, turnV, factor;
@@ -33,7 +31,6 @@ public class Camera extends Vector implements Locatable {
 		this.theta = theta;
 		this.psi = psi;
 		this.boost = false;
-		this.lastBoost = 0;
 		freeze();
 	}
 	
@@ -55,7 +52,7 @@ public class Camera extends Vector implements Locatable {
 			v = this.v.times(factor);
 		else
 			v = this.v;
-		this.add(Matrix4.phiRotate(-phi).multiply(v).times(Screen.dt));
+		this.add(Matrix4.phiRotate(phi).multiply(v).times(Screen.dt));
 		this.rotate(dPhi * Screen.dt, dTheta * Screen.dt, dPsi * Screen.dt);
 	}
 	
@@ -132,13 +129,6 @@ public class Camera extends Vector implements Locatable {
 		if (boost)
 			velocity *= factor;
 		this.add(new Vector((float) Math.cos(phi), 0, (float) -Math.sin(phi)).times(velocity * Screen.dt));
-	}
-	
-	public void flipSpeed() {
-		if (lastBoost < System.currentTimeMillis()) {
-			boost = !boost;
-			this.lastBoost = System.currentTimeMillis() + wait;
-		}
 	}
 	
 	public String toString() {

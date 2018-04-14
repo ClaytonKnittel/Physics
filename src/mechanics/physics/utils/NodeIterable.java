@@ -2,7 +2,7 @@ package mechanics.physics.utils;
 
 import java.util.Iterator;
 
-import mechanics.physics.Body;
+import mechanics.physics.bodies.Body;
 import mechanics.physics.utils.NodeIterable.Node;
 
 public abstract class NodeIterable implements Iterable<Node> {

@@ -1,5 +1,6 @@
-package mechanics.physics;
+package mechanics.physics.bodies;
 
+import mechanics.physics.CollisionInformation;
 import mechanics.physics.utils.Attribute;
 import tensor.DVector;
 
@@ -89,7 +90,7 @@ public final class PMath {
 	 * @param a <code>Body</code> a
 	 * @param b <code>Body</code> b
 	 * 
-	 * Handes the collision of two rigid Bodies.
+	 * Handles the collision of two rigid Bodies.
 	 * 
 	 */
 	public static DVector collide(Body a, Body b) {
@@ -178,6 +179,24 @@ public final class PMath {
 		if (p.mag2() < .0001)
 			p = r.cross(DVector.X);
 		return p.normalized();
+	}
+	
+	
+	
+	public static double dTheta(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
+		return (sq(Math.sin(psi)) / l2 + sq(Math.cos(psi)) / l1) * L;
+	}
+	
+	public static double dPhi(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
+		return (1 / l2 - 1 / l1) * L * Math.sin(theta) * Math.sin(psi) / 2;
+	}
+	
+	public static double dPsi(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
+		return (1 / l3 - sq(Math.sin(psi)) / l2 - sq(Math.cos(psi)) / l1) * L * Math.cos(theta);
+	}
+	
+	private static double sq(double d) {
+		return d * d;
 	}
 	
 }

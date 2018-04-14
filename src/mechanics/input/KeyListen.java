@@ -91,7 +91,7 @@ public class KeyListen {
 			});
 		keyActions.put(KeyEvent.VK_M, (c) -> { c.rotate(0, Camera.turnV, 0); });
 		keyActions.put(KeyEvent.VK_K, (c) -> { c.rotate(0, -Camera.turnV, 0); });
-		keyActions.put(KeyEvent.VK_J, (c) -> c.flipSpeed());
+		keyActions.put(KeyEvent.VK_J, (c) -> c.toggleBoost());
 	}
 	
 	public boolean shift() {

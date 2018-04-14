@@ -1,9 +1,9 @@
 package mechanics.graphics;
 
 import graphics.Color;
+import mechanics.graphics.shapes.LineSegment;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.FiniteModularList;
-import mechanics.utils.LineSegment;
 import tensor.Vector;
 
 public class PathTracer implements DynamicDrawable {
@@ -12,6 +12,8 @@ public class PathTracer implements DynamicDrawable {
 	private float precision;
 	private Color color;
 	private Screen screen;
+	
+	private static final float lineWidth = 1;
 	
 	public PathTracer(float precision, int size, Color color) {
 		this.precision = precision * precision;
@@ -30,9 +32,9 @@ public class PathTracer implements DynamicDrawable {
 	
 	public void recordLocation(Vector pos) {
 		if (lines.isEmpty())
-			lines.add(new LineSegment(pos, pos, color));
+			lines.add(new LineSegment(pos, pos, lineWidth, color));
 		else if (shouldAppend(pos)) {
-			screen.remove(lines.add(new LineSegment(lines.getLast().end(), pos, color)));
+			screen.remove(lines.add(new LineSegment(lines.getLast().end(), pos, lineWidth, color)));
 			screen.add(lines.getLast());
 		} else
 			return;

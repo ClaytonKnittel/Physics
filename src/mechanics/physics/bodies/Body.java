@@ -1,4 +1,4 @@
-package mechanics.physics;
+package mechanics.physics.bodies;
 
 import graphics.Color;
 import graphics.VBOConverter;
@@ -25,11 +25,15 @@ public abstract class Body implements Entity {
 	
 	private DVector netForce;
 	
-	
+	// for graphics
 	private Matrix4 model;
 	
 	
 	private double mass;
+	
+	// angular momentum
+	private DVector l;
+	
 	private double phi, theta, psi;
 	
 	/**
@@ -43,8 +47,6 @@ public abstract class Body implements Entity {
 	
 	
 	private BodyCollisionList collided;
-	
-	private int time = 0;
 	
 	/**
 	 * By default, Bodies are Physical and Massive
@@ -81,6 +83,16 @@ public abstract class Body implements Entity {
 		velocity.add(netForce.divide(mass).times(PMath.dt / 2));
 		// reset the forces (they were only calculated to find v(dt / 2) and must be reset before the first physics iteration runs
 		reset();
+	}
+	
+	public void setL(DVector d) {
+		this.l = d;
+	}
+	
+	public void setPTP(double phi, double theta, double psi) {
+		this.phi = phi;
+		this.theta = theta;
+		this.psi = psi;
 	}
 	
 	@Override
@@ -135,7 +147,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public String toString() {
-		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nMass: " + mass + "\nColor: " + color;
+		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nAngles: phi: " + phi + " \tTheta: " + theta + " \tPsi: " + psi + "\nL: " + l + "\nMass: " + mass + "\nColor: " + color;
 	}
 	
 	public boolean is(Attribute a) {
@@ -147,7 +159,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public void update() {
-		model = Matrix4.eulerMatrix((float) phi, (float) theta, (float) psi).multiply(Matrix4.translate(pos.toVector()));
+		model = Matrix4.model(pos.toVector(), (float) phi, (float) theta, (float) psi).multiply(shape.model());
 		if (tracing())
 			pathTracer.recordLocation(pos.toVector());
 	}
@@ -163,7 +175,21 @@ public abstract class Body implements Entity {
 	private void step() {
 		velocity.add(netForce.divide(mass).times(PMath.dt));
 		pos.add(velocity.times(PMath.dt));
+		angularStep();
 		reset();
+	}
+	
+	private void angularStep() {
+		double l = this.l.mag();
+		double l1 = shape.l1();
+		double l2 = shape.l2();
+		double l3 = shape.l3();
+		double dPhi = PMath.dPhi(phi, theta, psi, l1, l2, l3, l);
+		double dTheta = PMath.dTheta(phi, phi, phi, l1, l2, l3, l);
+		double dPsi = PMath.dPsi(phi, theta, theta, l1, l2, l3, l);
+		this.phi += dPhi * PMath.dt;
+		this.theta += dTheta * PMath.dt;
+		this.psi += dPsi * PMath.dt;
 	}
 	
 	private void reset() {

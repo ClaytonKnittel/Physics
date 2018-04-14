@@ -99,17 +99,17 @@ public class Screen {
 		});
 		
 		p.put(K.K, () -> {
-			camera.setDTheta(-Camera.turnV);
+			camera.setDTheta(Camera.turnV);
 		});
 		p.put(K.M, () -> {
-			camera.setDTheta(Camera.turnV);
+			camera.setDTheta(-Camera.turnV);
 		});
 		
 		p.put(K.Q, () -> {
-			camera.setDPsi(-Camera.turnV);
+			camera.setDPsi(Camera.turnV);
 		});
 		p.put(K.E, () -> {
-			camera.setDPsi(Camera.turnV);
+			camera.setDPsi(-Camera.turnV);
 		});
 		
 		r.put(K.SPACE, () -> shift = false);
