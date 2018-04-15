@@ -54,7 +54,7 @@ public class Camera extends Vector implements Locatable {
 			v = this.v.times(factor);
 		else
 			v = this.v;
-		this.add(Matrix4.phiRotate(phi).multiply(v).times(Screen.dt));
+		this.add(Matrix4.yRotate(phi).multiply(v).times(Screen.dt));
 		this.rotate(dPhi * Screen.dt, dTheta * Screen.dt, dPsi * Screen.dt);
 	}
 	

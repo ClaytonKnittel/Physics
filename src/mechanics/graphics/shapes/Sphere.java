@@ -9,6 +9,8 @@ public class Sphere implements Shape {
 	
 	private static float[] modelData;
 	
+	private Matrix4 model;
+	
 	private float radius;
 	
 	static {
@@ -17,15 +19,25 @@ public class Sphere implements Shape {
 	
 	public Sphere(float radius) {
 		this.radius = radius;
+		updateModel();
+	}
+	
+	private void updateModel() {
+		model = Matrix4.scale(radius);
 	}
 	
 	@Override
 	public Matrix4 model() {
-		return Matrix4.scale(radius);
+		return model;
 	}
 	
 	public float[] modelData() {
 		return modelData;
+	}
+	
+	public void setRadius(float r) {
+		this.radius = r;
+		updateModel();
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {
@@ -58,6 +70,11 @@ public class Sphere implements Shape {
 	@Override
 	public double l3() {
 		return radius * radius * 2.0 / 5.0;
+	}
+	
+	@Override
+	public void update() {
+		return;
 	}
 	
 	

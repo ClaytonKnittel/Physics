@@ -126,6 +126,18 @@ public abstract class Body implements Entity {
 		return velocity;
 	}
 	
+	public double phi() {
+		return phi;
+	}
+	
+	public double theta() {
+		return theta;
+	}
+	
+	public double psi() {
+		return psi;
+	}
+	
 	protected void setVelocity(DVector v) {
 		this.velocity = v;
 	}
@@ -140,6 +152,10 @@ public abstract class Body implements Entity {
 	
 	public double mass() {
 		return mass;
+	}
+	
+	public DVector angularVelocity() {
+		return w;
 	}
 	
 	public Color color() {
@@ -184,15 +200,15 @@ public abstract class Body implements Entity {
 	}
 	
 	private void angularStep() {
-//		double l1 = mass * shape.l1();
-//		double l2 = mass * shape.l2();
-//		double l3 = mass * shape.l3();
-//		w.add(PMath.dW(phi, theta, psi, l1, l2, l3, w, torque));
-//		DVector dAngles = PMath.dAngles(l1, l2, l3, w);
-//		phi += dAngles.x();
-//		theta += dAngles.y();
-//		psi += dAngles.z();
-		phi += .001;
+		double l1 = mass * shape.l1();
+		double l2 = mass * shape.l2();
+		double l3 = mass * shape.l3();
+		w.add(PMath.dW(phi, theta, psi, l1, l2, l3, w, torque));
+		DVector dAngles = PMath.dAngles(l1, l2, l3, w);
+		phi += dAngles.x();
+		theta += dAngles.y();
+		psi += dAngles.z();
+		//phi += .001;
 		//psi += .0011;
 	}
 	

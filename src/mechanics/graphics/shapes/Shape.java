@@ -1,10 +1,10 @@
 package mechanics.graphics.shapes;
 
+import graphics.entities.GLFWRenderable;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
-import tensor.Matrix4;
 
-public interface Shape {
+public interface Shape extends GLFWRenderable {
 
 	/**
 	 * @param s The shape to be comparing to this one
@@ -23,16 +23,6 @@ public interface Shape {
 	 * The surface normal is the <code>Vector</code> normal to and pointing outward from this <code>Shape</code>'s surface.
 	 */
 	boolean colliding(Shape s, DVector thisToOther);
-	
-	/**
-	 * @return the model data for this shape, in compliance with whatever rendering method is being used
-	 */
-	float[] modelData();
-	
-	/**
-	 * @return themodel matrix. Will be the first operator to be performed on the data to transform it into the right shape / size
-	 */
-	Matrix4 model();
 	
 	/**
 	 * Moment of inertia factor, excluding the mass factor

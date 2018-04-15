@@ -8,6 +8,7 @@ import graphics.Color;
 import graphics.entities.LightSource;
 import mechanics.graphics.Camera;
 import mechanics.graphics.Screen;
+import mechanics.graphics.shapes.Axes;
 import mechanics.graphics.shapes.LineSegment;
 import mechanics.physics.ExactSolution;
 import mechanics.physics.bodies.PMath;
@@ -15,6 +16,7 @@ import mechanics.physics.bodies.Planet;
 import mechanics.physics.bodies.Rectangle;
 import mechanics.utils.ThreadMaster;
 import tensor.DVector;
+import tensor.Matrixd;
 import tensor.Vector;
 
 public class Main {
@@ -71,11 +73,18 @@ public class Main {
 		});
 		
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
-		r.setAngularVelocity(new DVector(0, 0, 0.0001));
+		r.setAngularVelocity(new DVector(0, 0, 0.01));
 		//r.setPTP(1.2, .4, 0);
 		s.add(r);
 		
-		LineSegment l = new LineSegment(new Vector(0, 0, 0), new Vector(100, 200, 0), 1, Color.cyan);
+		Axes a = new Axes(Vector.ZERO, 10, Color.red, Color.green, Color.blue);
+		s.add(a);
+		
+		
+//		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
+//		s.add(p);
+		
+		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 0), 1, Color.cyan);
 		s.add(l);
 		
 		s.init();
@@ -87,6 +96,7 @@ public class Main {
 		ThreadMaster physics = new ThreadMaster(() -> {
 			s.physUpdate();
 			PMath.next();
+			l.setDir(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(10, 10, 0)).toVector(), 40);
 		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {

@@ -13,12 +13,15 @@ public class Box implements Shape {
 	 */
 	private float l, w, h;
 	
+	private Matrix4 model;
+	
 	private static float[] modelData;
 	
 	public Box(float l, float w, float h) {
 		this.l = l;
 		this.w = w;
 		this.h = h;
+		updateModel();
 	}
 	
 	static {
@@ -77,10 +80,21 @@ public class Box implements Shape {
 			.5f, -.5f, -.5f,	0, -1, 0,
 		};
 	}
+	
+	private void updateModel() {
+		model = Matrix4.scale(l, w, h);
+	}
+	
+	public void setDimensions(float l, float w, float h) {
+		this.l = l;
+		this.w = w;
+		this.h = h;
+		updateModel();
+	}
 
 	@Override
 	public Matrix4 model() {
-		return Matrix4.scale(l, w, h);
+		return model;
 	}
 	
 	@Override
@@ -113,6 +127,11 @@ public class Box implements Shape {
 	@Override
 	public double l3() {
 		return (l * l + w * w) / 12;
+	}
+	
+	@Override
+	public void update() {
+		return;
 	}
 	
 }

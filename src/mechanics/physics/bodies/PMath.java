@@ -204,9 +204,9 @@ public final class PMath {
 		DVector tRot = rot.multiply(torque);
 		wRot.add(new DVector(((l2 - l3) * wRot.y() * wRot.z() + tRot.x()) / l1,
 							 ((l3 - l1) * wRot.z() * wRot.x() + tRot.y()) / l2,
-							 ((l1 - l2) * wRot.x() * wRot.y() + tRot.z()) / l3).times(dt));
+							 ((l1 - l2) * wRot.x() * wRot.y() + tRot.z()) / l3));
 		
-		return rotInv.multiply(wRot);
+		return rotInv.multiply(wRot).times(dt);
 	}
 	
 	public static DVector dAngles(double phi, double theta, double psi, DVector w) {

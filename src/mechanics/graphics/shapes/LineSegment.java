@@ -14,20 +14,22 @@ public class LineSegment implements GLFWRenderable {
 	private Vector center;
 	private Color color;
 	
-	private float radius, hLength;
+	private float radius, length;
 	
 	// tells which direction this line is pointing
-	private float phi, psi;
+	private float phi, theta;
 	
-	private static final float[] modelData;
+	private Matrix4 model;
+	
+	protected static final float[] modelData;
 	
 	static {
 		int numPoints = 15;
 		
 		float pi2 = 2 * (float) Math.PI;
 		float d = pi2 / numPoints;
-		float l = 1;
-		float w = 1;
+		float l = .5f;
+		float w = .5f;
 		
 		modelData = new float[36 * numPoints];
 		
@@ -75,18 +77,43 @@ public class LineSegment implements GLFWRenderable {
 	public LineSegment(Vector start, Vector end, float width, Color color) {
 		this.start = start;
 		this.end = end;
-		this.center = start.plus(end).divide(2);
-		System.out.println(center);
-		
-		Vector len = end.minus(start);
-		this.hLength = len.mag() / 2;
-		Vector2 projXZ = new Vector2(len.x(), len.z());
-		Vector2 projXY = new Vector2(len.x(), len.y());
-		this.phi = (float) Math.acos(projXZ.x() / projXZ.mag());
-		this.psi = (float) Math.acos(projXY.x() / projXY.mag());
 		
 		this.radius = width / 2;
 		this.color = color;
+		
+		set();
+	}
+	
+	private void set() {
+		this.center = start.plus(end).divide(2);
+		
+		Vector len = end.minus(start);
+		this.length = len.mag();
+		Vector2 projXZ = new Vector2(len.x(), len.z());
+		if (projXZ.x() == 0 && projXZ.y() == 0)
+			this.phi = 0;
+		else
+			this.phi = (float) -Math.acos(projXZ.x() / projXZ.mag());
+		this.theta = (float) Math.asin(len.y() / length);
+		updateModel();
+	}
+	
+	private void updateModel() {
+		model = Matrix4.translate(center).multiply(Matrix4.yRotate(phi).multiply(Matrix4.zRotate(theta)).multiply(Matrix4.scale(length, radius, radius)));
+	}
+	
+	public void setStart(Vector start) {
+		this.start = start;
+		set();
+	}
+	
+	public void setEnd(Vector end) {
+		this.end = end;
+		set();
+	}
+	
+	public void setDir(Vector dir, float length) {
+		setEnd(start.plus(dir.normalized().times(length)));
 	}
 	
 	/**
@@ -122,12 +149,12 @@ public class LineSegment implements GLFWRenderable {
 	}
 	
 	public String toString() {
-		return "Center: " + center + "\tLength: " + hLength + "\t" + color;
+		return "Center: " + center + "\tLength: " + length + "\t" + color;
 	}
 
 	@Override
 	public Matrix4 model() {
-		return Matrix4.translate(center).multiply(Matrix4.phiRotate(phi).multiply(Matrix4.psiRotate(psi)).multiply(Matrix4.scale(hLength, radius, radius)));
+		return model;
 	}
 
 	@Override
