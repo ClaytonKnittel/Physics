@@ -161,7 +161,7 @@ public class Screen {
 	
 	public void setCamera(Vector loc, float phi, float theta, float psi) {
 		camera.add(loc.minus(camera));
-		camera.rotate((theta - camera.theta()) / dt, (phi - camera.phi()) / dt, (psi - camera.psi()) / dt);
+		camera.setAngles(phi, theta, psi);
 	}
 	
 	/**

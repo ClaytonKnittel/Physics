@@ -31,10 +31,13 @@ public abstract class Body implements Entity {
 	
 	private double mass;
 	
-	// angular momentum
-	private DVector l;
+	// angular velocity
+	private DVector w;
 	
+	// orientation of the body. at 0, 0, 0, axes align with space frame axes
 	private double phi, theta, psi;
+	
+	private DVector torque;
 	
 	/**
 	 * @serialField a description of the shape of this Body
@@ -65,6 +68,7 @@ public abstract class Body implements Entity {
 		this.phi = 0;
 		this.theta = 0;
 		this.psi = 0;
+		this.w = new DVector(0, 0, 0);
 		reset();
 	}
 	
@@ -85,8 +89,8 @@ public abstract class Body implements Entity {
 		reset();
 	}
 	
-	public void setL(DVector d) {
-		this.l = d;
+	public void setAngularVelocity(DVector d) {
+		this.w = d;
 	}
 	
 	public void setPTP(double phi, double theta, double psi) {
@@ -147,7 +151,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public String toString() {
-		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nAngles: phi: " + phi + " \tTheta: " + theta + " \tPsi: " + psi + "\nL: " + l + "\nMass: " + mass + "\nColor: " + color;
+		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nAngles: phi: " + phi + " \tTheta: " + theta + " \tPsi: " + psi + "\nW: " + w + "\nMass: " + mass + "\nColor: " + color;
 	}
 	
 	public boolean is(Attribute a) {
@@ -180,20 +184,21 @@ public abstract class Body implements Entity {
 	}
 	
 	private void angularStep() {
-		double l = this.l.mag();
-		double l1 = shape.l1();
-		double l2 = shape.l2();
-		double l3 = shape.l3();
-		double dPhi = PMath.dPhi(phi, theta, psi, l1, l2, l3, l);
-		double dTheta = PMath.dTheta(phi, phi, phi, l1, l2, l3, l);
-		double dPsi = PMath.dPsi(phi, theta, theta, l1, l2, l3, l);
-		this.phi += dPhi * PMath.dt;
-		this.theta += dTheta * PMath.dt;
-		this.psi += dPsi * PMath.dt;
+//		double l1 = mass * shape.l1();
+//		double l2 = mass * shape.l2();
+//		double l3 = mass * shape.l3();
+//		w.add(PMath.dW(phi, theta, psi, l1, l2, l3, w, torque));
+//		DVector dAngles = PMath.dAngles(l1, l2, l3, w);
+//		phi += dAngles.x();
+//		theta += dAngles.y();
+//		psi += dAngles.z();
+		phi += .001;
+		//psi += .0011;
 	}
 	
 	private void reset() {
 		netForce = new DVector(DVector.ZERO);
+		torque = new DVector(DVector.ZERO);
 	}
 	
 	/**

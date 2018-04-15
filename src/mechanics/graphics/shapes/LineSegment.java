@@ -19,35 +19,19 @@ public class LineSegment implements GLFWRenderable {
 	// tells which direction this line is pointing
 	private float phi, psi;
 	
-	private float[] modelData;
+	private static final float[] modelData;
 	
-	public LineSegment(Vector start, Vector end, float width, Color color) {
-		this.start = start;
-		this.end = end;
-		this.center = start.plus(end).divide(2);
+	static {
+		int numPoints = 15;
 		
-		Vector len = end.minus(start);
-		this.hLength = len.mag() / 2;
-		Vector2 projXZ = new Vector2(len.x(), len.z());
-		Vector2 projXY = new Vector2(len.x(), len.y());
-		this.phi = (float) Math.acos(projXZ.x() / projXZ.mag());
-		this.psi = (float) Math.acos(projXY.x() / projXY.mag());
-		System.out.println("Angles  " + psi + " " + phi);
-		
-		this.radius = width / 2;
-		this.color = color;
-		createModel(1, 1, 15);
-	}
-	
-	private void createModel(float width, float length, int numPointsAroundCircle) {
 		float pi2 = 2 * (float) Math.PI;
-		float d = pi2 / numPointsAroundCircle;
-		float l = length;
-		float w = width;
+		float d = pi2 / numPoints;
+		float l = 1;
+		float w = 1;
 		
-		modelData = new float[36 * numPointsAroundCircle];
+		modelData = new float[36 * numPoints];
 		
-		for (int i = 0; i < numPointsAroundCircle; i++) {
+		for (int i = 0; i < numPoints; i++) {
 			modelData[36 * i] = -l;									// x1
 			modelData[36 * i + 1] = yPosInCircle(w, (i + 1) * d);	// y1
 			modelData[36 * i + 2] = zPosInCircle(w, (i + 1) * d);	// z1
@@ -88,13 +72,30 @@ public class LineSegment implements GLFWRenderable {
 		}
 	}
 	
+	public LineSegment(Vector start, Vector end, float width, Color color) {
+		this.start = start;
+		this.end = end;
+		this.center = start.plus(end).divide(2);
+		System.out.println(center);
+		
+		Vector len = end.minus(start);
+		this.hLength = len.mag() / 2;
+		Vector2 projXZ = new Vector2(len.x(), len.z());
+		Vector2 projXY = new Vector2(len.x(), len.y());
+		this.phi = (float) Math.acos(projXZ.x() / projXZ.mag());
+		this.psi = (float) Math.acos(projXY.x() / projXY.mag());
+		
+		this.radius = width / 2;
+		this.color = color;
+	}
+	
 	/**
 	 * 
 	 * @param radius radius of this line
 	 * @param angle the angle above 0 (pointing in the z-direction)
 	 * @return z-coordinate
 	 */
-	private float zPosInCircle(float radius, float angle) {
+	private static float zPosInCircle(float radius, float angle) {
 		return radius * (float) Math.cos(angle);
 	}
 	/**
@@ -103,7 +104,7 @@ public class LineSegment implements GLFWRenderable {
 	 * @param angle the angle above 0 (pointing in the z-direction)
 	 * @return z-coordinate
 	 */
-	private float yPosInCircle(float radius, float angle) {
+	private static float yPosInCircle(float radius, float angle) {
 		return radius * (float) Math.sin(angle);
 	}
 	
@@ -126,7 +127,7 @@ public class LineSegment implements GLFWRenderable {
 
 	@Override
 	public Matrix4 model() {
-		return Matrix4.phiRotate(phi).multiply(Matrix4.psiRotate(psi).multiply(Matrix4.scale(hLength, radius, radius)));
+		return Matrix4.translate(center).multiply(Matrix4.phiRotate(phi).multiply(Matrix4.psiRotate(psi)).multiply(Matrix4.scale(hLength, radius, radius)));
 	}
 
 	@Override

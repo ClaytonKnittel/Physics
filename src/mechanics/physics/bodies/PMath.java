@@ -3,6 +3,7 @@ package mechanics.physics.bodies;
 import mechanics.physics.CollisionInformation;
 import mechanics.physics.utils.Attribute;
 import tensor.DVector;
+import tensor.Matrixd;
 
 public final class PMath {
 	
@@ -183,20 +184,43 @@ public final class PMath {
 	
 	
 	
-	public static double dTheta(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
-		return (sq(Math.sin(psi)) / l2 + sq(Math.cos(psi)) / l1) * L;
+	/**
+	 * 
+	 * @param phi
+	 * @param theta
+	 * @param psi
+	 * @param l1
+	 * @param l2
+	 * @param l3
+	 * @param w
+	 * @param torque
+	 * @return the small change in angular velocity to be made
+	 */
+	public static DVector dW(double phi, double theta, double psi, double l1, double l2, double l3, DVector w, DVector torque) {
+		Matrixd rot = Matrixd.toRotatingFrame(phi, theta, psi);
+		Matrixd rotInv = Matrixd.toSpaceFrame(phi, theta, psi);
+		
+		DVector wRot = rot.multiply(w);
+		DVector tRot = rot.multiply(torque);
+		wRot.add(new DVector(((l2 - l3) * wRot.y() * wRot.z() + tRot.x()) / l1,
+							 ((l3 - l1) * wRot.z() * wRot.x() + tRot.y()) / l2,
+							 ((l1 - l2) * wRot.x() * wRot.y() + tRot.z()) / l3).times(dt));
+		
+		return rotInv.multiply(wRot);
 	}
 	
-	public static double dPhi(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
-		return (1 / l2 - 1 / l1) * L * Math.sin(theta) * Math.sin(psi) / 2;
+	public static DVector dAngles(double phi, double theta, double psi, DVector w) {
+		double sp = Math.sin(phi);
+		double cp = Math.cos(phi);
+		double st = Math.sin(theta);
+		double ct = Math.cos(theta);
+		
+		return new DVector(
+			w.z() + (w.y() * cp - w.x() * sp) * ct / st,
+			w.x() * cp + w.y() * sp,
+			(w.x() * cp - w.y() * sp) / st
+		).times(dt);
 	}
 	
-	public static double dPsi(double phi, double theta, double psi, double l1, double l2, double l3, double L) {
-		return (1 / l3 - sq(Math.sin(psi)) / l2 - sq(Math.cos(psi)) / l1) * L * Math.cos(theta);
-	}
-	
-	private static double sq(double d) {
-		return d * d;
-	}
 	
 }

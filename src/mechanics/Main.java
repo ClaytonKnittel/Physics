@@ -1,5 +1,9 @@
 package mechanics;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import graphics.Color;
 import graphics.entities.LightSource;
 import mechanics.graphics.Camera;
@@ -18,9 +22,9 @@ public class Main {
 	public static void main(String args[]) {
 		
 		Screen s = new Screen(800, 600, 72);
-		s.setCamera(new Vector(0, 0, 0), 0, 0, 0);
+		//s.setCamera(new Vector(0, 0, 0), 0, 0, 0);
 		
-//		s.setCamera(new Vector(0, 60, -60), -.4f, 0, 0);
+		s.setCamera(new Vector(45, 35, -18), 0.598f, 5.775f, 0);
 //		Setup.ELLIPTICAL.initialize(s, 1);
 		//Setup.ELLIPTICAL.showExactSolution(s, 300, Color.cyan);
 		
@@ -66,17 +70,13 @@ public class Main {
 			}
 		});
 		
-		Rectangle r = new Rectangle(new DVector(10, 0, -40), .001, 10, 20, 30, Color.blue);
-		r.setL(new DVector(0, 0, 10));
+		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
+		r.setAngularVelocity(new DVector(0, 0, 0.0001));
 		//r.setPTP(1.2, .4, 0);
 		s.add(r);
 		
-//		LineSegment l = new LineSegment(new Vector(0, 0, 0), new Vector(100, 200, 0), 10, Color.cyan);
-//		s.add(l);
-		
-//		Planet p1 = new Planet(new DVector(0, 0, 0), 0, 15, Color.gray);
-//		Planet p2 = new Planet(new DVector(100, 200, 0), 0, 15, Color.gray);
-//		s.add(p1, p2);
+		LineSegment l = new LineSegment(new Vector(0, 0, 0), new Vector(100, 200, 0), 1, Color.cyan);
+		s.add(l);
 		
 		s.init();
 		s.enter();
@@ -90,10 +90,10 @@ public class Main {
 		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {
-//			System.out.println(s.getInfo());
-//			System.out.println(graphics);
-//			System.out.println(physics);
-			System.out.println(r);
+			System.out.println(s.getInfo());
+			System.out.println(graphics);
+			System.out.println(physics);
+			//System.out.println(r);
 		}, 1, false, "info");
 
 		physics.start();

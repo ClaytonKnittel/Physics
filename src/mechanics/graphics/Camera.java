@@ -6,6 +6,8 @@ import tensor.Vector;
 
 public class Camera extends Vector implements Locatable {
 	
+	public static float pi2 = (float) Math.PI * 2;
+	
 	private float phi, theta, psi;
 	
 	private Vector v;
@@ -35,7 +37,7 @@ public class Camera extends Vector implements Locatable {
 	}
 	
 	public Camera(Vector pos) {
-		this(pos, 0, 0, 0);
+		this(pos, 0, (float) Math.PI / 2, 0);
 	}
 	
 	private void freeze() {
@@ -76,12 +78,30 @@ public class Camera extends Vector implements Locatable {
 		return psi;
 	}
 	
+	public void setAngles(float phi, float theta, float psi) {
+		this.phi = phi;
+		this.theta = theta;
+		this.psi = psi;
+	}
+	
 	public void setDPhi(float dPhi) {
 		this.dPhi = dPhi;
 	}
 	
 	public void setDTheta(float dTheta) {
 		this.dTheta = dTheta;
+	}
+	
+	public void setDPsi(float dPsi) {
+		this.dPsi = dPsi;
+	}
+	
+	private static float mod2Pi(float angle) {
+		if (angle < 0)
+			return mod2Pi(angle + pi2);
+		if (angle >= pi2)
+			return mod2Pi(angle - pi2);
+		return angle;
 	}
 	
 	public void setDX(float dx) {
@@ -96,18 +116,14 @@ public class Camera extends Vector implements Locatable {
 		v.z(dz);
 	}
 	
-	public void setDPsi(float dPsi) {
-		this.dPsi = dPsi;
-	}
-	
 	public void toggleBoost() {
 		boost = !boost;
 	}
 	
 	public void rotate(float dPhi, float dTheta, float dPsi) {
-		phi += dPhi;
-		theta += dTheta;
-		psi += dPsi;
+		phi = mod2Pi(phi + dPhi);
+		theta = mod2Pi(theta + dTheta);
+		psi = mod2Pi(psi + dPsi);
 	}
 	
 	public void updward(float velocity) {
