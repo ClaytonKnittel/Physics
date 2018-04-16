@@ -75,6 +75,16 @@ public class Axes implements Shape {
 		this.length = size;
 		updateModel();
 	}
+	
+	@Override
+	public Color color() {
+		return x;
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		return;
+	}
 
 	@Override
 	public CollisionInformation collisionInformation(Shape s, DVector thisToOther) {

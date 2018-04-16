@@ -14,4 +14,8 @@ public class Attributes {
 		return attributes[a.ordinal()];
 	}
 	
+	public void set(Attribute a, boolean condition) {
+		attributes[a.ordinal()] = condition;
+	}
+	
 }

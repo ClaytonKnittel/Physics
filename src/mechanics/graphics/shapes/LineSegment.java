@@ -93,7 +93,7 @@ public class LineSegment implements GLFWRenderable {
 		if (projXZ.x() == 0 && projXZ.y() == 0)
 			this.phi = 0;
 		else
-			this.phi = (float) -Math.acos(projXZ.x() / projXZ.mag());
+			this.phi = (float) Math.acos(projXZ.x() / projXZ.mag()) * (projXZ.y() < 0 ? 1 : -1);
 		this.theta = (float) Math.asin(len.y() / length);
 		updateModel();
 	}

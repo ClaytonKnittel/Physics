@@ -1,5 +1,7 @@
 package mechanics.graphics.shapes;
 
+import graphics.Color;
+import graphics.VBOConverter;
 import graphics.models.OBJLoader;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -9,6 +11,10 @@ public class Sphere implements Shape {
 	
 	private static float[] modelData;
 	
+	private float[] selectModelData;
+	
+	private Color color;
+	
 	private Matrix4 model;
 	
 	private float radius;
@@ -17,13 +23,19 @@ public class Sphere implements Shape {
 		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData();
 	}
 	
-	public Sphere(float radius) {
+	public Sphere(float radius, Color color) {
 		this.radius = radius;
+		this.color = color;
 		updateModel();
+		setModelData();
 	}
 	
 	private void updateModel() {
 		model = Matrix4.scale(radius);
+	}
+	
+	private void setModelData() {
+		selectModelData = VBOConverter.toPosNormColor(modelData, color);
 	}
 	
 	@Override
@@ -32,12 +44,23 @@ public class Sphere implements Shape {
 	}
 	
 	public float[] modelData() {
-		return modelData;
+		return selectModelData;
 	}
 	
 	public void setRadius(float r) {
 		this.radius = r;
 		updateModel();
+	}
+	
+	@Override
+	public Color color() {
+		return color;
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
+		setModelData();
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {

@@ -23,7 +23,6 @@ public class SphericalBodies implements Entity {
 	private DVector v1, v2;
 	
 	private Shape s1, s2;
-	private Color c1, c2;
 	
 	private double m1, m2;
 	
@@ -37,10 +36,8 @@ public class SphericalBodies implements Entity {
 		this.b2 = new DQuaternion(0, p1.x() * m1 / m2, Math.PI - p1.y(), p1.z() + Math.PI);
 		this.v1 = v1;
 		this.v2 = new DVector(v1.x() * m1 / m2, v1.y(), v1.z());
-		this.s1 = new Sphere(r1);
-		this.s2 = new Sphere(r2);
-		this.c1 = c1;
-		this.c2 = c2;
+		this.s1 = new Sphere(r1, c1);
+		this.s2 = new Sphere(r2, c2);
 		this.m1 = m1;
 		this.m2 = m2;
 		init();
@@ -156,11 +153,11 @@ public class SphericalBodies implements Entity {
 	 */
 	
 	public Body body1() {
-		return new Planet(new DQuaternion(cartesian1()), polarToCartesianVelocity1(), (float) m1, 1, c1);
+		return new Planet(new DQuaternion(cartesian1()), polarToCartesianVelocity1(), (float) m1, 1, s1.color());
 	}
 	
 	public Body body2() {
-		return new Planet(new DQuaternion(cartesian2()), polarToCartesianVelocity2(), (float) m2, 1, c2);
+		return new Planet(new DQuaternion(cartesian2()), polarToCartesianVelocity2(), (float) m2, 1, s2.color());
 	}
 	
 	private DVector polarToCartesianVelocity1() {

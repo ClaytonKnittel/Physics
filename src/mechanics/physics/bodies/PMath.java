@@ -215,6 +215,12 @@ public final class PMath {
 		double st = Math.sin(theta);
 		double ct = Math.cos(theta);
 		
+//		System.out.println(new DVector(
+//			w.z() + (w.y() * cp - w.x() * sp) * ct / st,
+//			w.x() * cp + w.y() * sp,
+//			(w.x() * cp - w.y() * sp) / st
+//		));
+		
 		return new DVector(
 			w.z() + (w.y() * cp - w.x() * sp) * ct / st,
 			w.x() * cp + w.y() * sp,

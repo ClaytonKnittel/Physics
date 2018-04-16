@@ -43,9 +43,7 @@ public abstract class Body implements Entity {
 	 * @serialField a description of the shape of this Body
 	 */
 	private Shape shape;
-	
-	private Color color;
-	
+		
 	private PathTracer pathTracer;
 	
 	
@@ -56,12 +54,11 @@ public abstract class Body implements Entity {
 	 */
 	private Attributes attributes;
 	
-	public Body(DVector pos, DVector vi, double mass, Shape shape, Color color, Attribute...attributes) {
+	public Body(DVector pos, DVector vi, double mass, Shape shape, Attribute...attributes) {
 		this.pos = new DQuaternion(pos);
 		this.velocity = vi;
 		this.mass = mass;
 		this.shape = shape;
-		this.color = color;
 		this.collided = new BodyCollisionList(this);
 		this.attributes = new Attributes(attributes);
 		this.model = new Matrix4();
@@ -72,12 +69,12 @@ public abstract class Body implements Entity {
 		reset();
 	}
 	
-	public Body(DVector pos, DVector vi, double mass, Shape shape, Color color) {
-		this(pos, vi, mass, shape, color, Attribute.Physical, Attribute.Massive);
+	public Body(DVector pos, DVector vi, double mass, Shape shape) {
+		this(pos, vi, mass, shape, Attribute.Physical, Attribute.Massive);
 	}
 	
-	public Body(DVector pos, double mass, Shape shape, Color color) {
-		this(pos, new DVector(DVector.ZERO), mass, shape, color);
+	public Body(DVector pos, double mass, Shape shape) {
+		this(pos, new DVector(DVector.ZERO), mass, shape);
 	}
 	
 	/**
@@ -93,7 +90,11 @@ public abstract class Body implements Entity {
 		this.w = d;
 	}
 	
-	public void setPTP(double phi, double theta, double psi) {
+	public void setPos(DVector pos) {
+		this.pos = pos;
+	}
+	
+	public void setAngles(double phi, double theta, double psi) {
 		this.phi = phi;
 		this.theta = theta;
 		this.psi = psi;
@@ -106,7 +107,7 @@ public abstract class Body implements Entity {
 	
 	@Override
 	public float[] modelData() {
-		return VBOConverter.toPosNormColor(shape.modelData(), color);
+		return shape.modelData();
 	}
 	
 	public void lineTrace(Screen screen, float precision, int numSteps, Color color) {
@@ -158,16 +159,12 @@ public abstract class Body implements Entity {
 		return w;
 	}
 	
-	public Color color() {
-		return color;
-	}
-	
 	public Shape shape() {
 		return shape;
 	}
 	
 	public String toString() {
-		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nAngles: phi: " + phi + " \tTheta: " + theta + " \tPsi: " + psi + "\nW: " + w + "\nMass: " + mass + "\nColor: " + color;
+		return "Position: " + (DVector) pos + "\nVelocity: " + velocity + "\nAngles: phi: " + phi + " \tTheta: " + theta + " \tPsi: " + psi + "\nW: " + w + "\nMass: " + mass;
 	}
 	
 	public boolean is(Attribute a) {
@@ -209,7 +206,8 @@ public abstract class Body implements Entity {
 		theta += dAngles.y();
 		psi += dAngles.z();
 		//phi += .001;
-		//psi += .0011;
+//		theta += .001;
+//		psi += .001;
 	}
 	
 	private void reset() {
@@ -246,6 +244,10 @@ public abstract class Body implements Entity {
 	
 	public boolean colliding(Body b) {
 		return shape.colliding(b.shape, b.pos.minus(pos));
+	}
+	
+	public void setAttribute(Attribute a, boolean condition) {
+		attributes.set(a, condition);
 	}
 	
 }

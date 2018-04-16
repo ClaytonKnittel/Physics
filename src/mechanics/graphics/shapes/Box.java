@@ -1,5 +1,7 @@
 package mechanics.graphics.shapes;
 
+import graphics.Color;
+import graphics.VBOConverter;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
@@ -17,22 +19,28 @@ public class Box implements Shape {
 	
 	private static float[] modelData;
 	
-	public Box(float l, float w, float h) {
+	private float[] selectModelData;
+	
+	private Color color;
+	
+	public Box(float l, float w, float h, Color color) {
 		this.l = l;
 		this.w = w;
 		this.h = h;
+		this.color = color;
 		updateModel();
+		setModelData();
 	}
 	
 	static {
 		modelData = new float[] {
 			-.5f, -.5f, .5f,	0, 0, 1,
-			.5f, -.5f, .5f,	0, 0, 1,
-			-.5f, .5f, .5f,	0, 0, 1,
+			.5f, -.5f, .5f,		0, 0, 1,
+			-.5f, .5f, .5f,		0, 0, 1,
 
-			.5f, -.5f, .5f,	0, 0, 1,
-			.5f, .5f, .5f,	0, 0, 1,
-			-.5f, .5f, .5f,	0, 0, 1,
+			.5f, -.5f, .5f,		0, 0, 1,
+			.5f, .5f, .5f,		0, 0, 1,
+			-.5f, .5f, .5f,		0, 0, 1,
 			
 			
 			-.5f, -.5f, -.5f,	0, 0, -1,
@@ -41,41 +49,41 @@ public class Box implements Shape {
 
 			.5f, -.5f, -.5f,	0, 0, -1,
 			-.5f, .5f, -.5f,	0, 0, -1,
-			.5f, .5f, -.5f,	0, 0, -1,
+			.5f, .5f, -.5f,		0, 0, -1,
 			
 			
-			.5f, -.5f, .5f,	1, 0, 0,
+			.5f, -.5f, .5f,		1, 0, 0,
 			.5f, -.5f, -.5f,	1, 0, 0,
-			.5f, .5f, .5f,	1, 0, 0,
+			.5f, .5f, .5f,		1, 0, 0,
 
 			.5f, -.5f, -.5f,	1, 0, 0,
-			.5f, .5f, -.5f,	1, 0, 0,
-			.5f, .5f, .5f,	1, 0, 0,
+			.5f, .5f, -.5f,		1, 0, 0,
+			.5f, .5f, .5f,		1, 0, 0,
 			
 			
 			-.5f, -.5f, .5f,	-1, 0, 0,
-			-.5f, .5f, .5f,	-1, 0, 0,
+			-.5f, .5f, .5f,		-1, 0, 0,
 			-.5f, -.5f, -.5f,	-1, 0, 0,
 
 			-.5f, -.5f, -.5f,	-1, 0, 0,
-			-.5f, .5f, .5f,	-1, 0, 0,
+			-.5f, .5f, .5f,		-1, 0, 0,
 			-.5f, .5f, -.5f,	-1, 0, 0,
 			
 			
-			-.5f, .5f, .5f,	0, 1, 0,
-			.5f, .5f, .5f,	0, 1, 0,
+			-.5f, .5f, .5f,		0, 1, 0,
+			.5f, .5f, .5f,		0, 1, 0,
 			-.5f, .5f, -.5f,	0, 1, 0,
 
-			.5f, .5f, .5f,	0, 1, 0,
-			.5f, .5f, -.5f,	0, 1, 0,
+			.5f, .5f, .5f,		0, 1, 0,
+			.5f, .5f, -.5f,		0, 1, 0,
 			-.5f, .5f, -.5f,	0, 1, 0,
 			
 			
 			-.5f, -.5f, .5f,	0, -1, 0,
 			-.5f, -.5f, -.5f,	0, -1, 0,
-			.5f, -.5f, .5f,	0, -1, 0,
+			.5f, -.5f, .5f,		0, -1, 0,
 
-			.5f, -.5f, .5f,	0, -1, 0,
+			.5f, -.5f, .5f,		0, -1, 0,
 			-.5f, -.5f, -.5f,	0, -1, 0,
 			.5f, -.5f, -.5f,	0, -1, 0,
 		};
@@ -85,11 +93,26 @@ public class Box implements Shape {
 		model = Matrix4.scale(l, w, h);
 	}
 	
+	private void setModelData() {
+		selectModelData = VBOConverter.toPosNormColor(modelData, color);
+	}
+	
 	public void setDimensions(float l, float w, float h) {
 		this.l = l;
 		this.w = w;
 		this.h = h;
 		updateModel();
+	}
+	
+	@Override
+	public Color color() {
+		return color;
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
+		setModelData();
 	}
 
 	@Override
@@ -111,7 +134,7 @@ public class Box implements Shape {
 
 	@Override
 	public float[] modelData() {
-		return modelData;
+		return selectModelData;
 	}
 	
 	@Override
