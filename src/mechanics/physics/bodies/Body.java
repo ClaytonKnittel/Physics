@@ -201,11 +201,11 @@ public abstract class Body implements Entity {
 		double l2 = mass * shape.l2();
 		double l3 = mass * shape.l3();
 		w.add(PMath.dW(phi, theta, psi, l1, l2, l3, w, torque));
-		DVector dAngles = PMath.dAngles(l1, l2, l3, w);
+		DVector dAngles = PMath.dAngles(phi, theta, psi, w);
 		phi += dAngles.x();
 		theta += dAngles.y();
 		psi += dAngles.z();
-		//phi += .001;
+//		phi += .001;
 //		theta += .001;
 //		psi += .001;
 	}

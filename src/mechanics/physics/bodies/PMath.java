@@ -215,17 +215,33 @@ public final class PMath {
 		double st = Math.sin(theta);
 		double ct = Math.cos(theta);
 		
-//		System.out.println(new DVector(
-//			w.z() + (w.y() * cp - w.x() * sp) * ct / st,
-//			w.x() * cp + w.y() * sp,
-//			(w.x() * cp - w.y() * sp) / st
-//		));
+		/**
+		 * if sin(theta) is 0, then it is not possible to rotate about x, so you need to change
+		 * phi and psi to be nonzero. As theta is 0, phi and psi can change by inverse factors
+		 * without changing the orientation of the shape (you can add something to psi and take
+		 * it away from phi with no change)
+		 */
+		if (st == 0 && sp == 0) {
+			cp *= -1;
+			sp += cp;
+			cp = sp - cp;
+			sp -= cp;
+		}
 		
-		return new DVector(
-			w.z() + (w.y() * cp - w.x() * sp) * ct / st,
-			w.x() * cp + w.y() * sp,
-			(w.x() * cp - w.y() * sp) / st
-		).times(dt);
+		double dphi, dtheta, dpsi;
+		dtheta = -w.x() * sp + w.y() * cp;
+		if (st == 0) {
+//			if (sp == 0)
+//				dpsi = w.y() * sp;
+			if (cp == 0)
+				dpsi = w.x();
+			else
+				dpsi = 0;
+		} else {
+			dpsi = (w.x() * cp + w.y() * sp) / st;
+		}
+		dphi = w.z() - dpsi * ct;
+		return new DVector(dphi, dtheta, dpsi).times(dt);
 	}
 	
 	

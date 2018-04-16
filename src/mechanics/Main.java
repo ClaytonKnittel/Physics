@@ -18,6 +18,7 @@ import mechanics.physics.bodies.Rectangle;
 import mechanics.physics.utils.Attribute;
 import mechanics.utils.ThreadMaster;
 import tensor.DVector;
+import tensor.Matrix;
 import tensor.Matrixd;
 import tensor.Vector;
 
@@ -75,7 +76,8 @@ public class Main {
 		});
 		
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
-		r.setAngularVelocity(new DVector(0, 0, 0.01));
+		r.setAngularVelocity(new DVector(0.8, 0, 0));
+		r.setAngles(0, 0, 0);
 		s.add(r);
 		
 		Axes a = new Axes(Vector.ZERO, 10, Color.red, Color.green, Color.blue);
@@ -83,15 +85,17 @@ public class Main {
 		
 		
 //		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
+//		p.setAttribute(Attribute.Massive, false);
+//		p.setAttribute(Attribute.Physical, false);
 //		s.add(p);
 		
-//		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
-//		s.add(l);
+		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
+		s.add(l);
 		
 		s.init();
 		s.enter();
 		
-		System.out.println(Matrixd.toRotatingFrame(.3, .4, .1).multiply(Matrixd.toSpaceFrame(.3, .4, .1)).roundString());
+		System.out.println(Matrixd.toSpaceFrame(.3, .4, .1).multiply(Matrixd.toSpaceFrame(.3, .4, .1)).roundString());
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.draw();
@@ -100,14 +104,14 @@ public class Main {
 			s.physUpdate();
 			PMath.next();
 			//l.setDir(r.angularVelocity().toVector(), 40);
-			//l.setEnd(r.angularVelocity().toVector().plus(l.start()));
+			l.setEnd(Matrixd.toRotatingFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
 		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {
 			System.out.println(s.getInfo());
 			System.out.println(graphics);
 			System.out.println(physics);
-			//System.out.println(r.phi() + " " + r.theta() + " " + r.psi());
+			System.out.println(r.phi() + " " + r.theta() + " " + r.psi());
 		}, 1, false, "info");
 
 		physics.start();
