@@ -76,7 +76,7 @@ public class Main {
 		});
 		
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
-		r.setAngularVelocity(new DVector(0.8, 0, 0));
+		r.setAngularVelocity(new DVector(0.8, 0.4, 0.7));
 		r.setAngles(0, 0, 0);
 		s.add(r);
 		
@@ -89,13 +89,15 @@ public class Main {
 //		p.setAttribute(Attribute.Physical, false);
 //		s.add(p);
 		
-		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
-		s.add(l);
+		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
+		
+//		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
+//		s.add(l);
 		
 		s.init();
 		s.enter();
 		
-		System.out.println(Matrixd.toSpaceFrame(.3, .4, .1).multiply(Matrixd.toSpaceFrame(.3, .4, .1)).roundString());
+		System.out.println(Matrixd.toSpaceFrame(.3, .4, .1).multiply(Matrixd.toRotatingFrame(.3, .4, .1)).roundString());
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.draw();
@@ -104,7 +106,8 @@ public class Main {
 			s.physUpdate();
 			PMath.next();
 			//l.setDir(r.angularVelocity().toVector(), 40);
-			l.setEnd(Matrixd.toRotatingFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
+			//l.setEnd(r.angularVelocity().toVector().times(40).plus(l.start()));
+			//l.setEnd(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
 		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {
