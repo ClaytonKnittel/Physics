@@ -1,28 +1,24 @@
 package mechanics.graphics.shapes;
 
 import graphics.Color;
-import graphics.VBOConverter;
-import graphics.entities.GLFWRenderable;
+import mechanics.physics.CollisionInformation;
+import tensor.DVector;
 import tensor.Matrix4;
 import tensor.Vector;
 import tensor.Vector2;
 
-public class LineSegment implements GLFWRenderable {
+public class LineSegment extends AbstractShape {
+	
+	private static final float[] modelData;
 	
 	private Vector start, end;
 	
 	private Vector center;
-	private Color color;
 	
 	private float radius, length;
 	
 	// tells which direction this line is pointing
 	private float phi, theta;
-	
-	private Matrix4 model;
-	private float reflectivity, shineDamper;
-	
-	protected static final float[] modelData;
 	
 	static {
 		int numPoints = 15;
@@ -76,14 +72,18 @@ public class LineSegment implements GLFWRenderable {
 	}
 	
 	public LineSegment(Vector start, Vector end, float width, Color color) {
+		super(color);
 		this.start = start;
 		this.end = end;
 		
 		this.radius = width / 2;
-		this.color = color;
 		
 		set();
 		setLightAttribs(0, 1);
+	}
+	
+	protected LineSegment() {
+		super(Color.black);
 	}
 	
 	private void set() {
@@ -100,8 +100,12 @@ public class LineSegment implements GLFWRenderable {
 		updateModel();
 	}
 	
+	protected float[] rawModelData() {
+		return modelData;
+	}
+	
 	private void updateModel() {
-		model = Matrix4.translate(center).multiply(Matrix4.yRotate(phi).multiply(Matrix4.zRotate(theta)).multiply(Matrix4.scale(length, radius, radius)));
+		updateModel(Matrix4.translate(center).multiply(Matrix4.yRotate(phi).multiply(Matrix4.zRotate(theta)).multiply(Matrix4.scale(length, radius, radius))));
 	}
 	
 	public void setStart(Vector start) {
@@ -144,40 +148,34 @@ public class LineSegment implements GLFWRenderable {
 	public Vector end() {
 		return end;
 	}
-
-	@Override
-	public void update() {
-		return;
-	}
 	
 	public String toString() {
-		return "Center: " + center + "\tLength: " + length + "\t" + color;
+		return "Center: " + center + "\tLength: " + length + "\t" + color();
 	}
 
 	@Override
-	public Matrix4 model() {
-		return model;
-	}
-	
-	@Override
-	public float reflectivity() {
-		return reflectivity;
-	}
-	
-	@Override
-	public float shineDamper() {
-		return shineDamper;
-	}
-	
-	@Override
-	public void setLightAttribs(float reflectivity, float shineDamper) {
-		this.reflectivity = reflectivity;
-		this.shineDamper = shineDamper;
+	public CollisionInformation collisionInformation(Shape s, DVector thisToOther) {
+		return null;
 	}
 
 	@Override
-	public float[] modelData() {
-		return VBOConverter.toPosNormColor(modelData, color);
+	public boolean colliding(Shape s, DVector thisToOther) {
+		return false;
+	}
+
+	@Override
+	public double l1() {
+		return 0;
+	}
+
+	@Override
+	public double l2() {
+		return 0;
+	}
+
+	@Override
+	public double l3() {
+		return 0;
 	}
 	
 	

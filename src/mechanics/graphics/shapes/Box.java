@@ -1,12 +1,13 @@
 package mechanics.graphics.shapes;
 
 import graphics.Color;
-import graphics.VBOConverter;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
 
-public class Box implements Shape {
+public class Box extends AbstractShape {
+	
+	private static final float[] modelData;
 	
 	/**
 	 * Length, width and height of box, respectively
@@ -15,22 +16,12 @@ public class Box implements Shape {
 	 */
 	private float l, w, h;
 	
-	private Matrix4 model;
-	
-	private static float[] modelData;
-	
-	private float[] selectModelData;
-	
-	private Color color;
-	private float reflectivity, shineDamper;
-	
 	public Box(float l, float w, float h, Color color) {
+		super(color);
 		this.l = l;
 		this.w = w;
 		this.h = h;
-		this.color = color;
 		updateModel();
-		setModelData();
 		setLightAttribs(0, 1);
 	}
 	
@@ -91,12 +82,12 @@ public class Box implements Shape {
 		};
 	}
 	
-	private void updateModel() {
-		model = Matrix4.scale(l, w, h);
+	protected float[] rawModelData() {
+		return modelData;
 	}
 	
-	private void setModelData() {
-		selectModelData = VBOConverter.toPosNormColor(modelData, color);
+	private void updateModel() {
+		updateModel(Matrix4.scale(l, w, h));
 	}
 	
 	public void setDimensions(float l, float w, float h) {
@@ -104,22 +95,6 @@ public class Box implements Shape {
 		this.w = w;
 		this.h = h;
 		updateModel();
-	}
-	
-	@Override
-	public Color color() {
-		return color;
-	}
-	
-	@Override
-	public void setColor(Color c) {
-		this.color = c;
-		setModelData();
-	}
-
-	@Override
-	public Matrix4 model() {
-		return model;
 	}
 	
 	@Override
@@ -131,28 +106,6 @@ public class Box implements Shape {
 	@Override
 	public boolean colliding(Shape s, DVector thisToOther) {
 		return false;
-	}
-
-
-	@Override
-	public float[] modelData() {
-		return selectModelData;
-	}
-	
-	@Override
-	public float reflectivity() {
-		return reflectivity;
-	}
-	
-	@Override
-	public float shineDamper() {
-		return shineDamper;
-	}
-	
-	@Override
-	public void setLightAttribs(float reflectivity, float shineDamper) {
-		this.reflectivity = reflectivity;
-		this.shineDamper = shineDamper;
 	}
 	
 	@Override
@@ -168,11 +121,6 @@ public class Box implements Shape {
 	@Override
 	public double l3() {
 		return (l * l + w * w) / 12;
-	}
-	
-	@Override
-	public void update() {
-		return;
 	}
 	
 }

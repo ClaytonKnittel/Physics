@@ -1,84 +1,39 @@
 package mechanics.graphics.shapes;
 
 import graphics.Color;
-import graphics.VBOConverter;
 import graphics.models.OBJLoader;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
 
-public class Sphere implements Shape {
-	
-	private static float[] modelData;
-	
-	private float[] selectModelData;
-	
-	private Color color;
-	private float reflectivity, shineDamper;
-	
-	private Matrix4 model;
+public class Sphere extends AbstractShape {
 	
 	private float radius;
+	
+	private static final float[] modelData;
 	
 	static {
 		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData();
 	}
 	
 	public Sphere(float radius, Color color) {
+		super(color);
 		this.radius = radius;
-		this.color = color;
 		updateModel();
-		setModelData();
 		setLightAttribs(0, 1);
 	}
 	
-	public void setLightAttribs(float reflectivity, float shineDamper) {
-		this.reflectivity = reflectivity;
-		this.shineDamper = shineDamper;
-	}
-	
 	private void updateModel() {
-		model = Matrix4.scale(radius);
+		updateModel(Matrix4.scale(radius));
 	}
 	
-	private void setModelData() {
-		selectModelData = VBOConverter.toPosNormColor(modelData, color);
-	}
-	
-	@Override
-	public Matrix4 model() {
-		return model;
-	}
-	
-	@Override
-	public float reflectivity() {
-		return reflectivity;
-	}
-	
-	@Override
-	public float shineDamper() {
-		return shineDamper;
-	}
-	
-	@Override
-	public float[] modelData() {
-		return selectModelData;
+	protected float[] rawModelData() {
+		return modelData;
 	}
 	
 	public void setRadius(float r) {
 		this.radius = r;
 		updateModel();
-	}
-	
-	@Override
-	public Color color() {
-		return color;
-	}
-	
-	@Override
-	public void setColor(Color c) {
-		this.color = c;
-		setModelData();
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {
@@ -111,11 +66,6 @@ public class Sphere implements Shape {
 	@Override
 	public double l3() {
 		return radius * radius * 2.0 / 5.0;
-	}
-	
-	@Override
-	public void update() {
-		return;
 	}
 	
 	

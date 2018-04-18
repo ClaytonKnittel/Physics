@@ -23,7 +23,7 @@ public class Axes implements Shape {
 	private final float[] selectModelData;
 	
 	static {
-		float[] line = LineSegment.modelData;
+		float[] line = new LineSegment().rawModelData();
 		modelData = new float[3][line.length];
 		for (int i = 0; i < line.length; i++) {
 			modelData[0][i] = line[i];				// x

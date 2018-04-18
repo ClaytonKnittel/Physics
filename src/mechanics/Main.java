@@ -1,9 +1,5 @@
 package mechanics;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import graphics.Color;
 import graphics.entities.LightSource;
 import mechanics.graphics.Camera;
@@ -78,6 +74,7 @@ public class Main {
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
 		r.setAngularVelocity(new DVector(3.0, 0.0, 3.0));
 		r.setAngles(0, 0, 0);
+		r.setLightAttribs(.8f, 12);
 		s.add(r);
 		
 		Axes a = new Axes(Vector.ZERO, 10, Color.red, Color.green, Color.blue);
@@ -85,8 +82,8 @@ public class Main {
 		
 		
 		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
-		p.setAttribute(Attribute.Massive, false);
-		p.setAttribute(Attribute.Physical, false);
+		p.unsetAttribute(Attribute.Massive);
+		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
 		s.add(p);
 		

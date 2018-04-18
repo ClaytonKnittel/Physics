@@ -276,8 +276,12 @@ public abstract class Body implements Entity {
 		return shape.colliding(b.shape, b.pos.minus(pos));
 	}
 	
-	public void setAttribute(Attribute a, boolean condition) {
-		attributes.set(a, condition);
+	public void setAttribute(Attribute a) {
+		attributes.set(a, true);
+	}
+	
+	public void unsetAttribute(Attribute a) {
+		attributes.set(a, false);
 	}
 	
 }
