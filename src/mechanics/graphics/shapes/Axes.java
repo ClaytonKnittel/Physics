@@ -14,6 +14,7 @@ public class Axes implements Shape {
 	private Vector pos;
 	private float length;
 	private final Color x, y, z;
+	private float reflectivity, shineDamper;
 	
 	private Matrix4 model;
 	
@@ -43,6 +44,7 @@ public class Axes implements Shape {
 		this.z = z;
 		selectModelData = setModelData();
 		updateModel();
+		setLightAttribs(0, 1);
 	}
 	
 	private float[] setModelData() {
@@ -104,6 +106,22 @@ public class Axes implements Shape {
 	@Override
 	public Matrix4 model() {
 		return model;
+	}
+	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
+	}
+	
+	@Override
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
 	}
 
 	@Override

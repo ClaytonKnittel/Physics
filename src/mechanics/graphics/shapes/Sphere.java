@@ -14,6 +14,7 @@ public class Sphere implements Shape {
 	private float[] selectModelData;
 	
 	private Color color;
+	private float reflectivity, shineDamper;
 	
 	private Matrix4 model;
 	
@@ -28,6 +29,12 @@ public class Sphere implements Shape {
 		this.color = color;
 		updateModel();
 		setModelData();
+		setLightAttribs(0, 1);
+	}
+	
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
 	}
 	
 	private void updateModel() {
@@ -43,6 +50,17 @@ public class Sphere implements Shape {
 		return model;
 	}
 	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
+	}
+	
+	@Override
 	public float[] modelData() {
 		return selectModelData;
 	}

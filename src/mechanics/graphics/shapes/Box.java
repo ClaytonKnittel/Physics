@@ -22,6 +22,7 @@ public class Box implements Shape {
 	private float[] selectModelData;
 	
 	private Color color;
+	private float reflectivity, shineDamper;
 	
 	public Box(float l, float w, float h, Color color) {
 		this.l = l;
@@ -30,6 +31,7 @@ public class Box implements Shape {
 		this.color = color;
 		updateModel();
 		setModelData();
+		setLightAttribs(0, 1);
 	}
 	
 	static {
@@ -135,6 +137,22 @@ public class Box implements Shape {
 	@Override
 	public float[] modelData() {
 		return selectModelData;
+	}
+	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
+	}
+	
+	@Override
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ public class LineSegment implements GLFWRenderable {
 	private float phi, theta;
 	
 	private Matrix4 model;
+	private float reflectivity, shineDamper;
 	
 	protected static final float[] modelData;
 	
@@ -82,6 +83,7 @@ public class LineSegment implements GLFWRenderable {
 		this.color = color;
 		
 		set();
+		setLightAttribs(0, 1);
 	}
 	
 	private void set() {
@@ -155,6 +157,22 @@ public class LineSegment implements GLFWRenderable {
 	@Override
 	public Matrix4 model() {
 		return model;
+	}
+	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
+	}
+	
+	@Override
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
 	}
 
 	@Override

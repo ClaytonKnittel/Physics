@@ -43,7 +43,9 @@ public abstract class Body implements Entity {
 	 * @serialField a description of the shape of this Body
 	 */
 	private Shape shape;
-		
+	
+	private float reflectivity, shineDamper;
+	
 	private PathTracer pathTracer;
 	
 	
@@ -67,6 +69,7 @@ public abstract class Body implements Entity {
 		this.psi = 0;
 		this.w = new DVector(0, 0, 0);
 		reset();
+		setLightAttribs(0, 1);
 	}
 	
 	public Body(DVector pos, DVector vi, double mass, Shape shape) {
@@ -84,6 +87,21 @@ public abstract class Body implements Entity {
 		velocity.add(netForce.divide(mass).times(PMath.dt / 2));
 		// reset the forces (they were only calculated to find v(dt / 2) and must be reset before the first physics iteration runs
 		reset();
+	}
+	
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
+	}
+	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
 	}
 	
 	public void setAngularVelocity(DVector d) {
@@ -205,9 +223,21 @@ public abstract class Body implements Entity {
 		phi += dAngles.x();
 		theta += dAngles.y();
 		psi += dAngles.z();
-//		phi += .001;
-//		theta += .001;
-//		psi += .001;
+		normalizeAngles();
+	}
+	
+	private void normalizeAngles() {
+		phi = mod2Pi(phi);
+		theta = mod2Pi(theta);
+		psi = mod2Pi(psi);
+	}
+	
+	private double mod2Pi(double d) {
+		if (d < 0)
+			return mod2Pi(d + Math.PI * 2);
+		if (d >= Math.PI * 2)
+			return mod2Pi(d - Math.PI * 2);
+		return d;
 	}
 	
 	private void reset() {

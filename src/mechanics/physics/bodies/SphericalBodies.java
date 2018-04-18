@@ -23,6 +23,7 @@ public class SphericalBodies implements Entity {
 	private DVector v1, v2;
 	
 	private Shape s1, s2;
+	private float reflectivity, shineDamper;
 	
 	private double m1, m2;
 	
@@ -46,6 +47,22 @@ public class SphericalBodies implements Entity {
 	@Override
 	public float[] modelData() {
 		return null;
+	}
+	
+	@Override
+	public float reflectivity() {
+		return reflectivity;
+	}
+	
+	@Override
+	public float shineDamper() {
+		return shineDamper;
+	}
+	
+	@Override
+	public void setLightAttribs(float reflectivity, float shineDamper) {
+		this.reflectivity = reflectivity;
+		this.shineDamper = shineDamper;
 	}
 	
 	public DVector p1() {

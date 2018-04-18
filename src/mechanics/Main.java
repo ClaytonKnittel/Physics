@@ -68,7 +68,7 @@ public class Main {
 				return new Vector(50, 0, 50);
 			}
 			public Color color() {
-				return Color.white;
+				return new Color(100, 230, 234);
 			}
 			public float brightness() {
 				return 0;
@@ -76,7 +76,7 @@ public class Main {
 		});
 		
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
-		r.setAngularVelocity(new DVector(0.8, 0.4, 0.7));
+		r.setAngularVelocity(new DVector(3.0, 0.0, 3.0));
 		r.setAngles(0, 0, 0);
 		s.add(r);
 		
@@ -84,15 +84,16 @@ public class Main {
 		s.add(a);
 		
 		
-//		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
-//		p.setAttribute(Attribute.Massive, false);
-//		p.setAttribute(Attribute.Physical, false);
-//		s.add(p);
+		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
+		p.setAttribute(Attribute.Massive, false);
+		p.setAttribute(Attribute.Physical, false);
+		p.setLightAttribs(.7f, 14);
+		s.add(p);
 		
 		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
 		
-//		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
-//		s.add(l);
+		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
+		s.add(l);
 		
 		s.init();
 		s.enter();
@@ -106,7 +107,7 @@ public class Main {
 			s.physUpdate();
 			PMath.next();
 			//l.setDir(r.angularVelocity().toVector(), 40);
-			//l.setEnd(r.angularVelocity().toVector().times(40).plus(l.start()));
+			l.setEnd(r.angularVelocity().toVector().times(1).plus(l.start()));
 			//l.setEnd(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
 		}, PMath.dt, false, "physics");
 		
@@ -115,6 +116,7 @@ public class Main {
 			System.out.println(graphics);
 			System.out.println(physics);
 			System.out.println(r.phi() + " " + r.theta() + " " + r.psi());
+			System.out.println(r.angularVelocity().mag());
 		}, 1, false, "info");
 
 		physics.start();
