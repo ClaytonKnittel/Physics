@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import graphics.entities.GLFWRenderable;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -41,8 +40,8 @@ public interface Shape extends GLFWRenderable {
 	 */
 	double l3();
 	
-	Color color();
+	String texture();
 	
-	void setColor(Color c);
+	void setTexture(String texture);
 	
 }

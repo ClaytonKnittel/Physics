@@ -1,6 +1,5 @@
 package mechanics.graphics;
 
-import graphics.Color;
 import mechanics.graphics.shapes.LineSegment;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.FiniteModularList;
@@ -10,12 +9,12 @@ public class PathTracer implements DynamicDrawable {
 	
 	private FiniteModularList<LineSegment> lines;
 	private float precision;
-	private Color color;
+	private String color;
 	private Screen screen;
 	
 	private static final float lineWidth = 1;
 	
-	public PathTracer(float precision, int size, Color color) {
+	public PathTracer(float precision, int size, String color) {
 		this.precision = precision * precision;
 		this.color = color;
 		lines = new FiniteModularList<LineSegment>(LineSegment.class, size);

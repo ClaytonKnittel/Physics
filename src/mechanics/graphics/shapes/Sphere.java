@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import graphics.models.OBJLoader;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -16,8 +15,8 @@ public class Sphere extends AbstractShape {
 		modelData = OBJLoader.loadVertexNormOBJ("/Users/claytonknittel/git/Utilities/data/sphere").getData();
 	}
 	
-	public Sphere(float radius, Color color) {
-		super(color);
+	public Sphere(float radius, String texture) {
+		super(texture);
 		this.radius = radius;
 		updateModel();
 		setLightAttribs(0, 1);

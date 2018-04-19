@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import graphics.models.OBJLoader;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -16,8 +15,8 @@ public class Guitar extends AbstractShape {
 		modelData = OBJLoader.loadVertexNormOBJ("/users/claytonknittel/downloads/ccrrd08t8vsw-e/eg/obj/Electric Guitar.obj").getData();
 	}
 	
-	public Guitar(float scale, Color color) {
-		super(color);
+	public Guitar(float scale, String texture) {
+		super(texture);
 		setScale(scale);
 		updateModel();
 		setLightAttribs(0, 1);

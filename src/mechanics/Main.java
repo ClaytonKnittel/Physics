@@ -72,7 +72,7 @@ public class Main {
 			}
 		});
 		
-		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
+		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
 		r.setAngularVelocity(new DVector(0.02, 0.0, .5));
 		r.setAngles(0, 0, 0);
 		r.setLightAttribs(.8f, 12);
@@ -81,11 +81,11 @@ public class Main {
 //		Guitar g = new Guitar(1f, Color.matte_blue);
 //		s.add(g);
 		
-		Axes a = new Axes(Vector.ZERO, 10, Color.red, Color.green, Color.blue);
-		s.add(a);
+//		Axes a = new Axes(Vector.ZERO, 10, "red", "green", "blue");
+//		s.add(a);
 		
 		
-		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, Color.red);
+		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, "red");
 		p.unsetAttribute(Attribute.Massive);
 		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
@@ -93,7 +93,7 @@ public class Main {
 		
 		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
 
-		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);		
+		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, "cyan");		
 //		LineSegment l2 = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.yellow);
 		s.add(l);
 //		s.add(l2);

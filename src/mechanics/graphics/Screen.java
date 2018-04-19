@@ -54,7 +54,7 @@ public class Screen {
 		setKeybindings(pressed, released);
 		
 		window = new GLFWWindow(width, height, "Planetary Motion", pressed, released);
-		setInputs("pos, norm, color", new int[] {3, 3, 3});
+		setInputs("pos, norm, texcoord", new int[] {3, 3, 2});
 		
 		window.setQuitAction(() -> ThreadMaster.quit());
 		

@@ -2,7 +2,6 @@ package mechanics.physics;
 
 import java.util.LinkedList;
 
-import graphics.Color;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.LineSegment;
 import mechanics.physics.bodies.Body;
@@ -15,11 +14,11 @@ public class ExactSolution implements DynamicDrawable {
 	private Screen screen;
 	private Body main, other;
 	private int numSteps;
-	private Color color;
+	private String color;
 	
 	private LinkedList<LineSegment> lines;
 	
-	public ExactSolution(Body main, Body other, int numSteps, Color color) {
+	public ExactSolution(Body main, Body other, int numSteps, String color) {
 		this.main = main;
 		this.other = other;
 		this.numSteps = numSteps;

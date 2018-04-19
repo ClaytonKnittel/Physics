@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import graphics.VBOConverter;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
@@ -13,7 +12,7 @@ public class Axes implements Shape {
 	
 	private Vector pos;
 	private float length;
-	private final Color x, y, z;
+	private final String x, y, z;
 	private float reflectivity, shineDamper;
 	
 	private Matrix4 model;
@@ -36,7 +35,7 @@ public class Axes implements Shape {
 		}
 	}
 	
-	public Axes(Vector pos, float length, Color x, Color y, Color z) {
+	public Axes(Vector pos, float length, String x, String y, String z) {
 		this.pos = pos;
 		this.length = length;
 		this.x = x;
@@ -49,9 +48,9 @@ public class Axes implements Shape {
 	
 	private float[] setModelData() {
 		float[] ret = new float[modelData[0].length * 3 * 3 / 2];
-		float[] x = VBOConverter.toPosNormColor(modelData[0], this.x);
-		float[] y = VBOConverter.toPosNormColor(modelData[1], this.y);
-		float[] z = VBOConverter.toPosNormColor(modelData[2], this.z);
+		float[] x = VBOConverter.toPosNormTexture(modelData[0]);
+		float[] y = VBOConverter.toPosNormTexture(modelData[1]);
+		float[] z = VBOConverter.toPosNormTexture(modelData[2]);
 		
 		int j = 0;
 		for (int i = 0; i < x.length; i++)
@@ -79,12 +78,12 @@ public class Axes implements Shape {
 	}
 	
 	@Override
-	public Color color() {
+	public String texture() {
 		return x;
 	}
 	
 	@Override
-	public void setColor(Color c) {
+	public void setTexture(String t) {
 		return;
 	}
 

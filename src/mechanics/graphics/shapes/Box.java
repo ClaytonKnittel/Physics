@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
@@ -16,8 +15,8 @@ public class Box extends AbstractShape {
 	 */
 	private float l, w, h;
 	
-	public Box(float l, float w, float h, Color color) {
-		super(color);
+	public Box(float l, float w, float h, String texture) {
+		super(texture);
 		this.l = l;
 		this.w = w;
 		this.h = h;

@@ -1,6 +1,5 @@
 package mechanics.physics.bodies;
 
-import graphics.Color;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Shape;
@@ -32,16 +31,21 @@ public class SphericalBodies implements Entity {
 	// traces body 1
 	private PathTracer pathTracer;
 	
-	public SphericalBodies(DVector p1, DVector v1, double m1, double m2, float r1, float r2, Color c1, Color c2) {
+	public SphericalBodies(DVector p1, DVector v1, double m1, double m2, float r1, float r2, String t1, String t2) {
 		this.b1 = new DQuaternion(p1);
 		this.b2 = new DQuaternion(0, p1.x() * m1 / m2, Math.PI - p1.y(), p1.z() + Math.PI);
 		this.v1 = v1;
 		this.v2 = new DVector(v1.x() * m1 / m2, v1.y(), v1.z());
-		this.s1 = new Sphere(r1, c1);
-		this.s2 = new Sphere(r2, c2);
+		this.s1 = new Sphere(r1, t1);
+		this.s2 = new Sphere(r2, t2);
 		this.m1 = m1;
 		this.m2 = m2;
 		init();
+	}
+	
+	@Override
+	public String texture() {
+		return "red";
 	}
 	
 	@Override
@@ -170,11 +174,11 @@ public class SphericalBodies implements Entity {
 	 */
 	
 	public Body body1() {
-		return new Planet(new DQuaternion(cartesian1()), polarToCartesianVelocity1(), (float) m1, 1, s1.color());
+		return new Planet(new DQuaternion(cartesian1()), polarToCartesianVelocity1(), (float) m1, 1, s1.texture());
 	}
 	
 	public Body body2() {
-		return new Planet(new DQuaternion(cartesian2()), polarToCartesianVelocity2(), (float) m2, 1, s2.color());
+		return new Planet(new DQuaternion(cartesian2()), polarToCartesianVelocity2(), (float) m2, 1, s2.texture());
 	}
 	
 	private DVector polarToCartesianVelocity1() {
@@ -192,7 +196,7 @@ public class SphericalBodies implements Entity {
 	}
 	
 	
-	public void lineTrace(Screen screen, float precision, int numSteps, Color color) {
+	public void lineTrace(Screen screen, float precision, int numSteps, String color) {
 		pathTracer = new PathTracer(precision, numSteps, color);
 		screen.add(pathTracer);
 	}

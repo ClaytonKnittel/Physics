@@ -1,6 +1,5 @@
 package mechanics.utils;
 
-import graphics.Color;
 import graphics.entities.GLFWRenderable;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Shape;
@@ -24,7 +23,7 @@ public interface Entity extends GLFWRenderable {
 	 */
 	void physUpdate();
 	
-	void lineTrace(Screen screen, float precision, int numSteps, Color color);
+	void lineTrace(Screen screen, float precision, int numSteps, String color);
 	
 	
 	void interact(Entity e);

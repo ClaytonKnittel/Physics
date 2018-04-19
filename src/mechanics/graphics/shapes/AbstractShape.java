@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import graphics.VBOConverter;
 import tensor.Matrix4;
 
@@ -10,11 +9,11 @@ public abstract class AbstractShape implements Shape {
 	
 	private float[] selectModelData;
 	
-	private Color color;
+	private String texture;
 	private float reflectivity, shineDamper;
 	
-	public AbstractShape(Color c) {
-		this.color = c;
+	public AbstractShape(String texture) {
+		this.texture = texture;
 		setLightAttribs(0, 1);
 		updateModelData();
 	}
@@ -22,7 +21,7 @@ public abstract class AbstractShape implements Shape {
 	protected abstract float[] rawModelData();
 	
 	private void updateModelData() {
-		selectModelData = VBOConverter.toPosNormColor(rawModelData(), color);
+		selectModelData = VBOConverter.toPosNormTexture(rawModelData());
 	}
 
 	@Override
@@ -56,13 +55,13 @@ public abstract class AbstractShape implements Shape {
 	}
 
 	@Override
-	public Color color() {
-		return color;
+	public String texture() {
+		return texture;
 	}
 
 	@Override
-	public void setColor(Color c) {
-		this.color = c;
+	public void setTexture(String texture) {
+		this.texture = texture;
 		updateModelData();
 	}
 	

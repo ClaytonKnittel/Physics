@@ -1,6 +1,5 @@
 package mechanics;
 
-import graphics.Color;
 import mechanics.graphics.Screen;
 import mechanics.physics.ExactSolution;
 import mechanics.physics.bodies.Body;
@@ -16,13 +15,15 @@ public class Setup {
 	
 	public static final Setup ELLIPTICAL, CIRCULAR, PARABOLIC, HYPERBOLIC, POLAR, EARTH_MOON, INNER_SYSTEM;
 	
-	private static final Color earthColor = new Color(57, 118, 40), sunColor = new Color(253, 184, 19), moonColor = new Color(254, 252, 215),
-			mercuryColor = new Color(177, 173, 173), venusColor = new Color(227, 158, 28), marsColor = new Color(193, 68, 14);
+//	private static final Color earthColor = new Color(57, 118, 40), sunColor = new Color(253, 184, 19), moonColor = new Color(254, 252, 215),
+//			mercuryColor = new Color(177, 173, 173), venusColor = new Color(227, 158, 28), marsColor = new Color(193, 68, 14);
+	private static final String earthColor = "earthColor", sunColor = "sunColor", moonColor = "moonColor",
+			mercuryColor = "mercuryColor", venusColor = "venusColor", marsColor = "marsColor";
 	
 	static {
 		Planet earth = new Planet(new DVector(30, 0, -100), new DVector(0, 0, -68), 10, 3, earthColor);
 		Planet sun = new Planet(new DVector(0, 0, -100), new DVector(0, 0, .068f), 10000, 5, sunColor);
-		Color[] traceE = new Color[] {Color.red, null};
+		String[] traceE = new String[] {"red", null};
 		int[] numSteps = {240, 0};
 		
 		ELLIPTICAL = new Setup(traceE, numSteps, earth, sun);
@@ -30,7 +31,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), 100, 5, sunColor);
-		traceE = new Color[] {Color.green, null};
+		traceE = new String[] {"green", null};
 		numSteps = new int[] {200, 0};
 		PMath.setupCircilarOrbit(earth, sun);
 		
@@ -38,7 +39,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(-.3f, 0, -100), 1000, 5, sunColor);
-		traceE = new Color[] {Color.green, null};
+		traceE = new String[] {"green", null};
 		numSteps = new int[] {1000, 0};
 		PMath.setupParabolicOrbit(earth, sun);
 		System.out.println(earth + "\n\n" + sun);
@@ -47,7 +48,7 @@ public class Setup {
 		
 		earth = new Planet(new DVector(30, 0, -100), new DVector(0, 0, -100), 10, 3, earthColor);
 		sun = new Planet(new DVector(0, 0, -100), new DVector(0, 0, .1f), 10000, 5, sunColor);
-		traceE = new Color[] {Color.red, null};
+		traceE = new String[] {"red", null};
 		numSteps = new int[] {500, 0};
 		
 		HYPERBOLIC = new Setup(traceE, numSteps, earth, sun);
@@ -56,7 +57,7 @@ public class Setup {
 		
 		SphericalBodies earthSun = new SphericalBodies(new DVector(30, Math.PI / 2, 0), new DVector(0, .16, -.12),
 													   10, 100, 3, 5, earthColor, sunColor);
-		traceE = new Color[] {Color.red, null};
+		traceE = new String[] {"red", null};
 		numSteps = new int[] {200, 0};
 		
 		POLAR = new Setup(traceE, numSteps, earthSun);
@@ -69,7 +70,7 @@ public class Setup {
 		PMath.setupCircilarOrbit(earth, sun);
 		PMath.setupOrbitAroundPlanet(earth, moon, new DVector(1, 1, 1).normalized());
 		
-		traceE = new Color[] {Color.red, null, Color.gray};
+		traceE = new String[] {"red", null, "gray"};
 		numSteps = new int[] {200, 0, 200};
 		
 		EARTH_MOON = new Setup(traceE, numSteps, earth, sun, moon);
@@ -87,7 +88,7 @@ public class Setup {
 		PMath.setupCircilarOrbit(earth, sun);
 		PMath.setupCircilarOrbit(mars, sun);
 		
-		traceE = new Color[] {null, Color.yellow, Color.orange, Color.cyan, Color.red};
+		traceE = new String[] {null, "yellow", "orange", "cyan", "red"};
 		numSteps = new int[] {0, 300, 300, 300, 300};
 		
 		INNER_SYSTEM = new Setup(traceE, numSteps, sun, mercury, venus, earth, mars);
@@ -97,11 +98,11 @@ public class Setup {
 	private Entity[] bodies;
 	
 	// which bodies will be traced (if opted to) (null if not traced, otherwise color of path)
-	private Color[] trace;
+	private String[] trace;
 	
 	private int[] numSteps;
 	
-	private Setup(Color[] trace, int[] numSteps, Entity...bodies) {
+	private Setup(String[] trace, int[] numSteps, Entity...bodies) {
 		this.bodies = bodies;
 		this.trace = trace;
 		this.numSteps = numSteps;
@@ -115,7 +116,7 @@ public class Setup {
 		}
 	}
 	
-	public void showExactSolution(Screen screen, int numSteps, Color color) {
+	public void showExactSolution(Screen screen, int numSteps, String color) {
 		Body a, b;
 		if (bodies[0] instanceof SphericalBodies) {
 			SphericalBodies sp = (SphericalBodies) bodies[0];
@@ -130,7 +131,7 @@ public class Setup {
 		e.calculatePath();
 	}
 	
-	public void showExactSolutions(Screen screen, int numSteps, Color[] colors, int sunLoc, int[] exacts) {
+	public void showExactSolutions(Screen screen, int numSteps, String[] colors, int sunLoc, int[] exacts) {
 		Body sun = (Body) bodies[sunLoc];
 		int colorLoc = 0;
 		for (int i : exacts) {

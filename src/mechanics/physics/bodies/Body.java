@@ -1,7 +1,5 @@
 package mechanics.physics.bodies;
 
-import graphics.Color;
-import graphics.VBOConverter;
 import mechanics.graphics.PathTracer;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Shape;
@@ -120,6 +118,11 @@ public abstract class Body implements Entity {
 	}
 	
 	@Override
+	public String texture() {
+		return shape.texture();
+	}
+	
+	@Override
 	public Matrix4 model() {
 		return model;
 	}
@@ -129,7 +132,7 @@ public abstract class Body implements Entity {
 		return shape.modelData();
 	}
 	
-	public void lineTrace(Screen screen, float precision, int numSteps, Color color) {
+	public void lineTrace(Screen screen, float precision, int numSteps, String color) {
 		pathTracer = new PathTracer(precision, numSteps, color);
 		screen.add(pathTracer);
 	}

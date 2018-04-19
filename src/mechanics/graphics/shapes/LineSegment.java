@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.Color;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
@@ -71,7 +70,7 @@ public class LineSegment extends AbstractShape {
 		}
 	}
 	
-	public LineSegment(Vector start, Vector end, float width, Color color) {
+	public LineSegment(Vector start, Vector end, float width, String color) {
 		super(color);
 		this.start = start;
 		this.end = end;
@@ -83,7 +82,7 @@ public class LineSegment extends AbstractShape {
 	}
 	
 	protected LineSegment() {
-		super(Color.black);
+		super("black");
 	}
 	
 	private void set() {
@@ -150,7 +149,7 @@ public class LineSegment extends AbstractShape {
 	}
 	
 	public String toString() {
-		return "Center: " + center + "\tLength: " + length + "\t" + color();
+		return "Center: " + center + "\tLength: " + length + "\t" + texture();
 	}
 
 	@Override
