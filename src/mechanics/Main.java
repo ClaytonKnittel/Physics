@@ -5,6 +5,7 @@ import graphics.entities.LightSource;
 import mechanics.graphics.Camera;
 import mechanics.graphics.Screen;
 import mechanics.graphics.shapes.Axes;
+import mechanics.graphics.shapes.Guitar;
 import mechanics.graphics.shapes.LineSegment;
 import mechanics.graphics.shapes.Sphere;
 import mechanics.physics.ExactSolution;
@@ -72,10 +73,13 @@ public class Main {
 		});
 		
 		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, Color.blue);
-		r.setAngularVelocity(new DVector(3.0, 0.0, 3.0));
+		r.setAngularVelocity(new DVector(0.02, 0.0, .5));
 		r.setAngles(0, 0, 0);
 		r.setLightAttribs(.8f, 12);
 		s.add(r);
+		
+//		Guitar g = new Guitar(1f, Color.matte_blue);
+//		s.add(g);
 		
 		Axes a = new Axes(Vector.ZERO, 10, Color.red, Color.green, Color.blue);
 		s.add(a);
@@ -88,9 +92,11 @@ public class Main {
 		s.add(p);
 		
 		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
-		
-		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);
+
+		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.cyan);		
+//		LineSegment l2 = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.yellow);
 		s.add(l);
+//		s.add(l2);
 		
 		s.init();
 		s.enter();
@@ -104,7 +110,8 @@ public class Main {
 			s.physUpdate();
 			PMath.next();
 			//l.setDir(r.angularVelocity().toVector(), 40);
-			l.setEnd(r.angularVelocity().toVector().times(1).plus(l.start()));
+			l.setEnd(r.angularVelocity().toVector().times(80).plus(l.start()));
+//			l2.setEnd(r.angularMomentum().toVector().times(1.4f).plus(l.start()));
 			//l.setEnd(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
 		}, PMath.dt, false, "physics");
 		

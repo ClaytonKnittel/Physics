@@ -19,6 +19,8 @@ public class Guitar extends AbstractShape {
 	public Guitar(float scale, Color color) {
 		super(color);
 		setScale(scale);
+		updateModel();
+		setLightAttribs(0, 1);
 	}
 	
 	@Override
