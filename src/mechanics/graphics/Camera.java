@@ -1,10 +1,10 @@
 package mechanics.graphics;
 
-import graphics.input.Locatable;
+import graphics.input.Observer;
 import tensor.Matrix4;
 import tensor.Vector;
 
-public class Camera extends Vector implements Locatable {
+public class Camera extends Vector implements Observer {
 	
 	public static float pi2 = (float) Math.PI * 2;
 	

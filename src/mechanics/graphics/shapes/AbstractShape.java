@@ -21,7 +21,7 @@ public abstract class AbstractShape implements Shape {
 	protected abstract float[] rawModelData();
 	
 	private void updateModelData() {
-		selectModelData = VBOConverter.toPosNormTexture(rawModelData());
+		selectModelData = rawModelData();
 	}
 
 	@Override

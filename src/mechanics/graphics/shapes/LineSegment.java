@@ -1,5 +1,6 @@
 package mechanics.graphics.shapes;
 
+import graphics.VBOConverter;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
@@ -27,47 +28,48 @@ public class LineSegment extends AbstractShape {
 		float l = .5f;
 		float w = .5f;
 		
-		modelData = new float[36 * numPoints];
+		float[] rawModelData = new float[36 * numPoints];
 		
 		for (int i = 0; i < numPoints; i++) {
-			modelData[36 * i] = -l;									// x1
-			modelData[36 * i + 1] = yPosInCircle(w, (i + 1) * d);	// y1
-			modelData[36 * i + 2] = zPosInCircle(w, (i + 1) * d);	// z1
-			modelData[36 * i + 3] = 0;								// n1x
-			modelData[36 * i + 4] = yPosInCircle(1, (i + 1) * d);	// n1y
-			modelData[36 * i + 5] = zPosInCircle(1, (i + 1) * d);	// n1z
-			modelData[36 * i + 6] = -l;								// x2
-			modelData[36 * i + 7] = yPosInCircle(w, i * d);			// y2
-			modelData[36 * i + 8] = zPosInCircle(w, i * d);			// z2
-			modelData[36 * i + 9] = 0;								// n2x
-			modelData[36 * i + 10] = yPosInCircle(1, i * d);		// n2y
-			modelData[36 * i + 11] = zPosInCircle(1, i * d);		// n2z
-			modelData[36 * i + 12] = l;								// x3
-			modelData[36 * i + 13] = yPosInCircle(w, (i + 1) * d);	// y3
-			modelData[36 * i + 14] = zPosInCircle(w, (i + 1) * d);	// z3
-			modelData[36 * i + 15] = 0;								// n3x
-			modelData[36 * i + 16] = yPosInCircle(1, (i + 1) * d);	// n3y
-			modelData[36 * i + 17] = zPosInCircle(1, (i + 1) * d);	// n3z
+			rawModelData[36 * i] = -l;									// x1
+			rawModelData[36 * i + 1] = yPosInCircle(w, (i + 1) * d);	// y1
+			rawModelData[36 * i + 2] = zPosInCircle(w, (i + 1) * d);	// z1
+			rawModelData[36 * i + 3] = 0;								// n1x
+			rawModelData[36 * i + 4] = yPosInCircle(1, (i + 1) * d);	// n1y
+			rawModelData[36 * i + 5] = zPosInCircle(1, (i + 1) * d);	// n1z
+			rawModelData[36 * i + 6] = -l;								// x2
+			rawModelData[36 * i + 7] = yPosInCircle(w, i * d);			// y2
+			rawModelData[36 * i + 8] = zPosInCircle(w, i * d);			// z2
+			rawModelData[36 * i + 9] = 0;								// n2x
+			rawModelData[36 * i + 10] = yPosInCircle(1, i * d);		// n2y
+			rawModelData[36 * i + 11] = zPosInCircle(1, i * d);		// n2z
+			rawModelData[36 * i + 12] = l;								// x3
+			rawModelData[36 * i + 13] = yPosInCircle(w, (i + 1) * d);	// y3
+			rawModelData[36 * i + 14] = zPosInCircle(w, (i + 1) * d);	// z3
+			rawModelData[36 * i + 15] = 0;								// n3x
+			rawModelData[36 * i + 16] = yPosInCircle(1, (i + 1) * d);	// n3y
+			rawModelData[36 * i + 17] = zPosInCircle(1, (i + 1) * d);	// n3z
 			
-			modelData[36 * i + 18] = -l;							// x4
-			modelData[36 * i + 19] = yPosInCircle(w, i * d);		// y4
-			modelData[36 * i + 20] = zPosInCircle(w, i * d);		// z4
-			modelData[36 * i + 21] = 0;								// n4x
-			modelData[36 * i + 22] = yPosInCircle(1, i * d);		// n4y
-			modelData[36 * i + 23] = zPosInCircle(1, i * d);		// n4z
-			modelData[36 * i + 24] = l;								// x5
-			modelData[36 * i + 25] = yPosInCircle(w, i * d);		// y5
-			modelData[36 * i + 26] = zPosInCircle(w, i * d);		// z5
-			modelData[36 * i + 27] = 0;								// n5x
-			modelData[36 * i + 28] = yPosInCircle(1, i * d);		// n5y
-			modelData[36 * i + 29] = zPosInCircle(1, i * d);		// n5z
-			modelData[36 * i + 30] = l;								// x6
-			modelData[36 * i + 31] = yPosInCircle(w, (i + 1) * d);	// y6
-			modelData[36 * i + 32] = zPosInCircle(w, (i + 1) * d);	// z6
-			modelData[36 * i + 33] = 0;								// n6x
-			modelData[36 * i + 34] = yPosInCircle(1, (i + 1) * d);	// n6y
-			modelData[36 * i + 35] = zPosInCircle(1, (i + 1) * d);	// n6z
+			rawModelData[36 * i + 18] = -l;							// x4
+			rawModelData[36 * i + 19] = yPosInCircle(w, i * d);		// y4
+			rawModelData[36 * i + 20] = zPosInCircle(w, i * d);		// z4
+			rawModelData[36 * i + 21] = 0;								// n4x
+			rawModelData[36 * i + 22] = yPosInCircle(1, i * d);		// n4y
+			rawModelData[36 * i + 23] = zPosInCircle(1, i * d);		// n4z
+			rawModelData[36 * i + 24] = l;								// x5
+			rawModelData[36 * i + 25] = yPosInCircle(w, i * d);		// y5
+			rawModelData[36 * i + 26] = zPosInCircle(w, i * d);		// z5
+			rawModelData[36 * i + 27] = 0;								// n5x
+			rawModelData[36 * i + 28] = yPosInCircle(1, i * d);		// n5y
+			rawModelData[36 * i + 29] = zPosInCircle(1, i * d);		// n5z
+			rawModelData[36 * i + 30] = l;								// x6
+			rawModelData[36 * i + 31] = yPosInCircle(w, (i + 1) * d);	// y6
+			rawModelData[36 * i + 32] = zPosInCircle(w, (i + 1) * d);	// z6
+			rawModelData[36 * i + 33] = 0;								// n6x
+			rawModelData[36 * i + 34] = yPosInCircle(1, (i + 1) * d);	// n6y
+			rawModelData[36 * i + 35] = zPosInCircle(1, (i + 1) * d);	// n6z
 		}
+		modelData = VBOConverter.toPosNormColor(rawModelData);
 	}
 	
 	public LineSegment(Vector start, Vector end, float width, String color) {

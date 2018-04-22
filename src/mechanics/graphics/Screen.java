@@ -7,7 +7,7 @@ import graphics.entities.GLFWRenderable;
 import graphics.entities.LightSource;
 import graphics.input.K;
 import graphics.input.KeyAction;
-import graphics.input.Locatable;
+import graphics.input.Observer;
 import mechanics.utils.DynamicDrawable;
 import mechanics.utils.Entity;
 import mechanics.utils.ThreadMaster;
@@ -197,7 +197,7 @@ public class Screen {
 		window.add(light);
 	}
 	
-	public void add(Locatable camera) {
+	public void add(Observer camera) {
 		window.add(camera);
 	}
 	

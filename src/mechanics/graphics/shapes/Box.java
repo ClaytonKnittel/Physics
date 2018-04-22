@@ -1,5 +1,6 @@
 package mechanics.graphics.shapes;
 
+import graphics.VBOConverter;
 import mechanics.physics.CollisionInformation;
 import tensor.DVector;
 import tensor.Matrix4;
@@ -25,7 +26,7 @@ public class Box extends AbstractShape {
 	}
 	
 	static {
-		modelData = new float[] {
+		float[] rawModelData = new float[] {
 			-.5f, -.5f, .5f,	0, 0, 1,
 			.5f, -.5f, .5f,		0, 0, 1,
 			-.5f, .5f, .5f,		0, 0, 1,
@@ -79,6 +80,7 @@ public class Box extends AbstractShape {
 			-.5f, -.5f, -.5f,	0, -1, 0,
 			.5f, -.5f, -.5f,	0, -1, 0,
 		};
+		modelData = VBOConverter.toPosNormColor(rawModelData);
 	}
 	
 	protected float[] rawModelData() {

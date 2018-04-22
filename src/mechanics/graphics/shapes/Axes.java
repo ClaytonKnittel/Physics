@@ -48,9 +48,9 @@ public class Axes implements Shape {
 	
 	private float[] setModelData() {
 		float[] ret = new float[modelData[0].length * 3 * 3 / 2];
-		float[] x = VBOConverter.toPosNormTexture(modelData[0]);
-		float[] y = VBOConverter.toPosNormTexture(modelData[1]);
-		float[] z = VBOConverter.toPosNormTexture(modelData[2]);
+		float[] x = VBOConverter.toPosNormColor(modelData[0]);
+		float[] y = VBOConverter.toPosNormColor(modelData[1]);
+		float[] z = VBOConverter.toPosNormColor(modelData[2]);
 		
 		int j = 0;
 		for (int i = 0; i < x.length; i++)
