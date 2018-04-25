@@ -1,6 +1,5 @@
 package mechanics.graphics.shapes;
 
-import graphics.VBOConverter;
 import tensor.Matrix4;
 
 public abstract class AbstractShape implements Shape {

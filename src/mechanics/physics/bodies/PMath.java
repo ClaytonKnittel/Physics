@@ -99,9 +99,9 @@ public final class PMath {
 			return DVector.ZERO;
 		
 		DVector thisToOther = b.pos().minus(a.pos());
-		if (!a.shape().colliding(b.shape(), thisToOther))
-			return DVector.ZERO;
 		CollisionInformation c = a.shape().collisionInformation(b.shape(), thisToOther);
+		if (c == null)
+			return DVector.ZERO;
 		
 		double force = PMath.collisionForce(a, b, c.norm()) / PMath.dt;
 		

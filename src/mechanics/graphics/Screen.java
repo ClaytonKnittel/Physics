@@ -45,6 +45,10 @@ public class Screen {
 	 * in the width dimension (in degrees)
 	 */
 	public Screen(int width, int height, float viewAngle) {
+		this(width, height, viewAngle, null);
+	}
+	
+	public Screen(int width, int height, float viewAngle, String skyboxTexture) {
 		this.width = width;
 		this.height = height;
 		this.camera = new Camera(new Vector(Vector.ZERO));
@@ -55,6 +59,9 @@ public class Screen {
 		
 		window = new GLFWWindow(width, height, "Planetary Motion", pressed, released);
 		setInputs("pos, norm, texcoord", new int[] {3, 3, 2});
+		
+		if (skyboxTexture != null)
+			window.setupSkybox(skyboxTexture);
 		
 		window.setQuitAction(() -> ThreadMaster.quit());
 		

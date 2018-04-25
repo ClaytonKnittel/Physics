@@ -16,13 +16,12 @@ public interface Shape extends GLFWRenderable {
 	CollisionInformation collisionInformation(Shape s, DVector thisToOther);
 	
 	/**
-	 * @param s The shape to be comparing to this one
-	 * @param thisToS the Vector going from this <code>Shape</code>'s center to the other's
-	 * @return whether or not these <code>Shape</code>s are colliding
-	 * <br>
-	 * The surface normal is the <code>Vector</code> normal to and pointing outward from this <code>Shape</code>'s surface.
+	 * Quicker algorithm that determines whether two shaoes are colliding
+	 * @param s
+	 * @param thisToS
+	 * @return
 	 */
-	boolean colliding(Shape s, DVector thisToOther);
+	public boolean colliding(Shape s, DVector thisToS);
 	
 	/**
 	 * Moment of inertia factor, excluding the mass factor

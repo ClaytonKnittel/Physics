@@ -23,12 +23,12 @@ public class Main {
 	
 	public static void main(String args[]) {
 		
-		Screen s = new Screen(800, 600, 72);
+		Screen s = new Screen(800, 600, 72, "clouds");
 //		s.setCamera(new Vector(0, 0, 0), 0, 0, 0);
 		
 		s.setCamera(new Vector(36.8f, 23.8f, 8.84f), .398f, 5.975f, 0);
 //		Setup.ELLIPTICAL.initialize(s, 1);
-		//Setup.ELLIPTICAL.showExactSolution(s, 300, Color.cyan);
+//		Setup.ELLIPTICAL.showExactSolution(s, 300, Color.cyan);
 		
 //		Setup.PARABOLIC.initialize(s, 1);
 //		Setup.PARABOLIC.showExactSolution(s, 300, Color.cyan);
@@ -65,18 +65,18 @@ public class Main {
 				return new Vector(50, 0, 50);
 			}
 			public Color color() {
-				return new Color(100, 230, 234);
+				return new Color(255, 255, 255);
 			}
 			public float brightness() {
 				return 0;
 			}
 		});
 		
-		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
-		r.setAngularVelocity(new DVector(0.6, 0.0, .5));
-		r.setAngles(0, 0, 0);
-		r.setLightAttribs(.8f, 12);
-		s.add(r);
+//		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
+//		r.setAngularVelocity(new DVector(0.6, 0.0, .5));
+//		r.setAngles(0, 0, 0);
+//		r.setLightAttribs(.8f, 12);
+//		s.add(r);
 		
 //		Guitar g = new Guitar(1f, Color.matte_blue);
 //		s.add(g);
@@ -85,17 +85,26 @@ public class Main {
 //		s.add(a);
 		
 		
-		Planet p = new Planet(new DVector(10, 20, 0), 3, 6, "red");
-		p.unsetAttribute(Attribute.Massive);
-		p.unsetAttribute(Attribute.Physical);
+		Planet p = new Planet(new DVector(10, 20, 0), 900, 6, "red");
+//		p.unsetAttribute(Attribute.Massive);
+//		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
 		s.add(p);
+		
+		Planet p2 = new Planet(new DVector(100, 20, 0), 200, 5, "blue");
+		p2.setLightAttribs(.2f, 4);
+		s.add(p2);
+		
+		Planet p3 = new Planet(new DVector(100, 70, 0), 200, 5, "blue");
+		p3.setLightAttribs(.3f, 5);
+		s.add(p3);
 		
 		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
 
 //		LineSegment l = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, "cyan");		
 //		LineSegment l2 = new LineSegment(r.pos().toVector(), new Vector(10, 20, 30), 1, Color.yellow);
 //		s.add(l);
+		
 //		s.add(l2);
 		
 		s.init();
@@ -118,8 +127,8 @@ public class Main {
 			System.out.println(s.getInfo());
 			System.out.println(graphics);
 			System.out.println(physics);
-			System.out.println(r.phi() + " " + r.theta() + " " + r.psi());
-			System.out.println(r.angularVelocity().mag());
+//			System.out.println(r.phi() + " " + r.theta() + " " + r.psi());
+//			System.out.println(r.angularVelocity().mag());
 		}, 1, false, "info");
 
 		physics.start();

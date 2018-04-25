@@ -36,20 +36,25 @@ public class Sphere extends AbstractShape {
 	}
 
 	public CollisionInformation collisionInformation(Shape s, DVector thisToS) {
-		if (!colliding(s, thisToS))
+		if (Sphere.class.isAssignableFrom(s.getClass()))
+			return sphereCollision((Sphere) s, thisToS);
+		return null;
+	}
+	
+	private CollisionInformation sphereCollision(Sphere s, DVector thisToS) {
+		double mdist = radius + s.radius;
+		mdist *= mdist;
+		if (thisToS.mag2() > mdist)
 			return null;
 		return new CollisionInformation(thisToS.divide(2), thisToS.normalized());
 	}
 	
-	public boolean colliding(Shape s, DVector thisToS) {
-		if (!Sphere.class.isAssignableFrom(s.getClass()))
-			return false;
-		Sphere p = (Sphere) s;
-		double mdist = radius + p.radius;
-		mdist *= mdist;
-		if (thisToS.mag2() > mdist)
-			return false;
-		return true;
+	public boolean colliding(Shape s, DVector thisToS) { 
+		if (Sphere.class.isAssignableFrom(s.getClass())) {
+			double mdist = radius + ((Sphere) s).radius;
+			return thisToS.mag2() <= mdist * mdist;
+		}
+		return false;
 	}
 	
 	@Override
