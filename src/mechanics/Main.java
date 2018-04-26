@@ -23,7 +23,7 @@ public class Main {
 	
 	public static void main(String args[]) {
 		
-		Screen s = new Screen(800, 600, 72, "clouds");
+		Screen s = new Screen(800, 600, 72, "starfield");
 //		s.setCamera(new Vector(0, 0, 0), 0, 0, 0);
 		
 		s.setCamera(new Vector(36.8f, 23.8f, 8.84f), .398f, 5.975f, 0);
@@ -72,11 +72,11 @@ public class Main {
 			}
 		});
 		
-//		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
-//		r.setAngularVelocity(new DVector(0.6, 0.0, .5));
-//		r.setAngles(0, 0, 0);
-//		r.setLightAttribs(.8f, 12);
-//		s.add(r);
+		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
+		r.setAngularVelocity(new DVector(0.6, 0.0, .5));
+		r.setAngles(0, 0, 0);
+		r.setLightAttribs(.8f, 12);
+		s.add(r);
 		
 //		Guitar g = new Guitar(1f, Color.matte_blue);
 //		s.add(g);
@@ -89,15 +89,15 @@ public class Main {
 //		p.unsetAttribute(Attribute.Massive);
 //		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
-		s.add(p);
+		//s.add(p);
 		
 		Planet p2 = new Planet(new DVector(100, 20, 0), 200, 5, "blue");
 		p2.setLightAttribs(.2f, 4);
-		s.add(p2);
+		//s.add(p2);
 		
 		Planet p3 = new Planet(new DVector(100, 70, 0), 200, 5, "blue");
 		p3.setLightAttribs(.3f, 5);
-		s.add(p3);
+		//s.add(p3);
 		
 		//System.out.println(PMath.dW(0, 0, 0, 10, 20, 30, new DVector(1, 0, 0), new DVector(0, 0, 0)));
 
