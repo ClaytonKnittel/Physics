@@ -16,7 +16,7 @@ import mechanics.physics.utils.Attribute;
 import mechanics.utils.ThreadMaster;
 import tensor.DVector;
 import tensor.Matrix;
-import tensor.Matrixd;
+import tensor.DMatrix;
 import tensor.Vector;
 
 public class Main {

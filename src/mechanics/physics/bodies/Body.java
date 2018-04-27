@@ -10,7 +10,7 @@ import mechanics.utils.Entity;
 import numbers.cliffordAlgebras.DQuaternion;
 import tensor.DVector;
 import tensor.Matrix4;
-import tensor.Matrixd;
+import tensor.DMatrix;
 
 public abstract class Body implements Entity {
 	
@@ -182,7 +182,7 @@ public abstract class Body implements Entity {
 	}
 	
 	public DVector angularMomentum() {
-		return Matrixd.toSpaceFrame(phi, theta, psi).multiply(new DVector(shape.l1(), shape.l2(), shape.l3()).prod(Matrixd.toRotatingFrame(phi, theta, psi).multiply(this.w)));
+		return DMatrix.toSpaceFrame(phi, theta, psi).multiply(new DVector(shape.l1(), shape.l2(), shape.l3()).prod(DMatrix.toRotatingFrame(phi, theta, psi).multiply(this.w)));
 	}
 	
 	public Shape shape() {

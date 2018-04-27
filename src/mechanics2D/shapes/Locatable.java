@@ -6,7 +6,6 @@ public interface Locatable {
 	
 	DVector2 pos();
 	
-	double x();
-	double y();
+	void move(DVector2 dPos);
 	
 }

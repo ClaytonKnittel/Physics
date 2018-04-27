@@ -3,16 +3,13 @@ package mechanics2D.shapes;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Circle implements Shape {
+public class Circle extends AbstractShape {
 	
-	private float radius;
-	private Orientable owner;
-	private Color color;
+	private double radius;
 	
-	public Circle(float radius, Orientable owner, Color color) {
+	public Circle(double radius, Orientable owner, Color color) {
+		super(owner, color);
 		this.radius = radius;
-		this.owner = owner;
-		this.color = color;
 	}
 	
 	public Circle(float radius, Color color) {
@@ -20,20 +17,36 @@ public class Circle implements Shape {
 	}
 	
 	@Override
-	public void setOwner(Orientable owner) {
-		this.owner = owner;
-	}
-	
-	@Override
 	public void draw(Graphics g) {
-		g.setColor(color);
+		g.setColor(color());
 		int r2 = (int) (2 * radius);
-		g.fillOval((int) (owner.x() - radius), (int) (owner.y() - radius), r2, r2);
+		g.fillOval((int) (owner().pos().x() - radius), (int) (owner().pos().y() - radius), r2, r2);
 	}
 	
 	@Override
 	public double moment() {
 		return 2d * radius * radius / 5d;
+	}
+	
+	@Override
+	public boolean colliding(Shape s) {
+		if (s instanceof Circle) {
+			Circle c = (Circle) s;
+			double di = radius + c.radius;
+			di *= di;
+			return di >= owner().pos().minus(c.owner().pos()).mag2();
+		}
+		return false;
+	}
+	
+	@Override
+	public CollisionInformation getCollisionInfo(Shape s) {
+		if (s instanceof Circle) {
+			
+		} else if (s instanceof Rectangle) {
+			
+		}
+		return null;
 	}
 	
 }

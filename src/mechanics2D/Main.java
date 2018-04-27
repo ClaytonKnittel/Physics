@@ -6,6 +6,7 @@ import mechanics.physics.bodies.PMath;
 import mechanics.utils.ThreadMaster;
 import mechanics2D.graphics.Screen;
 import mechanics2D.physics.Ball;
+import mechanics2D.physics.Box;
 
 public class Main {
 	
@@ -17,6 +18,9 @@ public class Main {
 		
 		Ball b2 = new Ball(100, 200, 0, 60, 20, 20, Color.GREEN);
 		s.add(b2);
+		
+		Box box = new Box(200, 300, 0, 0, 20, 10, 10, Color.ORANGE);
+		s.add(box);
 		
 		ThreadMaster t1 = new ThreadMaster(() -> {
 			s.render();

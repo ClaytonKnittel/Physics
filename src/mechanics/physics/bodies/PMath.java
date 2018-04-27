@@ -3,7 +3,7 @@ package mechanics.physics.bodies;
 import mechanics.physics.CollisionInformation;
 import mechanics.physics.utils.Attribute;
 import tensor.DVector;
-import tensor.Matrixd;
+import tensor.DMatrix;
 
 public final class PMath {
 	
@@ -197,8 +197,8 @@ public final class PMath {
 	 * @return the small change in angular velocity to be made
 	 */
 	public static DVector dW(double phi, double theta, double psi, double l1, double l2, double l3, DVector w, DVector torque) {
-		Matrixd rot = Matrixd.toRotatingFrame(phi, theta, psi);
-		Matrixd rotInv = Matrixd.toSpaceFrame(phi, theta, psi);
+		DMatrix rot = DMatrix.toRotatingFrame(phi, theta, psi);
+		DMatrix rotInv = DMatrix.toSpaceFrame(phi, theta, psi);
 		
 		DVector wRot = rot.multiply(w);
 		DVector tRot = rot.multiply(torque);
