@@ -27,7 +27,7 @@ public class ThreadMaster implements Runnable {
 		if (!useMainThread)
 			thread.setName(name);
 	}
-	
+
 	public static void quit() {
 		running = false;
 	}

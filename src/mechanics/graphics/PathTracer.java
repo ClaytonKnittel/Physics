@@ -2,7 +2,7 @@ package mechanics.graphics;
 
 import mechanics.graphics.shapes.LineSegment;
 import mechanics.utils.DynamicDrawable;
-import mechanics.utils.FiniteModularList;
+import structures.FiniteModularList;
 import tensor.Vector;
 
 public class PathTracer implements DynamicDrawable {

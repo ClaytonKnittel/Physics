@@ -22,7 +22,6 @@ import tensor.Vector;
 public class Main {
 	
 	public static void main(String args[]) {
-		
 		Screen s = new Screen(800, 600, 72, "starfield");
 //		s.setCamera(new Vector(0, 0, 0), 0, 0, 0);
 		
@@ -72,7 +71,7 @@ public class Main {
 			}
 		});
 		
-		Rectangle r = new Rectangle(new DVector(10, 0, -40), 1, 10, 20, 30, "blue");
+		Rectangle r = new Rectangle(new DVector(10, 0, -40), 10, 10, 20, 30, "blue");
 		r.setAngularVelocity(new DVector(0.6, 0.0, .5));
 		r.setAngles(0, 0, 0);
 		r.setLightAttribs(.8f, 12);
@@ -89,7 +88,7 @@ public class Main {
 //		p.unsetAttribute(Attribute.Massive);
 //		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
-		//s.add(p);
+		s.add(p);
 		
 		Planet p2 = new Planet(new DVector(100, 20, 0), 200, 5, "blue");
 		p2.setLightAttribs(.2f, 4);
@@ -117,10 +116,10 @@ public class Main {
 		ThreadMaster physics = new ThreadMaster(() -> {
 			s.physUpdate();
 			PMath.next();
-			//l.setDir(r.angularVelocity().toVector(), 40);
+//			l.setDir(r.angularVelocity().toVector(), 40);
 //			l.setEnd(r.angularVelocity().toVector().times(80).plus(l.start()));
 //			l2.setEnd(r.angularMomentum().toVector().times(1.4f).plus(l.start()));
-			//l.setEnd(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
+//			l.setEnd(Matrixd.toSpaceFrame(r.phi(), r.theta(), r.psi()).multiply(new DVector(40, 40, 0)).toVector().plus(l.start()));
 		}, PMath.dt, false, "physics");
 		
 		ThreadMaster info = new ThreadMaster(() -> {
