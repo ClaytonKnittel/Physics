@@ -3,6 +3,7 @@ package mechanics2D.physics;
 import java.awt.Color;
 
 import mechanics2D.shapes.Rectangle;
+import tensor.DVector2;
 
 public class Box extends Body {
 	
@@ -13,6 +14,11 @@ public class Box extends Body {
 	
 	public Box(double x, double y, double mass, double length, double width, Color color) {
 		this(x, y, 0, 0, mass, length, width, color);
+	}
+	
+	public Box setPos(DVector2 pos) {
+		super.pos().add(pos.minus(super.pos()));
+		return this;
 	}
 	
 }

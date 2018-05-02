@@ -33,7 +33,7 @@ public abstract class AbstractShape implements Shape, Transformable {
 	public Orientable transform(DVector2 pos, double angle) {
 		return new Orientable() {
 			public DVector2 pos() {
-				return DMatrix2.rotate(angle).multiply(owner.pos().minus(pos));
+				return DMatrix2.rotate(-angle).multiply(owner.pos().minus(pos));
 			}
 
 			public void move(DVector2 dPos) {
@@ -41,7 +41,7 @@ public abstract class AbstractShape implements Shape, Transformable {
 			}
 
 			public double angle() {
-				return owner.angle() + angle;
+				return owner.angle() - angle;
 			}
 
 			public void rotate(double dAngle) {

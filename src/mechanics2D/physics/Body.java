@@ -1,5 +1,7 @@
 package mechanics2D.physics;
 
+import java.awt.Color;
+
 import mechanics2D.graphics.Drawable;
 import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Orientable;
@@ -20,6 +22,9 @@ public abstract class Body implements Drawable, Orientable {
 	
 	private Shape shape;
 	
+	public boolean colliding;
+	public static Color collideColor = new Color(240, 20, 80);
+	
 	public Body(double x, double y, double vx, double vy, double mass, Shape shape) {
 		pos = new DVector2(x, y);
 		vel = new DVector2(vx, vy);
@@ -36,7 +41,11 @@ public abstract class Body implements Drawable, Orientable {
 		PMath.gForce(this, b);
 		if (b.shape().colliding(shape())) {
 			CollisionInformation c = b.shape().getCollisionInfo(shape());
-			
+			colliding = true;
+			b.colliding = true;
+		} else {
+			colliding = false;
+			b.colliding = false;
 		}
 	}
 	
@@ -53,6 +62,10 @@ public abstract class Body implements Drawable, Orientable {
 	@Override
 	public double angle() {
 		return phi;
+	}
+	
+	public void setW(double w) {
+		this.w = w;
 	}
 	
 	@Override
