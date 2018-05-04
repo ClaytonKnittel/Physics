@@ -8,9 +8,7 @@ public interface Shape {
 	
 	void setOwner(Orientable owner);
 	
-	boolean colliding(Shape s);
-	
-	CollisionInformation getCollisionInfo(Shape s);
+	boolean colliding(Shape s, boolean computeCollisionInfo);
 	
 	/**
 	 * @return the moment of inertia of this object, excluding the mass factor

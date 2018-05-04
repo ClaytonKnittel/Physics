@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import tensor.DMatrix2;
 import tensor.DVector2;
 
-import mechanics2D.physics.Body;
+import static mechanics2D.shapes.Orientable.toSpaceFrame;
 
 public class Rectangle extends AbstractShape {
 	
@@ -45,19 +45,15 @@ public class Rectangle extends AbstractShape {
 		ul = rot.multiply(this.ul.minus(owner().pos())).plus(owner().pos());
 		ur = rot.multiply(this.ur.minus(owner().pos())).plus(owner().pos());
 		
-		if (((Body) owner()).colliding) {
-			g.setColor(Body.collideColor);
-		} else
-			g.setColor(color());
-		
+		g.setColor(color());
 		g.fillPolygon(new int[] {(int) ll.x(), (int) lr.x(), (int) ur.x(), (int) ul.x()}, 
 				new int[] {(int) ll.y(), (int) lr.y(), (int) ur.y(), (int) ul.y()}, 4);
 	}
 	
 	@Override
-	public boolean colliding(Shape s) {
+	public boolean colliding(Shape s, boolean computeCollisionInfo) {
 		if (s instanceof Rectangle) {
-			if (collidingRects((Rectangle) s, true))
+			if (collidingRects((Rectangle) s, true, computeCollisionInfo))
 				return true;
 		}
 		return false;
@@ -69,8 +65,9 @@ public class Rectangle extends AbstractShape {
 	 * @param first true when called outside this method, false when called within
 	 * @return whether or not these rectangles collide
 	 */
-	private boolean collidingRects(Rectangle r, boolean first) {
-		Orientable rPos = r.transform(super.owner().pos(), super.owner().angle());
+	private boolean collidingRects(Rectangle r, boolean first, boolean compute) {
+		Orientable rPos = r.transform(super.owner());
+//		Orientable rPos = transform(r.owner());
 		
 		double hlength = r.length / 2;
 		double hheight = r.height / 2;
@@ -83,20 +80,51 @@ public class Rectangle extends AbstractShape {
 		double cos = Math.cos(theta);
 		double sin = Math.sin(theta);
 		
+		double hlcos = hlength * cos;
+		double hhcos = hheight * cos;
+		double hlsin = hlength * sin;
+		double hhsin = hheight * sin;
+		
 		// first test projection onto x-axis (will need to compare to length / 2)
-		double dif = hlength * Math.abs(cos) + hheight * Math.abs(sin);
+		double dif = Math.abs(hlcos) + Math.abs(hhsin);
 		if (notIntersecting(x - dif, x + dif, -this.length / 2, this.length / 2))
 			return false;
 		
 		// then test projection onto y-axis (will need to compare to height / 2)
-		dif = hlength * Math.abs(sin) + hheight * Math.abs(cos);
+		dif = Math.abs(hlsin) + Math.abs(hhcos);
 		if (notIntersecting(y - dif, y + dif, -this.height / 2, this.height / 2))
 			return false;
+		
+		if (compute) {
+			// find all intersecting points
+			double px, py;
+			int a = 1, b = 1;
+			
+			for (byte i = 0; i < 4; i++) {
+				px = x - b * hhsin + a * hlcos; // determine location of individual rectangle vertex
+				py = y + a * hlsin + b * hhcos;
+				
+				if (Math.abs(px) <= this.length / 2 && Math.abs(py) <= this.height / 2) {
+					double dir;
+					if (Math.abs(px / this.length) > Math.abs(py / this.height))	// colliding with left or right wall
+						dir = px > 0 ? 0 : Math.PI;
+					else															// colliding with top or bottom wall
+						dir = py > 0 ? Math.PI / 2 : 3 * Math.PI / 2;
+					
+					addCollisionInfo(new CollisionInformation(
+							toSpaceFrame(new DVector2(px, py), owner().pos(), owner().angle()), dir + owner().angle()));
+					return true;
+				}
+				if (a == -1)
+					b *= -1;
+				a *= -1;
+			}
+		}
 		
 		if (!first)
 			return true;
 		
-		if (r.collidingRects(this, false))
+		if (r.collidingRects(this, false, compute))
 			return true;
 		return false;
 	}
@@ -104,15 +132,10 @@ public class Rectangle extends AbstractShape {
 	private boolean notIntersecting(double min1, double max1, double min2, double max2) {
 		return min2 > max1 || min1 > max2;
 	}
-
-	@Override
-	public CollisionInformation getCollisionInfo(Shape s) {
-		return null;
-	}
-
+	
 	@Override
 	public double moment() {
-		return (length * length + height * height) * length * height / 12;
+		return (length * length + height * height) / 12;
 	}
 
 }

@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 
+import mechanics2D.shapes.AbstractShape;
+
 public class Drawer {
 	
 	private int width, height;
@@ -29,6 +31,7 @@ public class Drawer {
 		g.clearRect(0, 0, width, height);
 		for (Drawable d : entities)
 			d.draw(g);
+		//AbstractShape.drawCollisions(g);
 		
 		g.dispose();
 		b.show();

@@ -29,7 +29,7 @@ public class Circle extends AbstractShape {
 	}
 	
 	@Override
-	public boolean colliding(Shape s) {
+	public boolean colliding(Shape s, boolean computeCollisionInfo) {
 		if (s instanceof Circle) {
 			Circle c = (Circle) s;
 			double di = radius + c.radius;
@@ -37,16 +37,6 @@ public class Circle extends AbstractShape {
 			return di >= owner().pos().minus(c.owner().pos()).mag2();
 		}
 		return false;
-	}
-	
-	@Override
-	public CollisionInformation getCollisionInfo(Shape s) {
-		if (s instanceof Circle) {
-			
-		} else if (s instanceof Rectangle) {
-			
-		}
-		return null;
 	}
 	
 }

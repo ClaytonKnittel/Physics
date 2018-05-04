@@ -21,4 +21,12 @@ public class Box extends Body {
 		return this;
 	}
 	
+	public double width() {
+		return ((Rectangle) super.shape()).length();
+	}
+	
+	public double height() {
+		return ((Rectangle) super.shape()).height();
+	}
+	
 }

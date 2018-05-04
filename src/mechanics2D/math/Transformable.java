@@ -1,10 +1,13 @@
 package mechanics2D.math;
 
 import mechanics2D.shapes.Orientable;
-import tensor.DVector2;
 
 public interface Transformable {
 	
-	Orientable transform(DVector2 direction, double orientation);
+	/**
+	 * @param wrt the Orientable to transform this object with respect to
+	 * @return this object in the frame of reference of this orientable
+	 */
+	Orientable transform(Orientable wrt);
 	
 }

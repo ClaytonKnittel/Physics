@@ -1,9 +1,10 @@
 package mechanics2D.shapes;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.util.LinkedList;
 
 import mechanics2D.math.Transformable;
-import tensor.DMatrix2;
 import tensor.DVector2;
 
 public abstract class AbstractShape implements Shape, Transformable {
@@ -11,9 +12,14 @@ public abstract class AbstractShape implements Shape, Transformable {
 	private Orientable owner;
 	private Color color;
 	
+	// to be set by any call to colliding, if asked by the caller, to subsequently
+	// be retrieved by a call to getCollisionInfo from Shape
+	private static LinkedList<CollisionInformation> collisionInfo;
+	
 	public AbstractShape(Orientable owner, Color color) {
 		this.owner = owner;
 		this.color = color;
+		collisionInfo = new LinkedList<>();
 	}
 	
 	public Color color() {
@@ -24,24 +30,46 @@ public abstract class AbstractShape implements Shape, Transformable {
 		return owner;
 	}
 	
+	protected static void addCollisionInfo(CollisionInformation c) {
+		collisionInfo.add(c);
+		System.out.println(c);
+	}
+	
+	public static void drawCollisions(Graphics g) {
+		for (CollisionInformation c : collisionInfo)
+			c.draw(g);
+	}
+	
+	public static final boolean areCollisions() {
+		return !collisionInfo.isEmpty();
+	}
+	
+	/**
+	 * 
+	 * @return the collision info determined from the call to colliding, which is assumed
+	 * to have been done immediately prior
+	 */
+	public static final CollisionInformation popCollisionInfo() {
+		return collisionInfo.removeFirst();
+	}
+	
 	@Override
 	public void setOwner(Orientable owner) {
 		this.owner = owner;
 	}
 	
 	@Override
-	public Orientable transform(DVector2 pos, double angle) {
+	public Orientable transform(Orientable wrt) {
 		return new Orientable() {
 			public DVector2 pos() {
-				return DMatrix2.rotate(-angle).multiply(owner.pos().minus(pos));
+				return wrt.toBodyFrame(owner().pos());
 			}
-
 			public void move(DVector2 dPos) {
 				return;
 			}
 
 			public double angle() {
-				return owner.angle() - angle;
+				return owner.angle() - wrt.angle();
 			}
 
 			public void rotate(double dAngle) {

@@ -1,12 +1,16 @@
 package mechanics2D.physics;
 
-import java.awt.Color;
-
 import mechanics2D.graphics.Drawable;
 import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Orientable;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
+
+import static mechanics2D.shapes.AbstractShape.popCollisionInfo;
+
+import java.util.LinkedList;
+
+import static mechanics2D.shapes.AbstractShape.areCollisions;
 
 public abstract class Body implements Drawable, Orientable {
 	
@@ -17,13 +21,9 @@ public abstract class Body implements Drawable, Orientable {
 	
 	private double mass;
 	
-	private DVector2 netForce;
-	private double netTorque;
+	private LinkedList<Force> netForce, netImpulse;
 	
 	private Shape shape;
-	
-	public boolean colliding;
-	public static Color collideColor = new Color(240, 20, 80);
 	
 	public Body(double x, double y, double vx, double vy, double mass, Shape shape) {
 		pos = new DVector2(x, y);
@@ -34,24 +34,28 @@ public abstract class Body implements Drawable, Orientable {
 		this.shape = shape;
 		I = shape.moment() * mass;
 		shape.setOwner(this);
+		netForce = new LinkedList<>();
+		netImpulse = new LinkedList<>();
 		resetForces();
 	}
 	
 	public void interact(Body b) {
 		PMath.gForce(this, b);
-		if (b.shape().colliding(shape())) {
-			CollisionInformation c = b.shape().getCollisionInfo(shape());
-			colliding = true;
-			b.colliding = true;
-		} else {
-			colliding = false;
-			b.colliding = false;
+		if (b.shape().colliding(shape(), true)) {
+			while (areCollisions()) {
+				CollisionInformation c = popCollisionInfo();
+				PMath.collisionForce(this, b, c);
+			}
 		}
 	}
 	
 	@Override
 	public DVector2 pos() {
 		return pos;
+	}
+	
+	public DVector2 vel() {
+		return vel;
 	}
 	
 	@Override
@@ -64,6 +68,10 @@ public abstract class Body implements Drawable, Orientable {
 		return phi;
 	}
 	
+	public double w() {
+		return w;
+	}
+	
 	public void setW(double w) {
 		this.w = w;
 	}
@@ -71,6 +79,10 @@ public abstract class Body implements Drawable, Orientable {
 	@Override
 	public void rotate(double angle) {
 		phi += angle;
+	}
+	
+	public double moment() {
+		return I;
 	}
 	
 	@Override
@@ -82,23 +94,37 @@ public abstract class Body implements Drawable, Orientable {
 		return mass;
 	}
 	
-	public void addForce(DVector2 force) {
+	public void addForce(Force force) {
 		netForce.add(force);
 	}
 	
+	public void addImpulse(Force force) {
+		netImpulse.add(force);
+	}
+	
 	private void resetForces() {
-		netForce = new DVector2(0, 0);
-		netTorque = 0;
+		netForce.clear();
+		netImpulse.clear();
 	}
 	
 	public void update() {
-		vel.add(netForce.times(PMath.dt / mass));
+		for (Force f : netForce) {
+			vel.add(f.force().times(PMath.dt / mass));
+			
+			w += f.torque() * PMath.dt / I;
+		}
+		for (Force f : netImpulse) {
+			vel.add(f.force().divide(mass));
+			
+			w += f.torque() / I;
+		}
 		pos.add(vel.times(PMath.dt));
-		
-		w += netTorque * PMath.dt / I;
 		phi += w * PMath.dt;
-		
 		resetForces();
+	}
+	
+	public double energy() {
+		return mass * vel.mag2() / 2 + I * w * w / 2;
 	}
 	
 }

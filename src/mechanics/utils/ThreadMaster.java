@@ -5,17 +5,28 @@ public class ThreadMaster implements Runnable {
 	private Thread thread;
 	
 	private Updatable u;
+	
 	private long delay;
 	private long delta;
+	private double frequency;
+	
+	private float speed;
+	
 	private int frames;
+	
 	private boolean useMain;
 	
 	private static boolean running = true;
 	
 	public ThreadMaster(Updatable u, double frequency, boolean useMainThread) {
 		this.u = u;
-		this.delay = (long) Math.round(frequency * 1000);
+		
 		this.delta = System.currentTimeMillis();
+		this.frequency = frequency;
+		this.speed = 1;
+		
+		setDelay();
+		
 		this.frames = 0;
 		this.useMain = useMainThread;
 		if (!useMainThread)
@@ -34,6 +45,15 @@ public class ThreadMaster implements Runnable {
 	
 	public static boolean running() {
 		return running;
+	}
+	
+	private void setDelay() {
+		this.delay = (long) Math.round(frequency * 1000 / speed);
+	}
+	
+	public void setSpeed(float factor) {
+		this.speed = factor;
+		setDelay();
 	}
 	
 	private int reset() {

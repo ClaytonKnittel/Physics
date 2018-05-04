@@ -5,12 +5,28 @@ import tensor.DVector2;
 
 public class Force extends CollisionInformation {
 	
-	public Force(DVector2 force, DVector2 loc) {
-		super(force, loc);
+	private double torque;
+	
+	public Force(DVector2 loc, DVector2 force) {
+		super(loc, force);
+		torque = loc.cross(force);
+	}
+	
+	public Force(DVector2 force) {
+		super(DVector2.ZERO, force);
+		torque = 0;
 	}
 	
 	public Force opposite() {
-		return new Force(dir().times(-1), loc());
+		return new Force(loc(), dir().times(-1));
+	}
+	
+	public DVector2 force() {
+		return super.dir();
+	}
+	
+	public double torque() {
+		return torque;
 	}
 	
 }
