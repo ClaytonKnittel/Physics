@@ -5,21 +5,21 @@ import structures.Web;
 
 public class Bodies {
 	
-	private Web<Body> bodies;
+	private Web<PhysicsBody> bodies;
 	
 	public Bodies() {
 		bodies = new Web<>();
 	}
 	
-	public void add(Body...b) {
-		for (Body bo : b)
+	public void add(PhysicsBody...b) {
+		for (PhysicsBody bo : b)
 			bodies.add(bo);
 	}
 	
 	public void attemptAdd(Drawable... drawables) {
 		for (Drawable d : drawables) {
-			if (Body.class.isAssignableFrom(d.getClass()))
-				bodies.add((Body) d);
+			if (PhysicsBody.class.isAssignableFrom(d.getClass()))
+				bodies.add((PhysicsBody) d);
 		}
 	}
 	

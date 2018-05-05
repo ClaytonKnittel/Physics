@@ -1,10 +1,8 @@
 package mechanics2D.shapes;
 
-import java.awt.Graphics;
+import mechanics2D.graphics.Drawable;
 
-public interface Shape {
-	
-	void draw(Graphics g);
+public interface Shape extends Drawable {
 	
 	void setOwner(Orientable owner);
 	

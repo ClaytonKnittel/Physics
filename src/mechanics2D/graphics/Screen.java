@@ -1,5 +1,7 @@
 package mechanics2D.graphics;
 
+import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
 import mechanics2D.physics.Bodies;
@@ -26,6 +28,10 @@ public class Screen extends JFrame {
 	public void add(Drawable...drawables) {
 		drawer.add(drawables);
 		bodies.attemptAdd(drawables);
+	}
+	
+	public void add(KeyListener k) {
+		this.addKeyListener(k);
 	}
 	
 	public void physUpdate() {

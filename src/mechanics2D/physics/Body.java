@@ -1,8 +1,6 @@
 package mechanics2D.physics;
 
-import mechanics2D.graphics.Drawable;
 import mechanics2D.shapes.CollisionInformation;
-import mechanics2D.shapes.Orientable;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
@@ -12,7 +10,7 @@ import java.util.LinkedList;
 
 import static mechanics2D.shapes.AbstractShape.areCollisions;
 
-public abstract class Body implements Drawable, Orientable {
+public abstract class Body implements PhysicsBody {
 	
 	private DVector2 pos, vel;
 	
@@ -25,7 +23,7 @@ public abstract class Body implements Drawable, Orientable {
 	
 	private Shape shape;
 	
-	public Body(double x, double y, double vx, double vy, double mass, Shape shape) {
+	protected Body(double x, double y, double vx, double vy, double mass, Shape shape) {
 		pos = new DVector2(x, y);
 		vel = new DVector2(vx, vy);
 		phi = 0;
@@ -39,14 +37,19 @@ public abstract class Body implements Drawable, Orientable {
 		resetForces();
 	}
 	
-	public void interact(Body b) {
-		PMath.gForce(this, b);
-		if (b.shape().colliding(shape(), true)) {
+	public void interact(PhysicsBody other) {
+		
+		PMath.gForce(this, other);
+		if (other.shape().colliding(shape(), true)) {
 			while (areCollisions()) {
 				CollisionInformation c = popCollisionInfo();
-				PMath.collisionForce(this, b, c);
+				PMath.collisionForce(this, other, c);
 			}
 		}
+	}
+	
+	public static boolean is(Object o) {
+		return Body.class.isAssignableFrom(o.getClass());
 	}
 	
 	@Override
@@ -85,19 +88,21 @@ public abstract class Body implements Drawable, Orientable {
 		return I;
 	}
 	
+	public double mass() {
+		return mass;
+	}
+	
 	@Override
 	public Shape shape() {
 		return shape;
 	}
 	
-	public double mass() {
-		return mass;
-	}
-	
+	@Override
 	public void addForce(Force force) {
 		netForce.add(force);
 	}
 	
+	@Override
 	public void addImpulse(Force force) {
 		netImpulse.add(force);
 	}
@@ -113,10 +118,11 @@ public abstract class Body implements Drawable, Orientable {
 			
 			w += f.torque() * PMath.dt / I;
 		}
+		int size = netImpulse.size();
 		for (Force f : netImpulse) {
-			vel.add(f.force().divide(mass));
+			vel.add(f.force().divide(mass * size));
 			
-			w += f.torque() / I;
+			w += f.torque() / I / size;
 		}
 		pos.add(vel.times(PMath.dt));
 		phi += w * PMath.dt;

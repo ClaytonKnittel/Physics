@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import mechanics2D.Main;
 import mechanics2D.math.Transformable;
 import tensor.DVector2;
 
@@ -32,7 +33,8 @@ public abstract class AbstractShape implements Shape, Transformable {
 	
 	protected static void addCollisionInfo(CollisionInformation c) {
 		collisionInfo.add(c);
-		System.out.println(c);
+		Main.pos = c.loc();
+		Main.dir = c.dir();
 	}
 	
 	public static void drawCollisions(Graphics g) {

@@ -35,11 +35,6 @@ public class CollisionInformation implements Drawable {
 		DVector2 end = loc.plus(dir.times(scale));
 		g.drawLine((int) loc.x(), (int) loc.y(), (int) end.x(), (int) end.y());
 	}
-
-	@Override
-	public Shape shape() {
-		return null;
-	}
 	
 	@Override
 	public String toString() {

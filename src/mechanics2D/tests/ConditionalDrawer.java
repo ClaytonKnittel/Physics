@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import mechanics2D.graphics.Drawable;
-import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
 public class ConditionalDrawer implements Drawable {
@@ -31,13 +30,8 @@ public class ConditionalDrawer implements Drawable {
 			}
 		}
 	}
-
-	@Override
-	public Shape shape() {
-		return null;
-	}
 	
-	public interface PositionTest {
+	public static interface PositionTest {
 		boolean test(DVector2 pos);
 	}
 	
