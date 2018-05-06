@@ -38,8 +38,7 @@ public abstract class Body implements PhysicsBody {
 	}
 	
 	public void interact(PhysicsBody other) {
-		
-		PMath.gForce(this, other);
+		//PMath.gForce(this, other);
 		if (other.shape().colliding(shape(), true)) {
 			while (areCollisions()) {
 				CollisionInformation c = popCollisionInfo();
@@ -112,21 +111,24 @@ public abstract class Body implements PhysicsBody {
 		netImpulse.clear();
 	}
 	
-	public void update() {
+	public void applyForces() {
 		for (Force f : netForce) {
 			vel.add(f.force().times(PMath.dt / mass));
 			
 			w += f.torque() * PMath.dt / I;
 		}
-		int size = netImpulse.size();
 		for (Force f : netImpulse) {
-			vel.add(f.force().divide(mass * size));
+			vel.add(f.force().divide(mass));
 			
-			w += f.torque() / I / size;
+			w += f.torque() / I;
 		}
+		resetForces();
+	}
+	
+	public void update() {
+		applyForces();
 		pos.add(vel.times(PMath.dt));
 		phi += w * PMath.dt;
-		resetForces();
 	}
 	
 	public double energy() {

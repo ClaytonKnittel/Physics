@@ -2,10 +2,9 @@ package mechanics2D.shapes;
 
 import java.awt.Graphics;
 
+import mechanics2D.physics.PMath;
 import tensor.DMatrix2;
 import tensor.DVector2;
-
-import static mechanics2D.shapes.Orientable.toSpaceFrame;
 
 public class Rectangle extends AbstractShape {
 	
@@ -52,10 +51,10 @@ public class Rectangle extends AbstractShape {
 	
 	@Override
 	public boolean colliding(Shape s, boolean computeCollisionInfo) {
-		if (s instanceof Rectangle) {
-			if (collidingRects((Rectangle) s, true, computeCollisionInfo))
-				return true;
-		}
+		if (s instanceof Rectangle)
+			return collidingRects((Rectangle) s, true, computeCollisionInfo);
+		if (s instanceof Circle)
+			return collidingCircle((Circle) s, computeCollisionInfo);
 		return false;
 	}
 	
@@ -111,9 +110,9 @@ public class Rectangle extends AbstractShape {
 					else															// colliding with top or bottom wall
 						dir = py > 0 ? Math.PI / 2 : 3 * Math.PI / 2;
 					
-					addCollisionInfo(new CollisionInformation(
-							toSpaceFrame(new DVector2(px, py), owner().pos(), owner().angle()), dir + owner().angle()));
-					return true;
+//					addCollisionInfo(new CollisionInformation(
+//							toSpaceFrame(new DVector2(px, py), owner().pos(), owner().angle()), dir + owner().angle()));
+					addCollisionInfo(new DVector2(px, py), dir);
 				}
 				if (a == -1)
 					b *= -1;
@@ -127,6 +126,45 @@ public class Rectangle extends AbstractShape {
 		if (r.collidingRects(this, false, compute))
 			return true;
 		return false;
+	}
+	
+	private boolean collidingCircle(Circle c, boolean computeCollisionInfo) {
+		Orientable rPos = c.transform(super.owner());
+		
+		DVector2  pos = rPos.pos();
+		double x = pos.x();
+		double y = pos.y();
+		double hlen = length / 2;
+		double hheight = height / 2;
+		if (x < 0)
+			hlen *= -1;
+		if (y < 0)
+			hheight *= -1;
+		
+		if (Math.abs(x) > Math.abs(hlen)) {
+			if (Math.abs(y) > Math.abs(hheight)) {					// colliding with corner of rectangle
+				DVector2 to = new DVector2(x - hlen, y - hheight);
+				
+				if (to.mag2() > PMath.square(c.radius()))
+					return false;
+				
+				addCollisionInfo(new DVector2(hlen, hheight), to.angle());
+			} else {												// colliding with side of rectangle
+				if (Math.abs(x - hlen) > c.radius())
+					return false;
+				
+				addCollisionInfo(new DVector2(hlen, y), x > 0 ? 0 : Math.PI);
+			}
+		} else if (Math.abs(y) > Math.abs(hheight)) {				// colliding with top/bottom of rectangle
+			if (Math.abs(y - hheight) > c.radius())
+				return false;
+			
+			addCollisionInfo(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2);
+		} else {													// shouldn't happen
+			System.err.println("Circle inside rectangle");
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean notIntersecting(double min1, double max1, double min2, double max2) {

@@ -1,5 +1,7 @@
 package mechanics2D.shapes;
 
+import static mechanics2D.shapes.Orientable.toSpaceFrame;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -29,6 +31,10 @@ public abstract class AbstractShape implements Shape, Transformable {
 	
 	public Orientable owner() {
 		return owner;
+	}
+	
+	protected void addCollisionInfo(DVector2 bodyPos, double bodyAngle) {
+		addCollisionInfo(new CollisionInformation(owner().toSpaceFrame(bodyPos), bodyAngle + owner().angle()));
 	}
 	
 	protected static void addCollisionInfo(CollisionInformation c) {
