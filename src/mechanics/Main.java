@@ -88,7 +88,7 @@ public class Main {
 //		p.unsetAttribute(Attribute.Massive);
 //		p.unsetAttribute(Attribute.Physical);
 		p.setLightAttribs(.7f, 14);
-		s.add(p);
+		//s.add(p);
 		
 		Planet p2 = new Planet(new DVector(100, 20, 0), 200, 5, "blue");
 		p2.setLightAttribs(.2f, 4);
