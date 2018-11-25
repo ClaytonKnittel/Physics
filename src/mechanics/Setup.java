@@ -13,7 +13,7 @@ public class Setup {
 	
 	public static boolean tracing = false;
 	
-	public static final Setup ELLIPTICAL, CIRCULAR, PARABOLIC, HYPERBOLIC, POLAR, EARTH_MOON, INNER_SYSTEM;
+	public static final Setup ELLIPTICAL, CIRCULAR, PARABOLIC, HYPERBOLIC, POLAR, EARTH_MOON, INNER_SYSTEM, BLACK_HOLE;
 	
 //	private static final Color earthColor = new Color(57, 118, 40), sunColor = new Color(253, 184, 19), moonColor = new Color(254, 252, 215),
 //			mercuryColor = new Color(177, 173, 173), venusColor = new Color(227, 158, 28), marsColor = new Color(193, 68, 14);
@@ -76,10 +76,10 @@ public class Setup {
 		EARTH_MOON = new Setup(traceE, numSteps, earth, sun, moon);
 		
 		
-		float radMult = .6f;
+		float radMult = .6f * 20;
 		
 		earth = new Planet(new DVector(1000, 0, -100), 10, 1 * radMult, earthColor);
-		sun = new Planet(new DVector(0, 0, -100), 1000, 30 * radMult, sunColor);
+		sun = new Planet(new DVector(0, 0, -100), 1000, 3 * radMult, sunColor);
 		Planet mercury = new Planet(new DVector(86.7832, 380.222, 0), 0.552735261, 1 * radMult, mercuryColor);
 		Planet venus = new Planet(new DVector(-551.552, -462.807, 0), 8.14997513, 1 * radMult, venusColor);
 		Planet mars = new Planet(new DVector(-1229.71, 893.434, 0), 1.07446849, 1 * radMult, marsColor);
@@ -92,6 +92,15 @@ public class Setup {
 		numSteps = new int[] {0, 300, 300, 300, 300};
 		
 		INNER_SYSTEM = new Setup(traceE, numSteps, sun, mercury, venus, earth, mars);
+
+		
+		traceE = new String[] {null, "yellow", "orange", "cyan", "red", null};
+		numSteps = new int[] {0, 300, 300, 300, 300, 0};
+		
+		Planet blackHole = new Planet(new DVector(100, 100, -10000), 10000000, 1 * radMult, "blue");
+		blackHole.addVelocity(new DVector(0, 0, 1000));
+		
+		BLACK_HOLE = new Setup(traceE, numSteps, sun, mercury, venus, earth, mars, blackHole);
 	}
 	
 	

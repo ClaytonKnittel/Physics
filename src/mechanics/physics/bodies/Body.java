@@ -165,7 +165,7 @@ public abstract class Body implements Entity {
 		this.velocity = v;
 	}
 	
-	protected void addVelocity(DVector v) {
+	public void addVelocity(DVector v) {
 		this.velocity.add(v);
 	}
 	
